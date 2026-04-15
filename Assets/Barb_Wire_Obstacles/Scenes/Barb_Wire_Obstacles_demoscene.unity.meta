@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 85f76a4bbe18f2349afa84505745115d
+timeCreated: 1576869993
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 159800
+  packageName: Barbed Wire Obstacles
+  packageVersion: 1.0
+  assetPath: Assets/Barb_Wire_Obstacles/Scenes/Barb_Wire_Obstacles_demoscene.unity
+  uploadId: 344428

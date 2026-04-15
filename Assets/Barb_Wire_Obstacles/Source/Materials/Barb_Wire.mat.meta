@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 499cee5dd4ee205448ab23a5b040537a
+timeCreated: 1576869737
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 159800
+  packageName: Barbed Wire Obstacles
+  packageVersion: 1.0
+  assetPath: Assets/Barb_Wire_Obstacles/Source/Materials/Barb_Wire.mat
+  uploadId: 344428

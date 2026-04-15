@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 23cc9ac606bada04b874a78ed52ea1c5
+timeCreated: 1576932391
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 159800
+  packageName: Barbed Wire Obstacles
+  packageVersion: 1.0
+  assetPath: Assets/Barb_Wire_Obstacles/Prefabs/Wood_Obstacles_01.prefab
+  uploadId: 344428
