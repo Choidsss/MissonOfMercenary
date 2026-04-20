@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 003c95f5b252f8043a514020d83b6787
+timeCreated: 1541243944
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132830
+  packageName: Industrial Props Pack Vol.1
+  packageVersion: 1.1
+  assetPath: Assets/IGBlocks/IndustrialPropsPackVol1/Prefabs/TowerBigAntenna02.prefab
+  uploadId: 898028

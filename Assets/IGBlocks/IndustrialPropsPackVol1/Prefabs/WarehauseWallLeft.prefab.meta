@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 08ecdd0ab51b8b9449a0a271a7eb0e8c
+timeCreated: 1541256220
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132830
+  packageName: Industrial Props Pack Vol.1
+  packageVersion: 1.1
+  assetPath: Assets/IGBlocks/IndustrialPropsPackVol1/Prefabs/WarehauseWallLeft.prefab
+  uploadId: 898028

@@ -1,0 +1,134 @@
+fileFormatVersion: 2
+guid: 7b2db04b8cf0ce8409d5b45b03451f7a
+timeCreated: 1541244634
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: WarehauseLights01
+    100002: WarehauseLights02
+    100004: WarehauseLights03
+    100006: WarehauseLights04
+    100008: WarehauseLights05
+    100010: //RootNode
+    100012: WarehauseRoof
+    100014: WarehauseRoofMetal01
+    100016: WarehauseRoofMetal02
+    400000: WarehauseLights01
+    400002: WarehauseLights02
+    400004: WarehauseLights03
+    400006: WarehauseLights04
+    400008: WarehauseLights05
+    400010: WarehauseRoof
+    400012: //RootNode
+    400014: WarehauseRoofMetal01
+    400016: WarehauseRoofMetal02
+    2300000: WarehauseLights01
+    2300002: WarehauseLights02
+    2300004: WarehauseLights03
+    2300006: WarehauseLights04
+    2300008: WarehauseLights05
+    2300010: WarehauseRoof
+    2300012: WarehauseRoofMetal01
+    2300014: WarehauseRoofMetal02
+    3300000: WarehauseLights01
+    3300002: WarehauseLights02
+    3300004: WarehauseLights03
+    3300006: WarehauseLights04
+    3300008: WarehauseLights05
+    3300010: WarehauseRoof
+    3300012: WarehauseRoofMetal01
+    3300014: WarehauseRoofMetal02
+    4300000: WarehauseLights01
+    4300002: WarehauseRoofMetal01
+    4300004: WarehauseRoof
+    4300006: WarehauseRoofMetal02
+    4300008: WarehauseLights02
+    4300010: WarehauseLights03
+    4300012: WarehauseLights04
+    4300014: WarehauseLights05
+    6400000: WarehauseLights01
+    6400002: WarehauseLights02
+    6400004: WarehauseLights03
+    6400006: WarehauseLights04
+    6400008: WarehauseLights05
+    6400010: WarehauseRoof
+    6400012: WarehauseRoofMetal01
+    6400014: WarehauseRoofMetal02
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132830
+  packageName: Industrial Props Pack Vol.1
+  packageVersion: 1.1
+  assetPath: Assets/IGBlocks/IndustrialPropsPackVol1/Models/WarehauseRoof.FBX
+  uploadId: 898028

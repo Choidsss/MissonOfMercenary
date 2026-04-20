@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: eead831760c2edc43925e79d5242c4b8
+timeCreated: 1541242413
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132830
+  packageName: Industrial Props Pack Vol.1
+  packageVersion: 1.1
+  assetPath: Assets/IGBlocks/IndustrialPropsPackVol1/Models/Materials/TowerAntenna05.mat
+  uploadId: 898028

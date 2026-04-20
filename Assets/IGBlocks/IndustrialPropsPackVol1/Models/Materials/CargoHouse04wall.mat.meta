@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2e2bf543d07b6e0429683e383e6a609d
+timeCreated: 1541242414
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132830
+  packageName: Industrial Props Pack Vol.1
+  packageVersion: 1.1
+  assetPath: Assets/IGBlocks/IndustrialPropsPackVol1/Models/Materials/CargoHouse04wall.mat
+  uploadId: 898028

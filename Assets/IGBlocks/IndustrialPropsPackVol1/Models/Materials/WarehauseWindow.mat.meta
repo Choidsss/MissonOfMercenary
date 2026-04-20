@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 8174642a263a3ae4abf87933124ff29a
+timeCreated: 1541244634
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132830
+  packageName: Industrial Props Pack Vol.1
+  packageVersion: 1.1
+  assetPath: Assets/IGBlocks/IndustrialPropsPackVol1/Models/Materials/WarehauseWindow.mat
+  uploadId: 898028

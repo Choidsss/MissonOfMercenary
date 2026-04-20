@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 3b0f925ae58a34143aff7471ed0bc99d
+timeCreated: 1541243953
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132830
+  packageName: Industrial Props Pack Vol.1
+  packageVersion: 1.1
+  assetPath: Assets/IGBlocks/IndustrialPropsPackVol1/Prefabs/TowerAntenna05.prefab
+  uploadId: 898028

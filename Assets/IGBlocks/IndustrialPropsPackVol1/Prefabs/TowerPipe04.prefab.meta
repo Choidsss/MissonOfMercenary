@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: c4caf0091f66fea4eaa2aec22b409939
+timeCreated: 1541243966
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132830
+  packageName: Industrial Props Pack Vol.1
+  packageVersion: 1.1
+  assetPath: Assets/IGBlocks/IndustrialPropsPackVol1/Prefabs/TowerPipe04.prefab
+  uploadId: 898028

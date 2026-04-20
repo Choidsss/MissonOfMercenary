@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d70894b74d955c142a283253c5fd5967
+timeCreated: 1541243926
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132830
+  packageName: Industrial Props Pack Vol.1
+  packageVersion: 1.1
+  assetPath: Assets/IGBlocks/IndustrialPropsPackVol1/Prefabs/OilLargeTank02.prefab
+  uploadId: 898028

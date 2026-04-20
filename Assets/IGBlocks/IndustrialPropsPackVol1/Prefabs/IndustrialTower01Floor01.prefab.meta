@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 098a967adb38e7e4bb8202cbd0b12f50
+timeCreated: 1541243916
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132830
+  packageName: Industrial Props Pack Vol.1
+  packageVersion: 1.1
+  assetPath: Assets/IGBlocks/IndustrialPropsPackVol1/Prefabs/IndustrialTower01Floor01.prefab
+  uploadId: 898028
