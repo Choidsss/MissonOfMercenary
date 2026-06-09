@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
+    [Header("Movement Options")]
+    [SerializeField] float _speed = 1.0f;
+
+    Vector3 _move;
+
+    public Vector3 LookDirection {  get; set; }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -12,5 +19,10 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void Look()
+    {
+        LookDirection = this.transform.forward;
     }
 }
