@@ -1,28 +1,75 @@
 using UnityEngine;
 
-public class PlayerMove : MonoBehaviour
+namespace MissionOfMercenary
 {
-    [Header("Movement Options")]
-    [SerializeField] float _speed = 1.0f;
-
-    Vector3 _move;
-
-    public Vector3 LookDirection {  get; set; }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class PlayerMove : MonoBehaviour
     {
+        Rigidbody _rigidBody;
+
+        [SerializeField] InputReader _inputReader;
+
+        [Header("Movement Options")]
+        [SerializeField] float _speed = 1.0f;
+
+        Vector2 _move;
+        bool _isShot = false;
+
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void Start()
+        {
+            _rigidBody = GetComponent<Rigidbody>();
+        }
+
+        // Update is called once per frame
+        void FixedUpdate()
+        {
+            Move();
+        }
+
+        private void OnEnable()
+        {
+            _inputReader.OnMoveEvent += HandledMove;
+            _inputReader.OnshotEvent += HandledShot;
+        }
+
+        private void OnDisable()
+        {
+            _inputReader.OnMoveEvent -= HandledMove;
+            _inputReader.OnshotEvent -= HandledShot;
+        }
+
         
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        //DoMove를 부르는 함수
+        void Move()
+        {
+            DoMove();
+        }
 
-    void Look()
-    {
-        LookDirection = this.transform.forward;
+        //character 의 transform을 움직이는 함수
+        void DoMove()
+        {
+            Vector3 movement = new Vector3(_move.x, 0, _move.y);
+            _rigidBody.MovePosition(_rigidBody.position + movement * Time.fixedDeltaTime * _speed);
+        }
+
+        void HandledMove(Vector2 value)
+        {
+            _move = value;
+        }
+
+        void HandledShot(bool value)
+        {
+            if (value)
+            {
+                _isShot = true;
+            }
+            else
+            {
+                _isShot = false;
+            }
+        }
+
     }
 }
+
