@@ -986,6 +986,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7419260731707568730}
+  - component: {fileID: 2229139433681805245}
   m_Layer: 0
   m_Name: AR_M
   m_TagString: Untagged
@@ -1021,6 +1022,22 @@ Transform:
   - {fileID: 4702738985958861489}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2229139433681805245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907567775967570144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0431b3be5cf177c49804f597eb40bf5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _muzzle: {fileID: 4702738985958861489}
+  _muzzleFlash: {fileID: 199458, guid: 51b76f616384d4946bed4ecc9a6c2c3e, type: 3}
+  _flashDestroyedTime: 2
+  _autoSpeed: 1
 --- !u!1 &8540855330252511450
 GameObject:
   m_ObjectHideFlags: 0
