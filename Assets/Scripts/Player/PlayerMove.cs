@@ -7,6 +7,7 @@ namespace MissionOfMercenary
         Rigidbody _rigidBody;
 
         [SerializeField] InputReader _inputReader;
+        [SerializeField] GameObject _camera;
 
         [Header("Movement Options")]
         [SerializeField] float _speed = 1.0f;
@@ -46,7 +47,7 @@ namespace MissionOfMercenary
             DoMove();
         }
 
-        //character 의 transform을 움직이는 함수
+        //character 의 transform을 움직이는 함수(***************카메라를 기준으로 움직이도록 수정********************)
         void DoMove()
         {
             Vector3 movement = new Vector3(_move.x, 0, _move.y);
