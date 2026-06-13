@@ -10,6 +10,8 @@ TagManager:
   - Weapons
   - Ramp
   - BodyShot
+  - SecondCamera
+  - BulletSpawn
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - Water
   - UI
   - 
-  - 
+  - Maps
   - Ground
   - Weapons
   - Enemy

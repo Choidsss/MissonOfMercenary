@@ -23,7 +23,7 @@ namespace MissionOfMercenary
         InputAction _lookAction;
 
         public event Action<Vector2> OnMoveEvent;
-        public event Action<bool> OnshotEvent;
+        public event Action<float> OnshotEvent;
         public event Action<Vector2> OnLookEvent;
 
         private void OnEnable()
@@ -69,7 +69,7 @@ namespace MissionOfMercenary
         //Unity에서 Move함수를 Invoke 시키는 함수
         void ShotEventCallback(InputAction.CallbackContext context)
         {
-            bool value = context.ReadValue<bool>();
+            float value = context.ReadValue<float>();
             OnshotEvent?.Invoke(value);
         }
 

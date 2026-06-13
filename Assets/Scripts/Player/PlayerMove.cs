@@ -30,13 +30,13 @@ namespace MissionOfMercenary
         private void OnEnable()
         {
             _inputReader.OnMoveEvent += HandledMove;
-            _inputReader.OnshotEvent += HandledShot;
+            //_inputReader.OnshotEvent += HandledShot;
         }
 
         private void OnDisable()
         {
             _inputReader.OnMoveEvent -= HandledMove;
-            _inputReader.OnshotEvent -= HandledShot;
+            //_inputReader.OnshotEvent -= HandledShot;
         }
 
         
@@ -50,7 +50,22 @@ namespace MissionOfMercenary
         //character 의 transform을 움직이는 함수(***************카메라를 기준으로 움직이도록 수정********************)
         void DoMove()
         {
-            Vector3 movement = new Vector3(_move.x, 0, _move.y);
+            //Vector3 movement = new Vector3(_move.x, 0, _move.y);
+            //_rigidBody.MovePosition(_rigidBody.position + movement * Time.fixedDeltaTime * _speed);
+
+
+
+
+            Vector3 forward = _camera.transform.forward;
+            Vector3 right = _camera.transform.right;
+
+            // y축 영향 제거
+            forward.y = 0;
+            right.y = 0;
+            forward.Normalize();
+            right.Normalize();
+
+            Vector3 movement = (forward * _move.y + right * _move.x);
             _rigidBody.MovePosition(_rigidBody.position + movement * Time.fixedDeltaTime * _speed);
         }
 
@@ -59,17 +74,10 @@ namespace MissionOfMercenary
             _move = value;
         }
 
-        void HandledShot(bool value)
-        {
-            if (value)
-            {
-                _isShot = true;
-            }
-            else
-            {
-                _isShot = false;
-            }
-        }
+        //void HandledShot(float value)
+        //{
+            
+        //}
 
     }
 }

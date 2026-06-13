@@ -19879,6 +19879,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6272289642370519854, guid: 9b501bc9f33120643ab08a177d24ce93, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6619764832026247841, guid: 9b501bc9f33120643ab08a177d24ce93, type: 3}
       propertyPath: m_Name
       value: fence (16)
@@ -40837,6 +40841,22 @@ PrefabInstance:
     - target: {fileID: 694162470681701275, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _cameraPitchSpeed
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1275091720209310590, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _inputReader
+      value: 
+      objectReference: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
+    - target: {fileID: 1275091720209310590, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _bulletMarkObj
+      value: 
+      objectReference: {fileID: 179232, guid: b2ac1383a96f94a50b7ed458be173bbd, type: 3}
+    - target: {fileID: 1275091720209310590, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _flashDestroyedTime
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1275091720209310590, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _bulletMarkDestroyedTime
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 2857590568242928252, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: m_Constraints

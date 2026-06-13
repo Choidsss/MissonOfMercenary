@@ -58,7 +58,7 @@ namespace MIssionOfMercenary
             //currentPitch에 Value.Y 값 누적시킴(Inverty는 위아래의 마우스 상하반전)
             _currentPitch += IsInverty ? _lookAngle.y : -_lookAngle.y;
             //일정 각도 이상으로 돌리지 안도록 제한
-            _currentPitch = Mathf.Clamp(_currentPitch, -90, 90); // => 상하 회전의 누적 움직임 값
+            _currentPitch = Mathf.Clamp(_currentPitch, -160, 160); // => 상하 회전의 누적 움직임 값
 
             //카메라 좌우회전에 X축 을 생성해줌(더해줌)
 
