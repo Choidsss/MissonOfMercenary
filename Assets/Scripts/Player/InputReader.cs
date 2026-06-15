@@ -11,20 +11,18 @@ namespace MissionOfMercenary
 
     public class InputReader : ScriptableObject
     {
-        /*
-         * 이 스크립트는 InputActionAsset의 Event를 처리해주는 스크립트입니다.
-         * 움직임 관련 함수들은 PlayerMove 로 이동
-         */
-
         [SerializeField] InputActionAsset _inputActionAsset;
 
         InputAction _moveAction;
         InputAction _shotAction;
         InputAction _lookAction;
+        InputAction _switchFireAction;
 
         public event Action<Vector2> OnMoveEvent;
         public event Action<float> OnshotEvent;
+        public event Action OnShotCancled;
         public event Action<Vector2> OnLookEvent;
+        public event Action OnAttackTypeToggleEvent;
 
         private void OnEnable()
         {
@@ -32,16 +30,24 @@ namespace MissionOfMercenary
             _moveAction = _inputActionAsset.FindAction("Move");
             _shotAction = _inputActionAsset.FindAction("Shot");
             _lookAction = _inputActionAsset.FindAction("Look");
+            _switchFireAction = _inputActionAsset.FindAction("SwitchFire");
+
             _moveAction.Enable();
             _shotAction.Enable();
             _lookAction.Enable();
+            _switchFireAction.Enable();
 
             // 이벤트 콜백 등록
             _moveAction.performed += MoveEventCallback;
             _moveAction.canceled += MoveEventCallback;
+
             _lookAction.performed += LookEventCallback;
             _lookAction.canceled += LookEventCallback;
+
             _shotAction.performed += ShotEventCallback;
+            _shotAction.canceled += ShotCancledCallBack;
+
+            _switchFireAction.performed += AttackTypeToggleEventCallBack;
         }
 
         private void OnDisable()
@@ -53,8 +59,13 @@ namespace MissionOfMercenary
             //이벤트 콜백 해제
             _moveAction.performed -= MoveEventCallback;
             _moveAction.canceled -= MoveEventCallback;
+
             _lookAction.performed -= LookEventCallback;
+
             _shotAction.performed -= ShotEventCallback;
+            _shotAction.canceled -= ShotCancledCallBack;
+
+            _switchFireAction.performed -= AttackTypeToggleEventCallBack;
         }
 
         //*************이벤트 처리 함수들*******************
@@ -73,11 +84,23 @@ namespace MissionOfMercenary
             OnshotEvent?.Invoke(value);
         }
 
+        //연발일때 멈추게 하는 이벤트를 Invoke 시키는 함수
+        void ShotCancledCallBack(InputAction.CallbackContext context)
+        {
+            OnShotCancled?.Invoke();
+        }
+
         //Unity에서 Look함수를 Invoke 시키는 함수
         void LookEventCallback(InputAction.CallbackContext context)
         {
             Vector2 value = context.ReadValue<Vector2>();
             OnLookEvent?.Invoke(value);
+        }
+
+        //Unity에서 조정간 단/연발 교체 함수를 Invoke 시키는 함수
+        void AttackTypeToggleEventCallBack(InputAction.CallbackContext context)
+        {
+            OnAttackTypeToggleEvent?.Invoke();
         }
     }
 }

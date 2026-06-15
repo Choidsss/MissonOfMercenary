@@ -2,15 +2,12 @@ using UnityEngine;
 using System.Collections;
 using System;
 using MissionOfMercenary;
+using UnityEditor.Rendering.LookDev;
 
 namespace MIssionOfMercenary
 {
     public class AssultRifle : MonoBehaviour, IWeapons
     {
-        /*
-         * 인풋으로 쏘는 거 들어오는거 체크해야됨
-         */
-
         public enum SingleOrAuto
         {
             single,
@@ -19,9 +16,13 @@ namespace MIssionOfMercenary
 
         public WeaponType weaponType { get; } = WeaponType.AR;
 
-        public SingleOrAuto AttackType { get; set; } = SingleOrAuto.single;
+        public SingleOrAuto AttackType { get; set; } = SingleOrAuto.auto;
 
         [SerializeField] InputReader _inputReader;
+
+        //[Header("CrossHairTranform")]
+        //[SerializeField] Transform _crossHairTransform;
+        //[SerializeField] GameObject _camera;
 
         [Header("Muzzle")]
         [SerializeField] Transform _muzzle;
@@ -39,22 +40,23 @@ namespace MIssionOfMercenary
 
         //[SerializeField] LayerMask _layer;
 
+        Coroutine _autoFireCoroutine;
 
-
-        // Update is called once per frame
         void Update()
         {
-            //Attack();
+            //MuzzleGizmos();
         }
 
         void OnEnable()
         {
-            _inputReader.OnshotEvent += Attack;
+            _inputReader.OnshotEvent += HandleShot;
+            _inputReader.OnShotCancled += HandleShotCancled;
         }
 
         void OnDisable()
         {
-            _inputReader.OnshotEvent -= Attack;
+            _inputReader.OnshotEvent -= HandleShot;
+            _inputReader.OnShotCancled -= HandleShotCancled;
         }
 
 
@@ -63,11 +65,16 @@ namespace MIssionOfMercenary
             if (_muzzle == null) { return; }
 
             RaycastHit hit;
-            bool isHit = Physics.Raycast(_muzzle.position, _muzzle.forward, out hit, AttackRange);
+            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+
+
+            //카메라에서 중앙으로 레이를 쏨
+            bool isHit = Physics.Raycast(ray, out hit, AttackRange);
 
             //  머즐플래시는 항상 생성
             GameObject flash = Instantiate(_muzzleFlash, _muzzle.position, _muzzle.rotation);
             StartCoroutine(FlashEffectDestoryRoutine(flash));
+
 
             //  그 다음에 hit 체크
             if (!isHit) { return; }
@@ -107,6 +114,26 @@ namespace MIssionOfMercenary
             //}
         }
 
+        void HandleShot(float shot)
+        {
+            if(AttackType == SingleOrAuto.auto)
+            {
+                _autoFireCoroutine = StartCoroutine(AutoFireRoutine());
+            }
+            else
+            {
+                Attack(shot);
+            }
+        }
+
+        void HandleShotCancled()
+        {
+            if (_autoFireCoroutine != null)
+            {
+                StopCoroutine(_autoFireCoroutine);
+            }
+        }
+
         IEnumerator FlashEffectDestoryRoutine(GameObject flash)
         {
             if(flash == null) { yield return null; }
@@ -121,6 +148,21 @@ namespace MIssionOfMercenary
 
             yield return new WaitForSeconds(_bulletMarkDestroyedTime);
             Destroy(mark);
+        }
+
+        IEnumerator AutoFireRoutine()
+        {
+            while (true)
+            {
+                Attack(1f);
+                yield return new WaitForSeconds(1f/_autoSpeed);
+            }
+        }
+
+        void MuzzleGizmos()
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(_muzzle.position, Vector3.forward);
         }
     }
 }
