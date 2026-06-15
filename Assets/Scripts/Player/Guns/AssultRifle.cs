@@ -159,10 +159,10 @@ namespace MIssionOfMercenary
             }
         }
 
-        void MuzzleGizmos()
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(_muzzle.position, Vector3.forward);
-        }
+        //void MuzzleGizmos()
+        //{
+        //    Gizmos.color = Color.blue;
+        //    Gizmos.DrawLine(_muzzle.position, Vector3.forward);
+        //}
     }
 }

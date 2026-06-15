@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputReader: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
+  _camera: {fileID: 0}
   _speed: 5
 --- !u!114 &694162470681701275
 MonoBehaviour:
@@ -115,6 +116,7 @@ MonoBehaviour:
   _inputReader: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
   _cameraTransform: {fileID: 2543910628095086680}
   _cameraSpeed: 5
+  _cameraPitchSpeed: 1
 --- !u!1 &7550246154737762014
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,6 +425,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 95000012490115852, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 511f24fd060ef465da64edde8c05d690, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
