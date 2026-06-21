@@ -17,8 +17,10 @@ namespace MissionOfMercenary
         InputAction _shotAction;
         InputAction _lookAction;
         InputAction _switchFireAction;
+        InputAction _runAction;
 
         public event Action<Vector2> OnMoveEvent;
+        public event Action OnRunToggleEvent;
         public event Action<float> OnshotEvent;
         public event Action OnShotCancled;
         public event Action<Vector2> OnLookEvent;
@@ -31,8 +33,10 @@ namespace MissionOfMercenary
             _shotAction = _inputActionAsset.FindAction("Shot");
             _lookAction = _inputActionAsset.FindAction("Look");
             _switchFireAction = _inputActionAsset.FindAction("SwitchFire");
+            _runAction = _inputActionAsset.FindAction("Run");
 
             _moveAction.Enable();
+            _runAction.Enable();
             _shotAction.Enable();
             _lookAction.Enable();
             _switchFireAction.Enable();
@@ -40,6 +44,8 @@ namespace MissionOfMercenary
             // 이벤트 콜백 등록
             _moveAction.performed += MoveEventCallback;
             _moveAction.canceled += MoveEventCallback;
+
+            _runAction.performed += RunEventCallBack;
 
             _lookAction.performed += LookEventCallback;
             _lookAction.canceled += LookEventCallback;
@@ -55,10 +61,14 @@ namespace MissionOfMercenary
             _moveAction.Disable();
             _shotAction.Disable();
             _lookAction.Disable();
+            _runAction.Disable();
+            _switchFireAction.Disable();
 
             //이벤트 콜백 해제
             _moveAction.performed -= MoveEventCallback;
             _moveAction.canceled -= MoveEventCallback;
+
+            _runAction.performed -= RunEventCallBack;
 
             _lookAction.performed -= LookEventCallback;
 
@@ -101,6 +111,11 @@ namespace MissionOfMercenary
         void AttackTypeToggleEventCallBack(InputAction.CallbackContext context)
         {
             OnAttackTypeToggleEvent?.Invoke();
+        }
+
+        void RunEventCallBack(InputAction.CallbackContext context)
+        {
+            OnRunToggleEvent?.Invoke();
         }
     }
 }

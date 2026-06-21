@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using MissionOfMercenary;
 using UnityEditor.Rendering.LookDev;
+using UnityEditor.SettingsManagement;
 
 namespace MIssionOfMercenary
 {
@@ -30,6 +31,7 @@ namespace MIssionOfMercenary
         [SerializeField] GameObject _bulletMarkObj;
         [SerializeField] float _flashDestroyedTime = 2.0f;
         [SerializeField] float _bulletMarkDestroyedTime = 2.0f;
+        
 
         [Header("Weapon Options")]
         [SerializeField] public int Damage { get; } = 5;
@@ -38,9 +40,17 @@ namespace MIssionOfMercenary
         
         [SerializeField] float _autoSpeed = 1.0f;
 
+        [SerializeField] int _minAmmo = 0;
+        [SerializeField] int _maxAmmo = 30;
+
+        public int Ammo { get; private set; }
+
+        public bool needReload { get; private set; } = false;
+
         //[SerializeField] LayerMask _layer;
 
         Coroutine _autoFireCoroutine;
+
 
         void Update()
         {
@@ -62,6 +72,10 @@ namespace MIssionOfMercenary
 
         public void Attack(float isShot)
         {
+            if(Ammo != _maxAmmo) { needReload = true; }
+            else { needReload = false; }
+
+
             if (_muzzle == null) { return; }
 
             RaycastHit hit;
@@ -73,8 +87,9 @@ namespace MIssionOfMercenary
 
             //  머즐플래시는 항상 생성
             GameObject flash = Instantiate(_muzzleFlash, _muzzle.position, _muzzle.rotation);
-            StartCoroutine(FlashEffectDestoryRoutine(flash));
+            Ammo--;
 
+            StartCoroutine(FlashEffectDestoryRoutine(flash));
 
             //  그 다음에 hit 체크
             if (!isHit) { return; }
@@ -116,6 +131,14 @@ namespace MIssionOfMercenary
 
         void HandleShot(float shot)
         {
+            //총알이 0 이 되면, 더이상 나가지 않도록 막음.
+            //Reload 하는 코드 만들어서 Ammo 충전하도록 만들 예정
+            if(Ammo <= 0)
+            {
+                Ammo = Mathf.Clamp(Ammo, _minAmmo, _maxAmmo);
+                return;
+            }
+
             if(AttackType == SingleOrAuto.auto)
             {
                 _autoFireCoroutine = StartCoroutine(AutoFireRoutine());
@@ -124,6 +147,13 @@ namespace MIssionOfMercenary
             {
                 Attack(shot);
             }
+        }
+
+        void HandledReload()
+        {
+            if (!needReload) {  return; }
+
+            Ammo = _maxAmmo;
         }
 
         void HandleShotCancled()
