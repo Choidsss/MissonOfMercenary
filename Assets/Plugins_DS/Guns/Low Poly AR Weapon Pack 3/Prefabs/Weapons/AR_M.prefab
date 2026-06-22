@@ -987,6 +987,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7419260731707568730}
   - component: {fileID: 2229139433681805245}
+  - component: {fileID: -7741671296081472078}
   m_Layer: 0
   m_Name: AR_M
   m_TagString: Untagged
@@ -1034,10 +1035,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0431b3be5cf177c49804f597eb40bf5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputReader: {fileID: 0}
   _muzzle: {fileID: 4702738985958861489}
   _muzzleFlash: {fileID: 199458, guid: 51b76f616384d4946bed4ecc9a6c2c3e, type: 3}
+  _bulletMarkObj: {fileID: 0}
   _flashDestroyedTime: 0.2
+  _bulletMarkDestroyedTime: 2
   _autoSpeed: 1
+  _minAmmo: 0
+  _maxAmmo: 30
+--- !u!114 &-7741671296081472078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907567775967570144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f6568d0909d394fbc33c9b727b7d7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputReader: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
+  _weapon: {fileID: 7419260731707568730}
+  _recoilKickBack: 10
+  _recoilUpDown: 10
+  _recoilVibration: 10
+  _snapSpeed: 10
+  _recoverySpeed: 10
 --- !u!1 &8540855330252511450
 GameObject:
   m_ObjectHideFlags: 0

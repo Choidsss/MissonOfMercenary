@@ -41623,6 +41623,30 @@ PrefabInstance:
       propertyPath: _bulletMarkDestroyedTime
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 2003390801828948337, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2003390801828948337, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _snapSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2003390801828948337, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _recoilUpDown
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2003390801828948337, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _recoverySpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2003390801828948337, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _recoilKickBack
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2003390801828948337, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _recoilVibration
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2857590568242928252, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: m_Constraints
       value: 80

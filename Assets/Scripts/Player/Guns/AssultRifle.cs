@@ -40,12 +40,14 @@ namespace MIssionOfMercenary
         
         [SerializeField] float _autoSpeed = 1.0f;
 
-        [SerializeField] int _minAmmo = 0;
-        [SerializeField] int _maxAmmo = 30;
+        //[SerializeField] int _minAmmo = 0;
+        //[SerializeField] int _maxAmmo = 30;
 
         public int Ammo { get; private set; }
 
         public bool needReload { get; private set; } = false;
+
+        public bool IsShot { get; private set; } = false;
 
         //[SerializeField] LayerMask _layer;
 
@@ -72,8 +74,8 @@ namespace MIssionOfMercenary
 
         public void Attack(float isShot)
         {
-            if(Ammo != _maxAmmo) { needReload = true; }
-            else { needReload = false; }
+            //if(Ammo != _maxAmmo) { needReload = true; }
+            //else { needReload = false; }
 
 
             if (_muzzle == null) { return; }
@@ -87,7 +89,7 @@ namespace MIssionOfMercenary
 
             //  머즐플래시는 항상 생성
             GameObject flash = Instantiate(_muzzleFlash, _muzzle.position, _muzzle.rotation);
-            Ammo--;
+            //Ammo--;
 
             StartCoroutine(FlashEffectDestoryRoutine(flash));
 
@@ -133,11 +135,11 @@ namespace MIssionOfMercenary
         {
             //총알이 0 이 되면, 더이상 나가지 않도록 막음.
             //Reload 하는 코드 만들어서 Ammo 충전하도록 만들 예정
-            if(Ammo <= 0)
-            {
-                Ammo = Mathf.Clamp(Ammo, _minAmmo, _maxAmmo);
-                return;
-            }
+            //if(Ammo <= 0)
+            //{
+            //    Ammo = Mathf.Clamp(Ammo, _minAmmo, _maxAmmo);
+            //    return;
+            //}
 
             if(AttackType == SingleOrAuto.auto)
             {
@@ -149,12 +151,12 @@ namespace MIssionOfMercenary
             }
         }
 
-        void HandledReload()
-        {
-            if (!needReload) {  return; }
+        //void HandledReload()
+        //{
+        //    if (!needReload) {  return; }
 
-            Ammo = _maxAmmo;
-        }
+        //    Ammo = _maxAmmo;
+        //}
 
         void HandleShotCancled()
         {
