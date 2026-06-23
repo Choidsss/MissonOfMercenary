@@ -10,6 +10,7 @@ namespace MIssionOfMercenary
     public class AssultRifle : MonoBehaviour, IWeapons
     {
         [SerializeField] WeaponRecoil _recoil;
+        ShellEjector _shell;
 
         public enum SingleOrAuto
         {
@@ -55,6 +56,10 @@ namespace MIssionOfMercenary
 
         Coroutine _autoFireCoroutine;
 
+        private void Start()
+        {
+            _shell = GetComponent<ShellEjector>();
+        }
 
         void Update()
         {
@@ -151,6 +156,7 @@ namespace MIssionOfMercenary
             {
                 Attack(shot);
                 _recoil.WeaponRecoilApply();
+                _shell.Ejector();
             }
         }
 
@@ -191,6 +197,7 @@ namespace MIssionOfMercenary
             {
                 Attack(1f);
                 _recoil.WeaponRecoilApply();
+                _shell.Ejector();
                 yield return new WaitForSeconds(1f/_autoSpeed);
             }
         }
