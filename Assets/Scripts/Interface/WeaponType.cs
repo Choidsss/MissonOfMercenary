@@ -10,4 +10,11 @@ namespace MIssionOfMercenary
         HG,
         Knife
     }
+
+    public enum AimType
+    {
+        None,
+        IronSight,
+        Scope
+    }
 }

@@ -18,6 +18,8 @@ namespace MissionOfMercenary
         InputAction _lookAction;
         InputAction _switchFireAction;
         InputAction _runAction;
+        InputAction _reloadAction;
+        InputAction _zoomInAction;
 
         public event Action<Vector2> OnMoveEvent;
         public event Action OnRunToggleEvent;
@@ -25,6 +27,8 @@ namespace MissionOfMercenary
         public event Action OnShotCancled;
         public event Action<Vector2> OnLookEvent;
         public event Action OnAttackTypeToggleEvent;
+        public event Action<float> OnReloadEvent;
+        public event Action OnZoomInToggleAction;
 
         private void OnEnable()
         {
@@ -34,12 +38,16 @@ namespace MissionOfMercenary
             _lookAction = _inputActionAsset.FindAction("Look");
             _switchFireAction = _inputActionAsset.FindAction("SwitchFire");
             _runAction = _inputActionAsset.FindAction("Run");
+            _reloadAction = _inputActionAsset.FindAction("Reload");
+            _zoomInAction = _inputActionAsset.FindAction("ZoomIn");
 
             _moveAction.Enable();
             _runAction.Enable();
             _shotAction.Enable();
             _lookAction.Enable();
             _switchFireAction.Enable();
+            _reloadAction.Enable();
+            _zoomInAction.Enable();
 
             // 이벤트 콜백 등록
             _moveAction.performed += MoveEventCallback;
@@ -54,6 +62,10 @@ namespace MissionOfMercenary
             _shotAction.canceled += ShotCancledCallBack;
 
             _switchFireAction.performed += AttackTypeToggleEventCallBack;
+
+            _reloadAction.performed += WeponReloadActionCallBack;
+
+            _zoomInAction.performed += ZoomInActionCallBack;
         }
 
         private void OnDisable()
@@ -76,6 +88,10 @@ namespace MissionOfMercenary
             _shotAction.canceled -= ShotCancledCallBack;
 
             _switchFireAction.performed -= AttackTypeToggleEventCallBack;
+
+            _reloadAction.performed -= WeponReloadActionCallBack;
+
+            _zoomInAction.performed -= ZoomInActionCallBack;
         }
 
         //*************이벤트 처리 함수들*******************
@@ -116,6 +132,17 @@ namespace MissionOfMercenary
         void RunEventCallBack(InputAction.CallbackContext context)
         {
             OnRunToggleEvent?.Invoke();
+        }
+
+        void WeponReloadActionCallBack(InputAction.CallbackContext context)
+        {
+            float value = context.ReadValue<float>();
+            OnReloadEvent?.Invoke(value);
+        }
+
+        void ZoomInActionCallBack(InputAction.CallbackContext context)
+        {
+            OnZoomInToggleAction?.Invoke();
         }
     }
 }

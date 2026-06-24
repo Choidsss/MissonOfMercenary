@@ -12,11 +12,15 @@ namespace MIssionOfMercenary
         [SerializeField] WeaponRecoil _recoil;
         ShellEjector _shell;
 
+        
+
         public enum SingleOrAuto
         {
             single,
             auto
         }
+
+        public AimType aimType { get; } = AimType.None;
 
         public WeaponType weaponType { get; } = WeaponType.AR;
 
@@ -43,33 +47,31 @@ namespace MIssionOfMercenary
         
         [SerializeField] float _autoSpeed = 1.0f;
 
-        //[SerializeField] int _minAmmo = 0;
-        //[SerializeField] int _maxAmmo = 30;
+        [SerializeField] int _maxAmmo = 30;
 
-        public int Ammo { get; private set; }
+        public int Ammo { get; private set; } = 30;
 
-        public bool needReload { get; private set; } = false;
+        public bool canReload { get; private set; } = false;
 
         public bool IsShot { get; private set; } = false;
 
         //[SerializeField] LayerMask _layer;
 
         Coroutine _autoFireCoroutine;
+        Coroutine _reloadRoutine;
+
+        float _reloadDelay = 2.0f;
 
         private void Start()
         {
             _shell = GetComponent<ShellEjector>();
         }
 
-        void Update()
-        {
-            //MuzzleGizmos();
-        }
-
         void OnEnable()
         {
             _inputReader.OnshotEvent += HandleShot;
             _inputReader.OnShotCancled += HandleShotCancled;
+            _inputReader.OnReloadEvent += HandledReload;
         }
 
         void OnDisable()
@@ -81,8 +83,8 @@ namespace MIssionOfMercenary
 
         public void Attack(float isShot)
         {
-            //if(Ammo != _maxAmmo) { needReload = true; }
-            //else { needReload = false; }
+            if(Ammo != _maxAmmo) { canReload = true; }
+            else { canReload = false; }
 
 
             if (_muzzle == null) { return; }
@@ -140,32 +142,31 @@ namespace MIssionOfMercenary
 
         void HandleShot(float shot)
         {
-            //총알이 0 이 되면, 더이상 나가지 않도록 막음.
-            //Reload 하는 코드 만들어서 Ammo 충전하도록 만들 예정
-            //if(Ammo <= 0)
-            //{
-            //    Ammo = Mathf.Clamp(Ammo, _minAmmo, _maxAmmo);
-            //    return;
-            //}
+            if(Ammo <= 0) { Ammo = 0; StopCoroutine(AutoFireRoutine()); }
 
-            if(AttackType == SingleOrAuto.auto)
+
+            if (AttackType == SingleOrAuto.auto && Ammo != 0)
             {
                 _autoFireCoroutine = StartCoroutine(AutoFireRoutine());
             }
             else
             {
+                if (Ammo <= 0) { return; }
+
                 Attack(shot);
+                Ammo--;
                 _recoil.WeaponRecoilApply();
                 _shell.Ejector();
+
             }
         }
 
-        //void HandledReload()
-        //{
-        //    if (!needReload) {  return; }
-
-        //    Ammo = _maxAmmo;
-        //}
+        void HandledReload(float value)
+        {
+            if (!canReload) { return; }
+            if (_reloadRoutine != null) StopCoroutine(_reloadRoutine); // 재장전 코루틴 멈춤
+            _reloadRoutine = StartCoroutine(ReloadDelayRoutine());
+        }
 
         void HandleShotCancled()
         {
@@ -193,13 +194,22 @@ namespace MIssionOfMercenary
 
         IEnumerator AutoFireRoutine()
         {
-            while (true)
+            while (Ammo > 0)
             {
                 Attack(1f);
+                Ammo--;
                 _recoil.WeaponRecoilApply();
                 _shell.Ejector();
+
                 yield return new WaitForSeconds(1f/_autoSpeed);
             }
+        }
+
+        IEnumerator ReloadDelayRoutine()
+        {
+            canReload = false;
+            yield return new WaitForSeconds(_reloadDelay);
+            Ammo = _maxAmmo;    
         }
 
         //void MuzzleGizmos()
