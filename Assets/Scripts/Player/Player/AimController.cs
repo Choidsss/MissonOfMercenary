@@ -1,5 +1,6 @@
 using MissionOfMercenary;
 using UnityEngine;
+using UnityEngine.Rendering.LookDev;
 
 namespace MIssionOfMercenary
 {
@@ -7,7 +8,17 @@ namespace MIssionOfMercenary
     {
         [SerializeField] InputReader _inputReader;
         [SerializeField] AssultRifle _ar;
+
+        [Header("Fov Options")]
+        [SerializeField] Camera _mainCamera;
+        [SerializeField] Camera _weaponCamera;
+        [SerializeField] float _normalFov;
+        [SerializeField] float _aimFov;
         [SerializeField] float _aimSpeed;
+
+        [Header("Sensitivity")]
+        [SerializeField] float _normalSensitivity;
+        [SerializeField] float _aimSensitivity;
 
         [SerializeField] GunTransformCorrection _transformCorrection;
 
@@ -15,7 +26,17 @@ namespace MIssionOfMercenary
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            //_transformCorrection = GetComponent<GunTransformCorrection>();
+            _normalFov = _mainCamera.fieldOfView;
+            //_mainCamera.depth = 0;
+            //_weaponCamera.depth = 1;
+
+            //_mainCamera.clearFlags = CameraClearFlags.Skybox;
+            //_weaponCamera.clearFlags = CameraClearFlags.Depth;
+        }
+
+        private void Update()
+        {
+            UpdateFov();
         }
 
         private void OnEnable()
@@ -28,21 +49,20 @@ namespace MIssionOfMercenary
             _inputReader.OnZoomInToggleAction -= AimHandle;
         }
 
+        void UpdateFov()
+        {
+            float targetFov = IsAiming ? _aimFov : _normalFov;
+
+            _mainCamera.fieldOfView = Mathf.Lerp(_mainCamera.fieldOfView, targetFov, _aimSpeed * Time.deltaTime);
+            _weaponCamera.fieldOfView = _mainCamera.fieldOfView; // µø±‚»≠
+        }
 
         void AimHandle()
         {
             if (_ar.aimType == AimType.IronSight) return;
-
             IsAiming = !IsAiming;
 
             _transformCorrection.Aiming();
         }
-
-        //void HandleAim()
-        //{
-        //    Debug.Log($"_ar: {_ar}, _camera: {_camera}");
-        //    if (_ar.aimType == AimType.None) return;
-        //    IsAiming = !IsAiming;
-        //}
     }
 }

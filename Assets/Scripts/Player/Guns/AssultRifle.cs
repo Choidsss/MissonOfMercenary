@@ -166,6 +166,7 @@ namespace MIssionOfMercenary
             if (!canReload) { return; }
             if (_reloadRoutine != null) StopCoroutine(_reloadRoutine); // 재장전 코루틴 멈춤
             _reloadRoutine = StartCoroutine(ReloadDelayRoutine());
+            Debug.Log("Reloading");
         }
 
         void HandleShotCancled()

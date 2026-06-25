@@ -7,10 +7,10 @@ namespace MIssionOfMercenary
     {
         [SerializeField] Transform _leftHand;
         [SerializeField] Transform _gun;
-        [SerializeField] PlayerMove _playerMove;
+        [SerializeField] Transform _aimPosition;
         [SerializeField] GameObject _camera;
 
-        [SerializeField] Transform _aimPosition;
+        [SerializeField] PlayerMove _playerMove;
         [SerializeField] AimController _aimController;
 
         [Header("Run Correction Options")]
