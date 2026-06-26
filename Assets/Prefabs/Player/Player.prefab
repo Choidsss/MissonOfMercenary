@@ -142,6 +142,7 @@ GameObject:
   - component: {fileID: 111921809067059592}
   - component: {fileID: 694162470681701275}
   - component: {fileID: 3623376667837324982}
+  - component: {fileID: 4032807633238968760}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -263,12 +264,30 @@ MonoBehaviour:
   _ar: {fileID: 8432908494238498437}
   _mainCamera: {fileID: 5024758830442866966}
   _weaponCamera: {fileID: 2047580484557982884}
-  _normalFov: 0.001
+  _normalFov: 60
   _aimFov: 0
   _aimSpeed: 0.5
   _normalSensitivity: 1
   _aimSensitivity: 1
   _transformCorrection: {fileID: 5668461940322352074}
+--- !u!114 &4032807633238968760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5289674846794416690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25695f8b9d8d3f44b917b78a1f043b4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 2543910628095086680}
+  _playerMove: {fileID: 111921809067059592}
+  _bobFrequency: 10
+  _bobReturnSpeed: 1
+  _amountX: 1
+  _amountY: 0.4
 --- !u!1 &8280731064724997918
 GameObject:
   m_ObjectHideFlags: 0

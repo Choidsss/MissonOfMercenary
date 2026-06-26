@@ -22,11 +22,21 @@ namespace MIssionOfMercenary
 
         [SerializeField] GunTransformCorrection _transformCorrection;
 
+        [Header("Aim Option")]
+        [SerializeField] float _tiltSpeed;
+        [SerializeField] Transform _aimPosition;
+        [SerializeField] Transform _gunPosition;
+
+        Vector3 _defaultPosition;
+        Quaternion _defaultRotation;
         public bool IsAiming { get; private set; } = false;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             _normalFov = _mainCamera.fieldOfView;
+
+            _defaultPosition = _gunPosition.position;
+            _defaultRotation = _gunPosition.localRotation;
             //_mainCamera.depth = 0;
             //_weaponCamera.depth = 1;
 
@@ -37,6 +47,7 @@ namespace MIssionOfMercenary
         private void Update()
         {
             UpdateFov();
+            Aiming();
         }
 
         private void OnEnable()
@@ -63,6 +74,20 @@ namespace MIssionOfMercenary
             IsAiming = !IsAiming;
 
             _transformCorrection.Aiming();
+        }
+
+        public void Aiming()
+        {
+            if (IsAiming)
+            {
+                _gunPosition.position = Vector3.Lerp(_gunPosition.position, _aimPosition.position, _tiltSpeed * Time.deltaTime);
+                _gunPosition.rotation = Quaternion.Lerp(_gunPosition.rotation, _aimPosition.rotation, _tiltSpeed * Time.deltaTime);
+            }
+            else
+            {
+                _gunPosition.position = Vector3.Lerp(_gunPosition.position, _defaultPosition, _tiltSpeed * Time.deltaTime);
+                _gunPosition.rotation = Quaternion.Lerp(_gunPosition.rotation, _defaultRotation, _tiltSpeed * Time.deltaTime);
+            }
         }
     }
 }

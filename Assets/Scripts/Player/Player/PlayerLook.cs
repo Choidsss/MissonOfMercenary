@@ -21,6 +21,7 @@ namespace MIssionOfMercenary
 
         Vector2 _lookAngle; //이번 프레임에 얼마나 움직였는가
         float _currentPitch; //상하 각도 누적
+        float _yRotation;
 
         public Vector3 LookDirection { get; set; }
 
@@ -30,9 +31,16 @@ namespace MIssionOfMercenary
         }
 
         // Update is called once per frame
-        void FixedUpdate()
+        void Update()
         {
             Look();
+        }
+
+        void FixedUpdate()
+        {
+            // 리지드바디 회전만 FixedUpdate에서
+            Quaternion rotationY = Quaternion.Euler(0, _yRotation, 0);
+            _rigidBody.MoveRotation(_rigidBody.rotation * rotationY);
         }
 
         private void OnEnable()
@@ -50,6 +58,7 @@ namespace MIssionOfMercenary
         {
             DoLook();
             LookDirection = this.transform.forward;
+            _lookAngle = Vector2.zero;
         }
 
         //마우스 회전 담당 함수 
@@ -58,12 +67,17 @@ namespace MIssionOfMercenary
             //currentPitch에 Value.Y 값 누적시킴(Inverty는 위아래의 마우스 상하반전)
             _currentPitch += IsInverty ? _lookAngle.y : -_lookAngle.y;
             //일정 각도 이상으로 돌리지 안도록 제한
-            _currentPitch = Mathf.Clamp(_currentPitch, -160, 160); // => 상하 회전의 누적 움직임 값
+            _currentPitch = Mathf.Clamp(_currentPitch, -80, 80); // => 상하 회전의 누적 움직임 값
 
+            _yRotation = _lookAngle.x * _cameraSpeed; // FixedUpdate에서 쓸 값 저장
+
+            _cameraTransform.localEulerAngles = new Vector3(_currentPitch * _cameraPitchSpeed, 0, 0);
+            
+            
             //카메라 좌우회전에 X축 을 생성해줌(더해줌)
 
-            Quaternion rotationY = Quaternion.Euler(0, _lookAngle.x * _cameraSpeed, 0);
-            _rigidBody.MoveRotation(_rigidBody.rotation * rotationY);
+            //Quaternion rotationY = Quaternion.Euler(0, _lookAngle.x * _cameraSpeed, 0);
+            //_rigidBody.MoveRotation(_rigidBody.rotation * rotationY);
             //transform.Rotate(0, _lookAngle.x * _cameraSpeed, 0);
 
             //플레이어의 몸통을 카메라가 돌아간 것 만큼 돌림(Y축 각도 + 카메라의 좌우 각도)
@@ -71,7 +85,7 @@ namespace MIssionOfMercenary
 
             //this.transform.eulerAngles = new Vector3(0, this.transform.eulerAngles.y + _lookAngle.x, 0);
 
-            _cameraTransform.localEulerAngles = new Vector3(_currentPitch * _cameraPitchSpeed, 0, 0);
+
 
             //_cameraTransform.eulerAngles = new Vector3(_currentPitch, 0, 0);
 

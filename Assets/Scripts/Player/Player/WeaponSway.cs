@@ -40,7 +40,7 @@ namespace MIssionOfMercenary
             transform.localPosition = _originPos + _swayOffset; // 원래 위치 + 오프셋
         }
 
-
+        //This Function is accept input value By InputActionAsset
         void WeaponSwayHandle(Vector2 value)
         {
             float mouseX = -value.x;
