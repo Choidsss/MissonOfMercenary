@@ -8,6 +8,8 @@ namespace MIssionOfMercenary
     {
         [SerializeField] InputReader _inputReader;
         [SerializeField] AssultRifle _ar;
+        [SerializeField] WeaponSway _sway;
+        [SerializeField] GameObject _crossHair;
 
         [Header("Fov Options")]
         [SerializeField] Camera _mainCamera;
@@ -19,8 +21,6 @@ namespace MIssionOfMercenary
         [Header("Sensitivity")]
         [SerializeField] float _normalSensitivity;
         [SerializeField] float _aimSensitivity;
-
-        [SerializeField] GunTransformCorrection _transformCorrection;
 
         [Header("Aim Option")]
         [SerializeField] float _tiltSpeed;
@@ -35,13 +35,8 @@ namespace MIssionOfMercenary
         {
             _normalFov = _mainCamera.fieldOfView;
 
-            _defaultPosition = _gunPosition.position;
+            _defaultPosition = _gunPosition.localPosition;
             _defaultRotation = _gunPosition.localRotation;
-            //_mainCamera.depth = 0;
-            //_weaponCamera.depth = 1;
-
-            //_mainCamera.clearFlags = CameraClearFlags.Skybox;
-            //_weaponCamera.clearFlags = CameraClearFlags.Depth;
         }
 
         private void Update()
@@ -73,20 +68,24 @@ namespace MIssionOfMercenary
             if (_ar.aimType == AimType.IronSight) return;
             IsAiming = !IsAiming;
 
-            _transformCorrection.Aiming();
+            Aiming();
         }
 
         public void Aiming()
         {
             if (IsAiming)
             {
-                _gunPosition.position = Vector3.Lerp(_gunPosition.position, _aimPosition.position, _tiltSpeed * Time.deltaTime);
-                _gunPosition.rotation = Quaternion.Lerp(_gunPosition.rotation, _aimPosition.rotation, _tiltSpeed * Time.deltaTime);
+                _sway.enabled = false;
+                _crossHair.SetActive(false);
+                _gunPosition.localPosition = Vector3.Lerp(_gunPosition.localPosition, _aimPosition.localPosition, _tiltSpeed * Time.deltaTime);
+                _gunPosition.localRotation = Quaternion.Lerp(_gunPosition.localRotation, _aimPosition.localRotation, _tiltSpeed * Time.deltaTime);
             }
             else
             {
-                _gunPosition.position = Vector3.Lerp(_gunPosition.position, _defaultPosition, _tiltSpeed * Time.deltaTime);
-                _gunPosition.rotation = Quaternion.Lerp(_gunPosition.rotation, _defaultRotation, _tiltSpeed * Time.deltaTime);
+                _sway.enabled = true;
+                _crossHair.SetActive(false);
+                _gunPosition.localPosition = Vector3.Lerp(_gunPosition.localPosition, _defaultPosition, _tiltSpeed * Time.deltaTime);
+                _gunPosition.localRotation = Quaternion.Lerp(_gunPosition.localRotation, _defaultRotation, _tiltSpeed * Time.deltaTime);
             }
         }
     }
