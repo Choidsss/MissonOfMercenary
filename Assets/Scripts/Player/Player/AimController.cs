@@ -1,4 +1,5 @@
 using MissionOfMercenary;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.LookDev;
 
@@ -10,6 +11,7 @@ namespace MIssionOfMercenary
         [SerializeField] AssultRifle _ar;
         [SerializeField] WeaponSway _sway;
         [SerializeField] GameObject _crossHair;
+        [SerializeField] ArmMeshOffset _offset;
 
         [Header("Fov Options")]
         [SerializeField] Camera _mainCamera;
@@ -18,21 +20,20 @@ namespace MIssionOfMercenary
         [SerializeField] float _aimFov;
         [SerializeField] float _aimSpeed;
 
-        [Header("Sensitivity")]
-        [SerializeField] float _normalSensitivity;
-        [SerializeField] float _aimSensitivity;
-
         [Header("Aim Option")]
         [SerializeField] float _tiltSpeed;
+        [SerializeField] float _returnTiltSpeed;
         [SerializeField] Transform _aimPosition;
         [SerializeField] Transform _gunPosition;
 
         Vector3 _defaultPosition;
         Quaternion _defaultRotation;
+        //Vector3 _interpolationX;
         public bool IsAiming { get; private set; } = false;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            //_interpolationX = new Vector3(_offset.OffsetX, 0, 0);
             _normalFov = _mainCamera.fieldOfView;
 
             _defaultPosition = _gunPosition.localPosition;
@@ -67,6 +68,7 @@ namespace MIssionOfMercenary
         {
             if (_ar.aimType == AimType.IronSight) return;
             IsAiming = !IsAiming;
+            _offset.SetOffsetActive(!IsAiming);
 
             Aiming();
         }
@@ -77,15 +79,17 @@ namespace MIssionOfMercenary
             {
                 _sway.enabled = false;
                 _crossHair.SetActive(false);
+                _offset.enabled = false;
                 _gunPosition.localPosition = Vector3.Lerp(_gunPosition.localPosition, _aimPosition.localPosition, _tiltSpeed * Time.deltaTime);
                 _gunPosition.localRotation = Quaternion.Lerp(_gunPosition.localRotation, _aimPosition.localRotation, _tiltSpeed * Time.deltaTime);
             }
             else
             {
                 _sway.enabled = true;
-                _crossHair.SetActive(false);
-                _gunPosition.localPosition = Vector3.Lerp(_gunPosition.localPosition, _defaultPosition, _tiltSpeed * Time.deltaTime);
-                _gunPosition.localRotation = Quaternion.Lerp(_gunPosition.localRotation, _defaultRotation, _tiltSpeed * Time.deltaTime);
+                _offset.enabled = true;
+                _crossHair.SetActive(true);
+                _gunPosition.localPosition = Vector3.Lerp(_gunPosition.localPosition, _defaultPosition, _returnTiltSpeed * Time.deltaTime);
+                _gunPosition.localRotation = Quaternion.Lerp(_gunPosition.localRotation, _defaultRotation, _returnTiltSpeed * Time.deltaTime);
             }
         }
     }
