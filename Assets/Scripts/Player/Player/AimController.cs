@@ -79,14 +79,12 @@ namespace MIssionOfMercenary
             {
                 _sway.enabled = false;
                 _crossHair.SetActive(false);
-                _offset.enabled = false;
                 _gunPosition.localPosition = Vector3.Lerp(_gunPosition.localPosition, _aimPosition.localPosition, _tiltSpeed * Time.deltaTime);
                 _gunPosition.localRotation = Quaternion.Lerp(_gunPosition.localRotation, _aimPosition.localRotation, _tiltSpeed * Time.deltaTime);
             }
             else
             {
                 _sway.enabled = true;
-                _offset.enabled = true;
                 _crossHair.SetActive(true);
                 _gunPosition.localPosition = Vector3.Lerp(_gunPosition.localPosition, _defaultPosition, _returnTiltSpeed * Time.deltaTime);
                 _gunPosition.localRotation = Quaternion.Lerp(_gunPosition.localRotation, _defaultRotation, _returnTiltSpeed * Time.deltaTime);
