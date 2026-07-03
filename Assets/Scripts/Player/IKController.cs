@@ -1,6 +1,7 @@
 using MissionOfMercenary;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace MIssionOfMercenary
 {
@@ -30,7 +31,7 @@ namespace MIssionOfMercenary
         [SerializeField] float _swayClamp;
 
         Vector3 _swayOffset;
-        Vector3 _swaytarget;
+        Vector2 _swayInput;
         Vector3 _weaponBoxOrigin;
 
         Vector3 _currentRecoilPos;
@@ -42,14 +43,14 @@ namespace MIssionOfMercenary
 
         private void OnEnable()
         {
-            //_inputReader.OnLookEvent += HandleSway;
-            //_inputReader.OnshotEvent += HandleRecoil;
+            _inputReader.OnLookEvent += HandleSway;
+            _inputReader.OnshotEvent += HandleRecoil;
         }
 
         private void OnDisable()
         {
-            //_inputReader.OnLookEvent -= HandleSway;
-            //_inputReader.OnshotEvent -= HandleRecoil;
+            _inputReader.OnLookEvent -= HandleSway;
+            _inputReader.OnshotEvent -= HandleRecoil;
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -64,19 +65,80 @@ namespace MIssionOfMercenary
         void Update()
         {
             UpdateSway();
+            UpdateRecoil();
             //UpdateWeaponBox();
         }
 
         private void LateUpdate()
         {
-            //UpdateRecoil();
+            
             //UpdateWeapon();
-            //UpdateIK();
+            UpdateIK();
+        }
+
+        void HandleSway(Vector2 value)
+        {
+            //Vector2로 들어오는 입력갑 Vector3 으로 변환(y가 축이 되어야 X로 움직임, x가 축이되어야 Y가 움직임, 부호반대는 관성의 느낌을 주기 위해)
+            _swayInput = value;
         }
 
         void UpdateSway()
         {
-            _weaponBox.localPosition = Vector3.Lerp(_weaponBox.localPosition, _targetRecoilPos + _swayOffset, _swayAmount * Time.deltaTime);
+            Vector3 swayInput = new Vector3(-_swayInput.y, _swayInput.x, 0);
+            swayInput.x = Mathf.Clamp(swayInput.x, -_swayClamp, _swayClamp);
+            swayInput.y = Mathf.Clamp(swayInput.y, -_swayClamp, _swayClamp);
+
+            Quaternion rot = _weaponBox.rotation * Quaternion.Euler(swayInput.x, swayInput.y, 0);
+
+            _weaponBox.localPosition = Vector3.Lerp(_weaponBox.localPosition, _weaponBoxOrigin + _swayOffset, _swayAmount * Time.deltaTime);
+            _weaponBox.rotation = Quaternion.Lerp(_weaponBox.rotation, rot, _swayAmount * Time.deltaTime);
+
+            _swayInput = Vector2.zero; //초기화? 왜??????
         }
+
+
+        void HandleRecoil(float shot)
+        {
+            //뒤로 밀려서 -
+            _targetRecoilPos += new Vector3(0, 0, -_kickBack);
+            //vibration은 랜덤하게
+            _targetRecoilRot += new Vector3(-_upDown, Random.Range(-_vibration , _vibration), 0);
+        }
+
+        //AssultRifle Script Call this Function
+        public void ApplyRecoil()
+        {
+            _targetRecoilPos += new Vector3(0, 0, -_kickBack);
+            _targetRecoilRot += new Vector3(-_upDown, Random.Range(-_vibration, _vibration), 0);
+        }
+
+        /*
+         * ToDo : Muzzle must be Follow the _ar.localPosition
+         */
+        void UpdateRecoil()
+        {
+            //매 프레임마다 0으로 복귀하도록 함
+            _targetRecoilPos = Vector3.Lerp(_targetRecoilPos, Vector3.zero, _recoverySpeed * Time.deltaTime);
+            _targetRecoilRot = Vector3.Lerp(_targetRecoilRot, Vector3.zero , _recoverySpeed * Time.deltaTime);
+
+            //현재값은 목표치를 향하도록 함
+            _currentRecoilPos = Vector3.Lerp(_currentRecoilPos, _targetRecoilPos, _snapSpeed * Time.deltaTime);
+            _currentRecoilRot = Vector3.Lerp(_currentRecoilRot, _targetRecoilRot, _snapSpeed * Time.deltaTime);
+
+            //현재 AR의 위치에 현재 반동값을 적용
+            _ar.localPosition = _arOriginPos + _currentRecoilPos;
+            _ar.localRotation = _arOriginRot * Quaternion.Euler(_currentRecoilRot);
+        }
+
+        void UpdateIK()
+        {
+            _leftHand.position = _leftGripPoint.position;
+            _leftHand.rotation = _leftGripPoint.rotation;
+        }
+
+        //void UpdateWeaponBox()
+        //{
+
+        //}
     }
 }

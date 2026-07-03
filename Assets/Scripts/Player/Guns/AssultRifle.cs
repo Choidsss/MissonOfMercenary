@@ -9,10 +9,8 @@ namespace MIssionOfMercenary
 {
     public class AssultRifle : MonoBehaviour, IWeapons
     {
-        [SerializeField] WeaponRecoil _recoil;
+        [SerializeField] IKController _ikController;
         ShellEjector _shell;
-
-        
 
         public enum SingleOrAuto
         {
@@ -155,9 +153,8 @@ namespace MIssionOfMercenary
 
                 Attack(shot);
                 Ammo--;
-                _recoil.WeaponRecoilApply();
+                _ikController.ApplyRecoil();
                 _shell.Ejector();
-
             }
         }
 
@@ -199,9 +196,8 @@ namespace MIssionOfMercenary
             {
                 Attack(1f);
                 Ammo--;
-                _recoil.WeaponRecoilApply();
+                _ikController.ApplyRecoil();
                 _shell.Ejector();
-
                 yield return new WaitForSeconds(1f/_autoSpeed);
             }
         }
