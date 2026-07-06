@@ -14,6 +14,7 @@ namespace MIssionOfMercenary
         [SerializeField] Transform _weaponBox;
         [SerializeField] Transform _ar;
         [SerializeField] Transform _leftGripPoint;
+        [SerializeField] Transform _leftArmPoint;
         [SerializeField] Transform _leftArm;
         [SerializeField] Transform _leftForceArm;
         [SerializeField] Transform _leftHand;
@@ -24,6 +25,7 @@ namespace MIssionOfMercenary
         [SerializeField] float _vibration;
         [SerializeField] float _snapSpeed;
         [SerializeField] float _recoverySpeed;
+        [SerializeField] float _maxRecoil;
 
         [Header("Sway")]
         [SerializeField] float _swayAmount;
@@ -40,6 +42,9 @@ namespace MIssionOfMercenary
         Vector3 _targetRecoilRot;
         Vector3 _arOriginPos;
         Quaternion _arOriginRot;
+
+        Vector3 _armOriginPos;
+        Vector3 _foreArmOriginPos;
 
         private void OnEnable()
         {
@@ -59,6 +64,9 @@ namespace MIssionOfMercenary
             _weaponBoxOrigin = _weaponBox.localPosition;
             _arOriginPos = _ar.localPosition;
             _arOriginRot = _ar.localRotation;
+
+            _armOriginPos = _leftArm.localPosition;
+            _foreArmOriginPos = _leftForceArm.localPosition;
         }
 
         // Update is called once per frame
@@ -71,8 +79,6 @@ namespace MIssionOfMercenary
 
         private void LateUpdate()
         {
-            
-            //UpdateWeapon();
             UpdateIK();
         }
 
@@ -110,6 +116,9 @@ namespace MIssionOfMercenary
         {
             _targetRecoilPos += new Vector3(0, 0, -_kickBack);
             _targetRecoilRot += new Vector3(-_upDown, Random.Range(-_vibration, _vibration), 0);
+
+            _targetRecoilPos.x = Mathf.Clamp(_targetRecoilPos.x, -_maxRecoil, 0f);
+            _targetRecoilPos.z = Mathf.Clamp(_targetRecoilPos.z, -_maxRecoil, 0f);
         }
 
         /*
@@ -127,7 +136,13 @@ namespace MIssionOfMercenary
 
             //현재 AR의 위치에 현재 반동값을 적용
             _ar.localPosition = _arOriginPos + _currentRecoilPos;
+            //_ar.localPosition = Mathf.Clamp(_ar.localPosition, )
             _ar.localRotation = _arOriginRot * Quaternion.Euler(_currentRecoilRot);
+
+            // 원래 위치 + 현재 반동값
+            //_leftArm.localPosition = _armOriginPos + _currentRecoilPos;
+            //_leftForceArm.localPosition = _foreArmOriginPos + _currentRecoilPos;
+
         }
 
         void UpdateIK()
@@ -135,10 +150,5 @@ namespace MIssionOfMercenary
             _leftHand.position = _leftGripPoint.position;
             _leftHand.rotation = _leftGripPoint.rotation;
         }
-
-        //void UpdateWeaponBox()
-        //{
-
-        //}
     }
 }
