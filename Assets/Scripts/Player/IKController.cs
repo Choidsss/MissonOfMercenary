@@ -7,6 +7,8 @@ namespace MIssionOfMercenary
 {
     public class IKController : MonoBehaviour
     {
+        AssultRifle _assultRifle;
+
         [SerializeField] InputReader _inputReader;
 
         [Header("References")]
@@ -14,7 +16,6 @@ namespace MIssionOfMercenary
         [SerializeField] Transform _weaponBox;
         [SerializeField] Transform _ar;
         [SerializeField] Transform _leftGripPoint;
-        [SerializeField] Transform _leftArmPoint;
         [SerializeField] Transform _leftArm;
         [SerializeField] Transform _leftForceArm;
         [SerializeField] Transform _leftHand;
@@ -61,6 +62,8 @@ namespace MIssionOfMercenary
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            _assultRifle = GetComponentInChildren<AssultRifle>();
+
             _weaponBoxOrigin = _weaponBox.localPosition;
             _arOriginPos = _ar.localPosition;
             _arOriginRot = _ar.localRotation;
@@ -126,6 +129,8 @@ namespace MIssionOfMercenary
          */
         void UpdateRecoil()
         {
+            if (_assultRifle.Ammo == 0) { return; }
+
             //매 프레임마다 0으로 복귀하도록 함
             _targetRecoilPos = Vector3.Lerp(_targetRecoilPos, Vector3.zero, _recoverySpeed * Time.deltaTime);
             _targetRecoilRot = Vector3.Lerp(_targetRecoilRot, Vector3.zero , _recoverySpeed * Time.deltaTime);
@@ -147,8 +152,8 @@ namespace MIssionOfMercenary
 
         void UpdateIK()
         {
-            _leftHand.position = _leftGripPoint.position;
-            _leftHand.rotation = _leftGripPoint.rotation;
+            _leftArm.position = _leftGripPoint.position;
+            _leftArm.rotation = _leftGripPoint.rotation;
         }
     }
 }

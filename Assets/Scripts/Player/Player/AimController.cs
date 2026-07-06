@@ -7,9 +7,11 @@ namespace MIssionOfMercenary
 {
     public class AimController : MonoBehaviour
     {
+        SkinnedMeshRenderer _skinnedMeshRenderer;
+        
         [SerializeField] InputReader _inputReader;
         [SerializeField] AssultRifle _ar;
-        //[SerializeField] WeaponSway _sway;
+        [SerializeField] IKController _ik;
         [SerializeField] GameObject _crossHair;
         [SerializeField] ArmMeshOffset _offset;
 
@@ -33,6 +35,7 @@ namespace MIssionOfMercenary
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            _skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
             //_interpolationX = new Vector3(_offset.OffsetX, 0, 0);
             _normalFov = _mainCamera.fieldOfView;
 
@@ -77,14 +80,16 @@ namespace MIssionOfMercenary
         {
             if (IsAiming)
             {
-                //_sway.enabled = false;
+                _ik.enabled = false;
+                _skinnedMeshRenderer.enabled = false;
                 _crossHair.SetActive(false);
                 _gunPosition.localPosition = Vector3.Lerp(_gunPosition.localPosition, _aimPosition.localPosition, _tiltSpeed * Time.deltaTime);
                 _gunPosition.localRotation = Quaternion.Lerp(_gunPosition.localRotation, _aimPosition.localRotation, _tiltSpeed * Time.deltaTime);
             }
             else
             {
-                //_sway.enabled = true;
+                _ik.enabled = true;
+                _skinnedMeshRenderer.enabled = true;
                 _crossHair.SetActive(true);
                 _gunPosition.localPosition = Vector3.Lerp(_gunPosition.localPosition, _defaultPosition, _returnTiltSpeed * Time.deltaTime);
                 _gunPosition.localRotation = Quaternion.Lerp(_gunPosition.localRotation, _defaultRotation, _returnTiltSpeed * Time.deltaTime);
