@@ -133,7 +133,7 @@ namespace MIssionOfMercenary
 
             //매 프레임마다 0으로 복귀하도록 함
             _targetRecoilPos = Vector3.Lerp(_targetRecoilPos, Vector3.zero, _recoverySpeed * Time.deltaTime);
-            _targetRecoilRot = Vector3.Lerp(_targetRecoilRot, Vector3.zero , _recoverySpeed * Time.deltaTime);
+            _targetRecoilRot = Vector3.Lerp(_targetRecoilRot, Vector3.zero, _recoverySpeed * Time.deltaTime);
 
             //현재값은 목표치를 향하도록 함
             _currentRecoilPos = Vector3.Lerp(_currentRecoilPos, _targetRecoilPos, _snapSpeed * Time.deltaTime);
@@ -143,6 +143,9 @@ namespace MIssionOfMercenary
             _ar.localPosition = _arOriginPos + _currentRecoilPos;
             //_ar.localPosition = Mathf.Clamp(_ar.localPosition, )
             _ar.localRotation = _arOriginRot * Quaternion.Euler(_currentRecoilRot);
+
+
+
 
             // 원래 위치 + 현재 반동값
             //_leftArm.localPosition = _armOriginPos + _currentRecoilPos;
