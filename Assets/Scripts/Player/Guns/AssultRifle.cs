@@ -11,6 +11,10 @@ namespace MIssionOfMercenary
     {
         [SerializeField] IKController _ikController;
         [SerializeField] AimController _aimController;
+        [SerializeField] GameObject _bullet;
+        [SerializeField] float _bulletSpeed;
+        [SerializeField] float _interval;
+
         ShellEjector _shell;
 
         public enum SingleOrAuto
@@ -26,10 +30,6 @@ namespace MIssionOfMercenary
         public SingleOrAuto AttackType { get; set; } = SingleOrAuto.auto;
 
         [SerializeField] InputReader _inputReader;
-
-        //[Header("CrossHairTranform")]
-        //[SerializeField] Transform _crossHairTransform;
-        //[SerializeField] GameObject _camera;
 
         [Header("Muzzle")]
         [SerializeField] Transform _muzzle;
@@ -61,6 +61,8 @@ namespace MIssionOfMercenary
 
         float _reloadDelay = 2.0f;
 
+        
+
         private void Start()
         {
             _shell = GetComponent<ShellEjector>();
@@ -79,41 +81,41 @@ namespace MIssionOfMercenary
             _inputReader.OnShotCancled -= HandleShotCancled;
         }
 
-
+        //2단 RayCast로 구조 변경
         public void Attack(float isShot)
         {
             if(Ammo != _maxAmmo) { canReload = true; }
             else { canReload = false; }
 
+            Vector3 targetPoint;
 
             if (_muzzle == null) { return; }
 
-            RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
 
+            if (Physics.Raycast(ray, out RaycastHit hit, AttackRange))
+            {
+                targetPoint = hit.point;
+            }
+            else
+            {
+                targetPoint = ray.origin + ray.direction * AttackRange;
+            }
 
-            //카메라에서 중앙으로 레이를 쏨
-            bool isHit = Physics.Raycast(ray, out hit, AttackRange);
 
             //  머즐플래시는 항상 생성
             GameObject flash = Instantiate(_muzzleFlash, _muzzle.position, _muzzle.rotation);
-            //Ammo--;
-
             StartCoroutine(FlashEffectDestoryRoutine(flash));
 
-            //  그 다음에 hit 체크
-            if (!isHit) { return; }
+            Vector3 muzzleDir = (targetPoint - _muzzle.position).normalized;
+            if(!Physics.Raycast(_muzzle.position, muzzleDir, out RaycastHit muzzleHit, AttackRange)) { return; }
 
-            //Debug.Log("Success");
-            //if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Maps"))
-            //{
 
-            //}
-            Instantiate(_bulletMarkObj, hit.point, Quaternion.LookRotation(hit.normal));
+            Instantiate(_bulletMarkObj, muzzleHit.point, Quaternion.LookRotation(muzzleHit.normal));
             StartCoroutine(BulletMarkEffectDestoryRoutine(_bulletMarkObj));
 
 
-            EnemyHit enemyHit = hit.collider.GetComponent<EnemyHit>();
+            EnemyHit enemyHit = muzzleHit.collider.GetComponent<EnemyHit>();
             if (enemyHit != null)
             {
                 enemyHit.TakeDameged(Damage);
@@ -154,8 +156,6 @@ namespace MIssionOfMercenary
 
                 Attack(shot);
                 Ammo--;
-
-                //_ikController.ApplyRecoil();
 
                 if (_aimController.IsAiming)
                 {
@@ -208,8 +208,6 @@ namespace MIssionOfMercenary
                 Attack(1f);
                 Ammo--;
 
-                //_ikController.ApplyRecoil();
-
                 if (_aimController.IsAiming)
                 {
                     _aimController.ApplyRecoilDuringAiming();
@@ -219,7 +217,7 @@ namespace MIssionOfMercenary
                     _ikController.ApplyRecoil();
                 }
 
-                    _shell.Ejector();
+                _shell.Ejector();
                 yield return new WaitForSeconds(1f/_autoSpeed);
             }
         }
@@ -231,10 +229,17 @@ namespace MIssionOfMercenary
             Ammo = _maxAmmo;    
         }
 
-        //void MuzzleGizmos()
-        //{
-        //    Gizmos.color = Color.blue;
-        //    Gizmos.DrawLine(_muzzle.position, Vector3.forward);
-        //}
+        IEnumerator SpawnBulletTrail(Vector3 targetPoint)
+        {
+            GameObject go = Instantiate(_bullet, _muzzle.position, _muzzle.rotation);
+
+            //매 프레임마다 이동해야함
+            while(Vector3.Distance(go.transform.position, targetPoint) < 0.1f)
+            {
+                go.transform.position += _muzzle.forward * _bulletSpeed * Time.deltaTime;
+                yield return null;
+            }
+            Destroy(go);
+        }
     }
 }

@@ -42521,7 +42521,7 @@ PrefabInstance:
       objectReference: {fileID: 511681809}
     - target: {fileID: 3623376667837324982, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _upDown
-      value: 0.3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3623376667837324982, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _crossHair
@@ -42529,15 +42529,15 @@ PrefabInstance:
       objectReference: {fileID: 504828483}
     - target: {fileID: 3623376667837324982, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _snapSpeed
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3623376667837324982, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _vibration
-      value: 0.3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3623376667837324982, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _recoverySpeed
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3623376667837324982, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _weaponBoxPosition
