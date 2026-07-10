@@ -12,8 +12,7 @@ namespace MIssionOfMercenary
         [SerializeField] IKController _ikController;
         [SerializeField] AimController _aimController;
         [SerializeField] GameObject _bullet;
-        [SerializeField] float _bulletSpeed;
-        [SerializeField] float _interval;
+        [SerializeField] float _trailRendererSpeed;
 
         ShellEjector _shell;
 
@@ -102,6 +101,8 @@ namespace MIssionOfMercenary
                 targetPoint = ray.origin + ray.direction * AttackRange;
             }
 
+            Debug.Log(Vector3.Distance(_muzzle.position, targetPoint));
+            StartCoroutine(SpawnBulletTrail(targetPoint));
 
             //  머즐플래시는 항상 생성
             GameObject flash = Instantiate(_muzzleFlash, _muzzle.position, _muzzle.rotation);
@@ -231,12 +232,22 @@ namespace MIssionOfMercenary
 
         IEnumerator SpawnBulletTrail(Vector3 targetPoint)
         {
+            float movedDistance = 0;
             GameObject go = Instantiate(_bullet, _muzzle.position, _muzzle.rotation);
+            Vector3 dir = (targetPoint - _muzzle.position).normalized;
+
+            float totalDistance = Vector3.Distance(go.transform.position, targetPoint);
 
             //매 프레임마다 이동해야함
-            while(Vector3.Distance(go.transform.position, targetPoint) < 0.1f)
+            while (movedDistance < totalDistance)
             {
-                go.transform.position += _muzzle.forward * _bulletSpeed * Time.deltaTime;
+                if (go == null) break;
+
+                float step = _trailRendererSpeed * Time.deltaTime;
+
+                go.transform.position += dir * step;
+                movedDistance += step;
+
                 yield return null;
             }
             Destroy(go);
