@@ -101,7 +101,7 @@ namespace MIssionOfMercenary
                 targetPoint = ray.origin + ray.direction * AttackRange;
             }
 
-            Debug.Log(Vector3.Distance(_muzzle.position, targetPoint));
+            //Debug.Log(Vector3.Distance(_muzzle.position, targetPoint));
             StartCoroutine(SpawnBulletTrail(targetPoint));
 
             //  머즐플래시는 항상 생성

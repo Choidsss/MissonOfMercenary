@@ -46,10 +46,19 @@ namespace MIssionOfMercenary
 
         public bool IsAiming { get; private set; } = false;
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        /*
+         * An Issue where the head_bob effect is interrupted at the start due to a confict with the main camera's localposiiton retrieval.
+         * For now, resolving it by simply turning it off and on again whithin the 'Start' function;
+         * This will be need to refactoring later.
+         */
         void Start()
         {
             _headBob = GetComponent<HeadBob>();
+
+            //Head_bob Issue
+            _headBob.enabled = false;
+            _headBob.enabled = true;
+
             _skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
             _cameraOriginPos = _cam.transform.localPosition;
 

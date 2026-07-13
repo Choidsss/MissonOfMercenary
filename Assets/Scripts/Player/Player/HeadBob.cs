@@ -44,7 +44,6 @@ namespace MIssionOfMercenary
                 float bobY = Mathf.Sin(_bobTimer) * _amountY * multiply;
                 float bobX = Mathf.Sin(_bobTimer * 0.5f) * _amountX * multiply;
                 _bobOffset = Vector3.Lerp(_bobOffset, new Vector3(bobX, bobY, 0), _bobReturnSpeed * Time.deltaTime);
-
             }
             else
             {
