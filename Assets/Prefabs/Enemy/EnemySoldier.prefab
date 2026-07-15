@@ -9,6 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1123068371421246509}
+  - component: {fileID: 1283119099787707937}
+  - component: {fileID: 4980520778223027922}
+  - component: {fileID: 183303479098661019}
   m_Layer: 0
   m_Name: EnemySoldier
   m_TagString: Untagged
@@ -32,6 +35,65 @@ Transform:
   - {fileID: 5032547044166037398}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!195 &1283119099787707937
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84371884054343226}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &4980520778223027922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84371884054343226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c1515554b12524dab6b14a3a143e0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _findArea: {fileID: 183303479098661019}
+--- !u!114 &183303479098661019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84371884054343226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4624696a2ecfd7b45944bec9c41935c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _degree: 70
+  _distance: 10
+  _backsideDegree: 30
+  _backsideDistance: 1
+  _eyeHeight: {x: 0, y: 0, z: 0}
+  _targetHeight: {x: 0, y: 0, z: 0}
+  _obstaclesLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 1048576
 --- !u!1001 &5032547044165907754
 PrefabInstance:
   m_ObjectHideFlags: 0

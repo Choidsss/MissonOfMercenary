@@ -1,0 +1,133 @@
+CanSeePlayerNode 만드는 방법 - By Codex
+
+목표:
+EnemyFindArea가 판단한 "플레이어를 발견했는가" 값을 Behavior Tree 조건 노드에서 읽게 만들기.
+
+
+1. CanSeePlayerNode의 역할
+
+CanSeePlayerNode는 행동하지 않음.
+오직 조건만 판단함.
+
+역할:
+    EnemyFindArea.IsDetectedPlayer가 true면 Success
+    false면 Failure
+
+즉, 이 노드는 "플레이어가 보이는가?"만 검사함.
+
+
+2. 기본 코드 형태
+
+새 C# 파일 예시:
+
+    Assets/Scripts/Enemy/BTNodes/CanSeePlayerNode.cs
+
+코드 예시:
+
+    using UnityEngine;
+
+    namespace MIssionOfMercenary
+    {
+        public class CanSeePlayerNode : BTNode
+        {
+            EnemyFindArea _findArea;
+
+            public CanSeePlayerNode(EnemyFindArea findArea)
+            {
+                _findArea = findArea;
+            }
+
+            public override State Evaluate()
+            {
+                if (_findArea == null)
+                {
+                    return State.Failure;
+                }
+
+                return _findArea.IsDetectedPlayer ? State.Success : State.Failure;
+            }
+        }
+    }
+
+
+3. 왜 MonoBehaviour를 상속하지 않는가?
+
+BTNode는 일반 C# 클래스임.
+그래서 CanSeePlayerNode도 MonoBehaviour가 아니라 BTNode를 상속하는 것이 좋음.
+
+MonoBehaviour로 만들면 GameObject에 붙이는 컴포넌트가 되지만,
+Behavior Tree 노드는 EnemyBT 안에서 new로 만들어 쓰는 작은 판단 객체에 가까움.
+
+
+4. EnemyBT에서 연결하는 방법
+
+EnemyBT가 EnemyFindArea를 가지고 있어야 함.
+
+EnemyBT 필드 예시:
+
+    [SerializeField] EnemyFindArea _findArea;
+
+또는 Start에서 가져올 수도 있음.
+
+    _findArea = GetComponent<EnemyFindArea>();
+
+SetupTree() 안에서는 Chase Sequence에 CanSeePlayerNode를 넣으면 됨.
+
+예시:
+
+    Sequence chaseSeq = new Sequence();
+    chaseSeq.AddChild(new CanSeePlayerNode(_findArea));
+    chaseSeq.AddChild(new ChasePlayerNode(...));
+
+
+5. 전체 흐름 예시
+
+    Selector
+    - Attack Sequence
+      - CanAttackPlayer
+      - AttackPlayer
+    - Chase Sequence
+      - CanSeePlayerNode
+      - ChasePlayerNode
+    - Patrol Sequence
+      - PatrolNode
+
+CanSeePlayerNode가 Failure를 반환하면 Chase Sequence는 실패함.
+그러면 Selector는 다음 후보인 Patrol Sequence를 평가함.
+
+CanSeePlayerNode가 Success를 반환하면 ChasePlayerNode까지 실행됨.
+
+
+6. EnemyBT에서 꼭 같이 해야 하는 것
+
+Start에서 루트를 저장해야 함.
+
+    _root = SetupTree();
+
+Update에서 루트를 평가해야 함.
+
+    _root?.Evaluate();
+
+이 두 개가 없으면 CanSeePlayerNode를 만들어도 실제로 실행되지 않음.
+
+
+7. 주의할 점
+
+EnemyFindArea.IsDetectedPlayer 값은 EnemyFindArea.Update()에서 갱신되고 있음.
+EnemyBT.Update()와 EnemyFindArea.Update()의 실행 순서는 Unity가 보장하지 않음.
+
+처음에는 크게 문제 없을 수 있지만,
+나중에 정확한 순서가 필요하면 EnemyBT에서 EnemyFindArea의 감지 함수를 직접 호출하거나
+Script Execution Order를 조정하는 방법도 생각할 수 있음.
+
+
+8. 지금 단계 추천
+
+처음에는 CanSeePlayerNode만 만들고,
+ChasePlayerNode는 아직 비워둔 간단한 테스트 노드로 시작해도 됨.
+
+예:
+    CanSeePlayerNode가 Success면 Debug.Log("Player Found") 출력
+
+이렇게 하면 Behavior Tree 연결이 제대로 되는지 먼저 확인할 수 있음.
+

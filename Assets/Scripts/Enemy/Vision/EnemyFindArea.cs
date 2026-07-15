@@ -1,64 +1,81 @@
 using System.Linq;
+// í˜„ì¬ íŒŒì¼ì—ì„œ Linq ê¸°ëŠ¥ì„ ì“°ì§€ ì•Šìœ¼ë©´ using System.LinqëŠ” ì œê±°í•´ë„ ë¨. By Codex
 using UnityEngine;
 
 namespace MIssionOfMercenary
 {
     public class EnemyFindArea : MonoBehaviour
     {
-        //This Script is aboout Enemy's Finding player that decide the size of area
-        //Enemy's Vision limit forward to degree.
-
         [Header("Enemy Field Of Vision Options")]
-        [SerializeField] float _degree; //Àü¹æ ½Ã¾ß +-°¢µµ Á¦ÇÑ(ÇÑÂÊÀ¸·Î 70µµ, 140µµ)
-        [SerializeField] float _distance; //Àü¹æ ½Ã¾ß °Å¸® Á¦ÇÑ
-        [SerializeField] float _backsideDegree; //ÈÄ¹æ ½Ã¾ß +-°¢µµ Á¦ÇÑ(¾Ï»ì±â´É Ãß°¡¿¹Á¤ 45,45 µµ)
-        [SerializeField] float _backsideDistance; //ÈÄ¹æ ½Ã¾ß °Å¸® Á¦ÇÑ
-        [SerializeField] LayerMask _layer;
+        [SerializeField] float _degree; //ì „ë°© ì‹œì•¼ +-ê°ë„ ì œí•œ(í•œìª½ìœ¼ë¡œ 70ë„, 140ë„)
+        [SerializeField] float _distance; //ì „ë°© ì‹œì•¼ ê±°ë¦¬ ì œí•œ
+        [SerializeField] float _backsideDegree; //í›„ë°© ì‹œì•¼ +-ê°ë„ ì œí•œ(ì•”ì‚´ê¸°ëŠ¥ ì¶”ê°€ì˜ˆì • 45,45 ë„)
+        [SerializeField] float _backsideDistance; //í›„ë°© ì‹œì•¼ ê±°ë¦¬ ì œí•œ
+        
+        [Header("Eye Offset")]
+        [SerializeField] Vector3 _eyeHeight;
+        [SerializeField] Vector3 _targetHeight;
+        // Header ì˜¤íƒ€ì™€ ë³€ìˆ˜ ì˜ë¯¸ë¥¼ ë‚˜ì¤‘ì— ì •ë¦¬í•˜ë©´ ì¢‹ìŒ. ì§€ê¸ˆ Vector3ëŠ” ë†’ì´ê°’ì´ë¼ê¸°ë³´ë‹¤ ìœ„ì¹˜ ë³´ì • ì˜¤í”„ì…‹ìœ¼ë¡œ ì“°ì´ê³  ìˆìŒ. By Codex
+
+        [Header("Layer Classify")]
+        [SerializeField] LayerMask _obstaclesLayer;
+        [SerializeField] LayerMask _playerLayer;
 
         Vector3 _playerPosition;
-        
-        void Start()
-        {
-        
-        }
+        Transform _detectedTarget;
+        bool _isDetected = false;
+
+        public bool IsDetectedPlayer => _isDetected;
+        public Transform DetectedTarget => _detectedTarget;
 
         // Update is called once per frame
         void Update()
         {
-            IsDetectPlayer();
+            _isDetected = DetectPlayer();
         }
 
-        //bool IsGuardObjectHit()
-        //{
-
-        //}
-
-        //overlapsphere·Î Player°¡ ÀÖÀ¸¸é ¹Ù·Î true¸¦ ¸®ÅÏÁß
-        //º® Ã¼Å©¸¦ ¾î¶»°Ô ÇÏÁö?
-        bool IsDetectPlayer()
+        bool DetectPlayer()
         {
-            Collider[] collider = Physics.OverlapSphere(transform.position, _distance, _layer, QueryTriggerInteraction.Ignore);
+            Collider[] collider = Physics.OverlapSphere(transform.position, _distance, _playerLayer, QueryTriggerInteraction.Ignore);
+
+            _detectedTarget = null;
+
+            if(collider == null) { return false; }
 
             foreach (Collider col in collider)
             {
-                if(col.gameObject.layer == 20)
+                _playerPosition = col.gameObject.transform.position;
+
+                //ì‹œì•¼ ì•ˆìª½ì¸ì§€ ì™€ ë²½ì²´í¬
+                if (IsPlayerInEnemyDegree() && !IsBlockedByObtacles())
                 {
-                    _playerPosition = col.gameObject.transform.position;
+                    _detectedTarget = col.transform;
                     return true;
                 }
             }
             return false;
         }
-        
 
-        //Àü¹æÀ¸·Î ºÎÃ¤²Ã ¸¸µé¾î¼­ °¢µµ ¾È¿¡ Player°¡ ÀÖ´ÂÁö Ã¼Å©
+        bool IsBlockedByObtacles()
+        {
+            Vector3 start = _eyeHeight + transform.position;
+            Vector3 end = _targetHeight + _playerPosition;
+
+            Vector3 direction = end - start;
+
+            bool hitWall = Physics.Raycast(start, direction.normalized, direction.magnitude, _obstaclesLayer, QueryTriggerInteraction.Ignore);
+
+            return hitWall;
+        }
+
+        //ì „ë°©ìœ¼ë¡œ ë¶€ì±„ê¼´ ë§Œë“¤ì–´ì„œ ê°ë„ ì•ˆì— Playerê°€ ìˆëŠ”ì§€ ì²´í¬
         bool IsPlayerInEnemyDegree()
         {
-            Vector3 enemyLook = transform.forward; //ÀûÀÇ Àü¹æ º¤ÅÍ
-            Vector3 direction =  _playerPosition - transform.position; //Enemy ¿¡¼­ Player·Î °¡´Â º¤ÅÍ
-            float fov = Vector3.Angle(enemyLook, direction); //µÑ »çÀÌÀÇ °¢µµ¸¦ ±¸ÇÔ
+            Vector3 enemyLook = transform.forward; //ì ì˜ ì „ë°© ë²¡í„°
+            Vector3 direction =  _playerPosition - transform.position; //Enemy ì—ì„œ Playerë¡œ ê°€ëŠ” ë²¡í„°
+            float fov = Vector3.Angle(enemyLook, direction); //ë‘˜ ì‚¬ì´ì˜ ê°ë„ë¥¼ êµ¬í•¨
 
-            //°¢µµ°¡ _degree ¾ÈÂÊÀÎÁö Ã¼Å©
+            //ê°ë„ê°€ _degree ì•ˆìª½ì¸ì§€ ì²´í¬
             if (fov < _degree) { return true; }
             else return false;
         }
@@ -67,6 +84,18 @@ namespace MIssionOfMercenary
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, _distance);
+
+            if (_playerPosition == Vector3.zero)
+            {
+                return;
+            }
+
+            Vector3 start = transform.position + _eyeHeight;
+            Vector3 end = _playerPosition + _targetHeight;
+
+            // Draw one sight-check line only: green when detected, red when not detected. By Codex
+            Gizmos.color = _isDetected ? Color.green : Color.red;
+            Gizmos.DrawLine(start, end);
         }
     }
 }
