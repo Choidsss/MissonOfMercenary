@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1283119099787707937}
   - component: {fileID: 4980520778223027922}
   - component: {fileID: 183303479098661019}
+  - component: {fileID: 2377056269494213562}
   m_Layer: 0
   m_Name: EnemySoldier
   m_TagString: Untagged
@@ -70,6 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _findArea: {fileID: 183303479098661019}
+  _agent: {fileID: 0}
 --- !u!114 &183303479098661019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,6 +96,18 @@ MonoBehaviour:
   _playerLayer:
     serializedVersion: 2
     m_Bits: 1048576
+--- !u!114 &2377056269494213562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84371884054343226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bfb79a989ec7084da71f7da5ae27a70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5032547044165907754
 PrefabInstance:
   m_ObjectHideFlags: 0

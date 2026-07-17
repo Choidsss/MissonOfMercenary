@@ -24,23 +24,30 @@ namespace MIssionOfMercenary
         Vector3 _playerPosition;
         Transform _detectedTarget;
         bool _isDetected = false;
+        bool _isSense = false;
 
         public bool IsDetectedPlayer => _isDetected;
+        public bool IsSensePlayer => _isSense;
         public Transform DetectedTarget => _detectedTarget;
 
         // Update is called once per frame
         void Update()
         {
-            _isDetected = DetectPlayer();
+            DetectPlayer();
         }
 
+        //******************여기는 Player를 발견했을때의 코드******************
+
+
+
+        //스피어캐스트로 범위 만들어서 진짜 Player를 발견했는지 아닌지를 아는 함수
         bool DetectPlayer()
         {
             Collider[] collider = Physics.OverlapSphere(transform.position, _distance, _playerLayer, QueryTriggerInteraction.Ignore);
 
             _detectedTarget = null;
 
-            if(collider == null) { return false; }
+            if(collider == null) { _isDetected = false;  return false; }
 
             foreach (Collider col in collider)
             {
@@ -50,12 +57,18 @@ namespace MIssionOfMercenary
                 if (IsPlayerInEnemyDegree() && !IsBlockedByObtacles())
                 {
                     _detectedTarget = col.transform;
+                    _isDetected = true;
+                    _isSense = false;
+
                     return true;
                 }
             }
+            _isDetected = false;
+
             return false;
         }
 
+        //enemy 가 Player를 바라봤을때, 벽을 사이에 두고 있는지 아닌지 판단 함수
         bool IsBlockedByObtacles()
         {
             Vector3 start = _eyeHeight + transform.position;
@@ -68,7 +81,7 @@ namespace MIssionOfMercenary
             return hitWall;
         }
 
-        //전방으로 부채꼴 만들어서 각도 안에 Player가 있는지 체크
+        //전방으로 각도 만들어서 Enemy의 시야각 안에 Player가 있는지 체크
         bool IsPlayerInEnemyDegree()
         {
             Vector3 enemyLook = transform.forward; //적의 전방 벡터
@@ -79,6 +92,13 @@ namespace MIssionOfMercenary
             if (fov < _degree) { return true; }
             else return false;
         }
+
+        //******************여기는 Player를 감지 했을때의 코드******************
+        // 위치는 모르지만, 근처에 있다라는 사실은 알고 있는 상태
+        //무턱대고 범위 안에만 들어오면 Chase되게 만들면........현실성이 없는데..........
+        //Player에 IsHide 라는 프로퍼티 변수 하나를 주고, 소리를 내든 했을때 IsHide를 true로 바꿔버리면
+
+
 
         private void OnDrawGizmos()
         {

@@ -83,6 +83,7 @@ namespace MIssionOfMercenary
         //2단 RayCast로 구조 변경
         public void Attack(float isShot)
         {
+            IsShot = false;
             if(Ammo != _maxAmmo) { canReload = true; }
             else { canReload = false; }
 
@@ -114,6 +115,8 @@ namespace MIssionOfMercenary
 
             Instantiate(_bulletMarkObj, muzzleHit.point, Quaternion.LookRotation(muzzleHit.normal));
             StartCoroutine(BulletMarkEffectDestoryRoutine(_bulletMarkObj));
+
+            IsShot = true;
 
 
             EnemyHit enemyHit = muzzleHit.collider.GetComponent<EnemyHit>();
