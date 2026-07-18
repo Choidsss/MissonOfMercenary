@@ -1,3 +1,4 @@
+using MissionOfMercenary;
 using UnityEngine;
 
 namespace MIssionOfMercenary
@@ -5,12 +6,14 @@ namespace MIssionOfMercenary
     public class EnemyChase : MonoBehaviour
     {
         [SerializeField] float _amount;
+        [SerializeField] InputReader _inputReader;
 
         EnemyFindArea _findArea;
 
         Vector3 _targetPos;
         float _radius;
         LayerMask _playerLayer;
+
 
         public bool DoFind { get; private set; } = false;
         /*
@@ -28,6 +31,16 @@ namespace MIssionOfMercenary
          * 
          */
 
+        //private void OnEnable()
+        //{
+        //    _inputReader.OnshotEvent += ShotPositionStored;
+        //}
+
+        //private void OnDisable()
+        //{
+        //    _inputReader.OnshotEvent -= ShotPositionStored;
+        //}
+
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
@@ -39,6 +52,7 @@ namespace MIssionOfMercenary
         {
         
         }
+
 
         void EnemyMoveToSoundPosition()
         {

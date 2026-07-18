@@ -1,3 +1,4 @@
+using MissionOfMercenary;
 using UnityEngine;
 
 namespace MIssionOfMercenary
@@ -5,19 +6,28 @@ namespace MIssionOfMercenary
     public class PlayerStealth : MonoBehaviour
     {
         [SerializeField] AudioSource _gunshotSound;
+        [SerializeField] InputReader _inputReader;
 
         [Header("Player Hide Ops")]
         [SerializeField] float _radius;
         [SerializeField] LayerMask _enemyLayer;
 
-        
-
         bool _isHidden = false;
-        Vector3 _soundPosition;
+        Vector3 _shotPosition;
 
         public bool IsHidden { get { return _isHidden; } }
 
+        public Vector3 ShotPosition => _shotPosition;
 
+        //private void OnEnable()
+        //{
+        //    _inputReader.OnshotEvent += ShotPositionStored;
+        //}
+
+        //private void OnDisable()
+        //{
+        //    _inputReader.OnshotEvent -= ShotPositionStored;
+        //}
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -30,6 +40,15 @@ namespace MIssionOfMercenary
         {
             PlayerMakeSound();
         }
+
+        //void ShotPositionStored(float shoot)
+        //{
+        //    AssultRifle ar = GetComponentInChildren<AssultRifle>();
+
+        //    if(ar == null) { return; }
+
+        //    _shotPosition = ar.gameObject.transform.position;
+        //}
 
         void PlayerDetectEnemyArea()
         {
@@ -58,7 +77,7 @@ namespace MIssionOfMercenary
             {
                 //_isHidden의 상태변화 유지 시켜야 함
                 _isHidden = false;
-                _soundPosition = ar.gameObject.transform.position;
+                _shotPosition = ar.gameObject.transform.position;
             }
 
 

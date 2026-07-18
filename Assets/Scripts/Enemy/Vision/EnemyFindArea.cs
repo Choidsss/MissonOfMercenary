@@ -52,10 +52,13 @@ namespace MIssionOfMercenary
             foreach (Collider col in collider)
             {
                 _playerPosition = col.gameObject.transform.position;
+                
+                //ToDo : 플레이어가 들어온걸 체크하면 Enemy가 방향을 Player쪽으로 바라보도록 수정
 
                 //시야 안쪽인지 와 벽체크
                 if (IsPlayerInEnemyDegree() && !IsBlockedByObtacles())
                 {
+                    Debug.Log("Player Detected");
                     _detectedTarget = col.transform;
                     _isDetected = true;
                     _isSense = false;
@@ -78,6 +81,7 @@ namespace MIssionOfMercenary
 
             bool hitWall = Physics.Raycast(start, direction.normalized, direction.magnitude, _obstaclesLayer, QueryTriggerInteraction.Ignore);
 
+            Debug.Log($"{hitWall}");
             return hitWall;
         }
 
