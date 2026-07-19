@@ -55,7 +55,7 @@ namespace MIssionOfMercenary
         {
             _headBob = GetComponent<HeadBob>();
 
-            //Head_bob Issue
+            //Head_bob Issue : This code will be repaired, after.
             _headBob.enabled = false;
             _headBob.enabled = true;
 
@@ -73,7 +73,10 @@ namespace MIssionOfMercenary
             UpdateFov();
             Aiming();
 
+            //Gun Recoil Recovery To Vector.zero (총 반동 원래상태로 돌리는 코드) 
             _targetRecoilPos = Vector3.Lerp(_targetRecoilPos, Vector3.zero, _recoverySpeed * Time.deltaTime);
+
+            //프레임마다 총 반동 계산한걸 카메라의 포지션에 할당
             _cam.transform.localPosition = _cameraOriginPos + _targetRecoilPos;
         }
 
