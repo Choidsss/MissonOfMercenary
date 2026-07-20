@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4980520778223027922}
   - component: {fileID: 183303479098661019}
   - component: {fileID: 2377056269494213562}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EnemySoldier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 84371884054343226}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89c1515554b12524dab6b14a3a143e0b, type: 3}
   m_Name: 
@@ -96,6 +96,8 @@ MonoBehaviour:
   _playerLayer:
     serializedVersion: 2
     m_Bits: 1048576
+  _enemyTurnAmount: 17
+  _lookAngleOffset: 35
 --- !u!114 &2377056269494213562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,6 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bfb79a989ec7084da71f7da5ae27a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _amount: 0
 --- !u!1001 &5032547044165907754
 PrefabInstance:
   m_ObjectHideFlags: 0

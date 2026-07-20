@@ -15,12 +15,16 @@ namespace MIssionOfMercenary
         [Header("Eye Offset")]
         [SerializeField] Vector3 _eyeHeight;
         [SerializeField] Vector3 _targetHeight;
-        // Header 오타와 변수 의미를 나중에 정리하면 좋음. 지금 Vector3는 높이값이라기보다 위치 보정 오프셋으로 쓰이고 있음. By Codex
 
         [Header("Layer Classify")]
         [SerializeField] LayerMask _obstaclesLayer;
         [SerializeField] LayerMask _playerLayer;
 
+        [Header("Value Options")]
+        [SerializeField] float _enemyTurnAmount;
+        [SerializeField] float _lookAngleOffset;
+        
+        
         Vector3 _playerPosition;
         Transform _detectedTarget;
         bool _isDetected = false;
@@ -47,21 +51,22 @@ namespace MIssionOfMercenary
 
             _detectedTarget = null;
 
-            if(collider == null) { _isDetected = false;  return false; }
+            if(collider.Length == 0) { _isDetected = false;  return false; }
 
             foreach (Collider col in collider)
             {
                 _playerPosition = col.gameObject.transform.position;
-                
-                //ToDo : 플레이어가 들어온걸 체크하면 Enemy가 방향을 Player쪽으로 바라보도록 수정
+
+                //범위 안에 들었으면 인기척을 느꼈다라는 것이므로 이래야 맞지 않을까?
+                LookAtPlayer();
 
                 //시야 안쪽인지 와 벽체크
                 if (IsPlayerInEnemyDegree() && !IsBlockedByObtacles())
                 {
-                    Debug.Log("Player Detected");
                     _detectedTarget = col.transform;
                     _isDetected = true;
                     _isSense = false;
+
 
                     return true;
                 }
@@ -69,6 +74,21 @@ namespace MIssionOfMercenary
             _isDetected = false;
 
             return false;
+        }
+
+        void LookAtPlayer()
+        {
+            Vector3 direction = _playerPosition - transform.position;
+            direction.y = 0;
+
+            if(direction.sqrMagnitude <= 0.01f) { return; }
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            // 각도 보정
+            targetRotation = targetRotation * Quaternion.Euler(0f, _lookAngleOffset, 0f);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _enemyTurnAmount * Time.deltaTime);
         }
 
         //enemy 가 Player를 바라봤을때, 벽을 사이에 두고 있는지 아닌지 판단 함수
@@ -81,7 +101,6 @@ namespace MIssionOfMercenary
 
             bool hitWall = Physics.Raycast(start, direction.normalized, direction.magnitude, _obstaclesLayer, QueryTriggerInteraction.Ignore);
 
-            Debug.Log($"{hitWall}");
             return hitWall;
         }
 

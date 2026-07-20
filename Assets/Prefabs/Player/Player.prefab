@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 3623376667837324982}
   - component: {fileID: 4032807633238968760}
   - component: {fileID: 7812074923575429974}
+  - component: {fileID: 8822844103384651955}
   m_Layer: 20
   m_Name: Player
   m_TagString: Untagged
@@ -372,10 +373,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 2543910628095086680}
   _playerMove: {fileID: 111921809067059592}
-  _bobFrequency: 10
+  _bobFrequency: 13
   _bobReturnSpeed: 1
   _amountX: 1
-  _amountY: 0.8
+  _amountY: 1
   _runMultiply: 3
 --- !u!114 &7812074923575429974
 MonoBehaviour:
@@ -406,6 +407,23 @@ MonoBehaviour:
   _swayAmount: 2
   _swaySpeed: 2
   _swayClamp: 2
+--- !u!114 &8822844103384651955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5289674846794416690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3057f5313a9a44a49b52b1133c7c1314, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputReader: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
+  _radius: 70
+  _enemyLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &8280731064724997918
 GameObject:
   m_ObjectHideFlags: 0

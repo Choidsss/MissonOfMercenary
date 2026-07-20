@@ -1,4 +1,5 @@
 using MissionOfMercenary;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace MIssionOfMercenary
@@ -6,16 +7,18 @@ namespace MIssionOfMercenary
     public class EnemyChase : MonoBehaviour
     {
         [SerializeField] float _amount;
-        [SerializeField] InputReader _inputReader;
 
         EnemyFindArea _findArea;
 
-        Vector3 _targetPos;
-        float _radius;
         LayerMask _playerLayer;
+        float _radius;
 
+        Vector3 _targetPos = Vector3.zero;
 
         public bool DoFind { get; private set; } = false;
+
+        public Vector3 TargetPosition { get { return _targetPos; } set { _targetPos = value; } } 
+
         /*
          * _findArea에서 적이 Player를 찾았다면 Plaayer를 추적하도록 함
          * 1. _findArea 에서 IsDetectedPlayer가 true가 된다면(벽 체크는 이미 하는 중) Enemy가 상태를chase로 전환
@@ -47,12 +50,10 @@ namespace MIssionOfMercenary
             _findArea = GetComponent<EnemyFindArea>();
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
-        
+            Debug.Log($"{_targetPos}");
         }
-
 
         void EnemyMoveToSoundPosition()
         {

@@ -42494,14 +42494,6 @@ PrefabInstance:
       propertyPath: _crossHair
       value: 
       objectReference: {fileID: 504828483}
-    - target: {fileID: 4032807633238968760, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: _amountY
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4032807633238968760, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: _bobFrequency
-      value: 13
-      objectReference: {fileID: 0}
     - target: {fileID: 5289674846794416690, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: m_Name
       value: Player
@@ -42545,6 +42537,10 @@ PrefabInstance:
     - target: {fileID: 6757284830440564949, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8822844103384651955, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _radius
+      value: 500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -42891,14 +42887,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1123068371421246509, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2377056269494213562, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4980520778223027922, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
