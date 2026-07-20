@@ -6,6 +6,8 @@ namespace MIssionOfMercenary
 {
     public class EnemyFindArea : MonoBehaviour
     {
+        //Enemy에게 Overlap을 씌워서, 범위 안으로 Player가 들어온다면 그즉시 바라보고 벽체크를해서 Player를 발견했는지 아닌지 알려주는 스크립트
+
         [Header("Enemy Field Of Vision Options")]
         [SerializeField] float _degree; //전방 시야 +-각도 제한(한쪽으로 70도, 140도)
         [SerializeField] float _distance; //전방 시야 거리 제한
@@ -76,7 +78,7 @@ namespace MIssionOfMercenary
             return false;
         }
 
-        void LookAtPlayer()
+        public void LookAtPlayer()
         {
             Vector3 direction = _playerPosition - transform.position;
             direction.y = 0;
