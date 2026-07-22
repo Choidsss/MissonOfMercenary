@@ -6,8 +6,6 @@ namespace MIssionOfMercenary
 {
     public class EnemyFindArea : MonoBehaviour
     {
-        //Enemy에게 Overlap을 씌워서, 범위 안으로 Player가 들어온다면 그즉시 바라보고 벽체크를해서 Player를 발견했는지 아닌지 알려주는 스크립트
-
         [Header("Enemy Field Of Vision Options")]
         [SerializeField] float _degree; //전방 시야 +-각도 제한(한쪽으로 70도, 140도)
         [SerializeField] float _distance; //전방 시야 거리 제한
@@ -42,11 +40,6 @@ namespace MIssionOfMercenary
             DetectPlayer();
         }
 
-        //******************여기는 Player를 발견했을때의 코드******************
-
-
-
-        //스피어캐스트로 범위 만들어서 진짜 Player를 발견했는지 아닌지를 아는 함수
         bool DetectPlayer()
         {
             Collider[] collider = Physics.OverlapSphere(transform.position, _distance, _playerLayer, QueryTriggerInteraction.Ignore);
@@ -60,6 +53,8 @@ namespace MIssionOfMercenary
                 _playerPosition = col.gameObject.transform.position;
 
                 //범위 안에 들었으면 인기척을 느꼈다라는 것이므로 이래야 맞지 않을까?
+                //원래는 계속 돌아다니다가, 벽체크가 없다는게 확인 되면 보는게 맞을듯 => 이거도 플레이어한테 은신상태인지 아닌지를 또 체크하도록 해야 현실감이 있지 않을까.
+                //일단은 이렇게 가자
                 LookAtPlayer();
 
                 //시야 안쪽인지 와 벽체크
@@ -68,7 +63,7 @@ namespace MIssionOfMercenary
                     _detectedTarget = col.transform;
                     _isDetected = true;
                     _isSense = false;
-
+                    
 
                     return true;
                 }
@@ -93,7 +88,8 @@ namespace MIssionOfMercenary
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _enemyTurnAmount * Time.deltaTime);
         }
 
-        //enemy 가 Player를 바라봤을때, 벽을 사이에 두고 있는지 아닌지 판단 함수
+        //왜 계속 false가 뜨지...? 캐스트가 벽에 닿으면 true가 떠야 되는데
+        //Eyeoffset Issue => 캐스트가 바닥에 붙어 있어서 계속 벽 판정을 못한게 원인 => _eyeHeigh = 2,  _targetHeight = 1.5 로 수정하여 판정 수정 완료
         bool IsBlockedByObtacles()
         {
             Vector3 start = _eyeHeight + transform.position;
@@ -102,6 +98,7 @@ namespace MIssionOfMercenary
             Vector3 direction = end - start;
 
             bool hitWall = Physics.Raycast(start, direction.normalized, direction.magnitude, _obstaclesLayer, QueryTriggerInteraction.Ignore);
+            Debug.Log($"{hitWall}");
 
             return hitWall;
         }
@@ -117,13 +114,6 @@ namespace MIssionOfMercenary
             if (fov < _degree) { return true; }
             else return false;
         }
-
-        //******************여기는 Player를 감지 했을때의 코드******************
-        // 위치는 모르지만, 근처에 있다라는 사실은 알고 있는 상태
-        //무턱대고 범위 안에만 들어오면 Chase되게 만들면........현실성이 없는데..........
-        //Player에 IsHide 라는 프로퍼티 변수 하나를 주고, 소리를 내든 했을때 IsHide를 true로 바꿔버리면
-
-
 
         private void OnDrawGizmos()
         {
