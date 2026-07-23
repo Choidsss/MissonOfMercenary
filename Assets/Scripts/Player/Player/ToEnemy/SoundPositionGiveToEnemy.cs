@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MissionOfMercenary;
 using UnityEngine;
 
@@ -5,21 +6,11 @@ namespace MIssionOfMercenary
 {
     public class SoundPositionGiveToEnemy : MonoBehaviour
     {
-        AssultRifle _ar;
-
         [SerializeField] InputReader _inputReader;
-
 
         [Header("OverlapSphere Size Setting")]
         [SerializeField] float _radius;
         [SerializeField] LayerMask _enemyLayer;
-
-        bool _didGive = false;
-
-        void Start()
-        {
-            _ar = GetComponentInChildren<AssultRifle>();
-        }
 
         private void OnEnable()
         {
@@ -38,35 +29,23 @@ namespace MIssionOfMercenary
 
         public void PositionGiveToEnemy()
         {
-            //if (_ar == null) { return; }
-
             Collider[] cols = Physics.OverlapSphere(transform.position, _radius, _enemyLayer, QueryTriggerInteraction.Ignore);
-            Debug.Log($"{cols.Length}"); //ÀûÀº 1¸í, ¼ö´Â 11°³°¡ ÀâÈû => RagdollÄİ¶óÀÌ´õ ºĞ¸®·Î ÀÎÇÑ Çö»óÀ¸·Î ÃßÁ¤ *** goµµ °¡Á®¿ÀÁö¸¸ ec°¡ ¾ø´Â°Å·Îº¸¾Æ Äİ¶óÀÌ´õ°¡ ºÙ¾îÀÖ´Â ¿ÀºêÁ§Æ®¸¸ °¡Á®¿À´Â µí
+            // ì—¬ëŸ¬ ë˜ê·¸ëŒ ì½œë¼ì´ë”ì—ì„œ ì°¾ì€ ë™ì¼í•œ EnemyëŠ” HashSetìœ¼ë¡œ ì¤‘ë³µì„ ì œê±°í•˜ì—¬ ìœ„ì¹˜ë¥¼ í•œ ë²ˆë§Œ ì „ë‹¬í•¨. By Codex
+            HashSet<EnemyChase> enemies = new HashSet<EnemyChase>();
 
             foreach (Collider col in cols)
             {
-                //Äİ¶óÀÌ´õµµ ¼öÁ¤ ÇÊ¿ä
-                GameObject go = col.gameObject;
+                EnemyChase enemy = col.GetComponentInParent<EnemyChase>();
 
-                //¿©±â¼­ Äİ¶óÀÌ´õ Ã¼Å©ÇÑ°Å·Î ºÎ¸ğ¿¡ ÀÖ´Â EnemyChase °¡Á®¿Í¼­ ÀÖ´ÂÁö È®ÀÎÇÏ´Â ÄÚµå
-                EnemyChase ec = go.GetComponentInParent<EnemyChase>();
-
-                if(ec == null) { Debug.Log("Can't Find a Component<EnemyChase>"); return; }
-                
-                //EnemyChase°¡ ¼ö»öÁßÀÌ¶ó¸é PlayerÀÇ À§Ä¡ Á¤º¸¸¦ °»½ÅÇÏÁö ¾ÊÀ½
-                if(ec.DoFind)
+                if (enemy != null)
                 {
-                    _didGive = true; 
-                    return; 
+                    enemies.Add(enemy);
                 }
-                else
-                {
-                    _didGive = false;
-                }
+            }
 
-                //¾ê°¡ À§Ä¡¸¦ °è¼Ó ³Ñ°ÜÁÖ´Â ÄÚµå
-                ec.TargetPosition = transform.position;
-                _didGive = true;
+            foreach (EnemyChase enemy in enemies)
+            {
+                enemy.SetSoundTarget(transform.position);
             }
         }
     }
