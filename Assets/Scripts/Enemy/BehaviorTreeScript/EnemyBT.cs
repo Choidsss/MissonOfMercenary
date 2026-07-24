@@ -7,6 +7,7 @@ namespace MIssionOfMercenary
     {
         [SerializeField] EnemyFindArea _findArea;
         [SerializeField] NavMeshAgent _agent;
+        [SerializeField] EnemyPatrolNode _patrol;
 
         BTNode _root;
 
@@ -42,7 +43,8 @@ namespace MIssionOfMercenary
             //Add Node(chaseSeq)
             Sequence chaseSeq = new Sequence();
             chaseSeq.AddChild(new CanSeePlayerNode(_findArea));
-            //chaseSeq.AddChild(new ChasePlayerNode(_agent, _findArea));
+            chaseSeq.AddChild(new ChasePlayerNode(_agent, _findArea));
+            //chaseSeq.AddChild(new EnemyPatrolNode(_patrol));
 
             selector.AddChild(chaseSeq);
 

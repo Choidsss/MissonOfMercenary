@@ -30,6 +30,8 @@ namespace MIssionOfMercenary
         bool _isDetected = false;
         bool _isSense = false;
 
+        //Vector3 _testVec;
+
         public bool IsDetectedPlayer => _isDetected;
         public bool IsSensePlayer => _isSense;
         public Transform DetectedTarget => _detectedTarget;
@@ -94,6 +96,8 @@ namespace MIssionOfMercenary
         {
             Vector3 start = _eyeHeight + transform.position;
             Vector3 end = _targetHeight + _playerPosition;
+
+            //_testVec = start;
 
             Vector3 direction = end - start;
 
