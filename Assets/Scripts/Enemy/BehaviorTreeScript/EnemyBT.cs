@@ -6,8 +6,13 @@ namespace MIssionOfMercenary
     public class EnemyBT : MonoBehaviour
     {
         [SerializeField] EnemyFindArea _findArea;
-        [SerializeField] NavMeshAgent _agent;
-        [SerializeField] EnemyPatrolNode _patrol;
+        // 일반 BTNode는 Inspector에서 연결할 수 없으므로 이 필드 대신 SetupTree에서 생성해야 한다. By Codex
+
+        [Header("Patrol Node Options")]
+        //[SerializeField] EnemyPatrolNode _patrol;
+        [SerializeField] float _patrolSpeed;
+        [SerializeField] NavMeshAgent _nav;
+        [SerializeField] Transform[] _wayPoints;
 
         BTNode _root;
 
@@ -18,19 +23,17 @@ namespace MIssionOfMercenary
                 _findArea = GetComponent<EnemyFindArea>();
             }
 
-            if (_agent == null)
+            if (_nav == null)
             {
-                _agent = GetComponent<NavMeshAgent>();
+                _nav = GetComponent<NavMeshAgent>();
             }
         }
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             _root = SetupTree();
         }
 
-        // Update is called once per frame
         void Update()
         {
             _root?.Evaluate();
@@ -40,13 +43,16 @@ namespace MIssionOfMercenary
         {
             BehaviorSelector selector = new BehaviorSelector();
 
-            //Add Node(chaseSeq)
             Sequence chaseSeq = new Sequence();
             chaseSeq.AddChild(new CanSeePlayerNode(_findArea));
-            chaseSeq.AddChild(new ChasePlayerNode(_agent, _findArea));
-            //chaseSeq.AddChild(new EnemyPatrolNode(_patrol));
+            chaseSeq.AddChild(new ChasePlayerNode(_nav, _findArea));
+
+            EnemyPatrolNode patrolNode = new EnemyPatrolNode(_nav, _wayPoints, _patrolSpeed);
 
             selector.AddChild(chaseSeq);
+            selector.AddChild(patrolNode);
+
+            // PatrolNode를 (_agent, _wayPoint, _patrolSpeed)로 생성해 selector에 추가하지 않으면 플레이어가 없을 때 아무 행동도 하지 않는다. By Codex
 
             return selector;
         }
