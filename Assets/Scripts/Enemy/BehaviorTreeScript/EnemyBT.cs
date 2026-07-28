@@ -5,14 +5,20 @@ namespace MIssionOfMercenary
 {
     public class EnemyBT : MonoBehaviour
     {
+        EnemyChase _enemyChase;
+
         [SerializeField] EnemyFindArea _findArea;
         // 일반 BTNode는 Inspector에서 연결할 수 없으므로 이 필드 대신 SetupTree에서 생성해야 한다. By Codex
+        [SerializeField] NavMeshAgent _nav;
 
         [Header("Patrol Node Options")]
-        //[SerializeField] EnemyPatrolNode _patrol;
         [SerializeField] float _patrolSpeed;
-        [SerializeField] NavMeshAgent _nav;
         [SerializeField] Transform[] _wayPoints;
+
+        [Header("MoveToSoundPosition Options")]
+        [SerializeField] float _moveSoundPositionSpeed;
+        
+
 
         BTNode _root;
 
@@ -31,6 +37,7 @@ namespace MIssionOfMercenary
 
         void Start()
         {
+            _enemyChase = GetComponent<EnemyChase>();
             _root = SetupTree();
         }
 
