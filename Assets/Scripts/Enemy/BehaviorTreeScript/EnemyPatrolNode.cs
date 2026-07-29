@@ -12,10 +12,7 @@ namespace MIssionOfMercenary
         int _wayPointIndex = 0;
         bool _isForward = true;
 
-        public EnemyPatrolNode(
-            NavMeshAgent nav,
-            Transform[] wayPoint,
-            float patrolSpeed)
+        public EnemyPatrolNode(NavMeshAgent nav,Transform[] wayPoint,float patrolSpeed)
         {
             _nav = nav;
             _wayPoint = wayPoint;
@@ -49,8 +46,6 @@ namespace MIssionOfMercenary
                 {
                     _isForward = true;
                 }
-
-
 
                 if (_isForward)
                 {

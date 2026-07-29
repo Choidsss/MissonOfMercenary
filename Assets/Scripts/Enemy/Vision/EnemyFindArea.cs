@@ -90,8 +90,6 @@ namespace MIssionOfMercenary
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _enemyTurnAmount * Time.deltaTime);
         }
 
-        //왜 계속 false가 뜨지...? 캐스트가 벽에 닿으면 true가 떠야 되는데
-        //Eyeoffset Issue => 캐스트가 바닥에 붙어 있어서 계속 벽 판정을 못한게 원인 => _eyeHeigh = 2,  _targetHeight = 1.5 로 수정하여 판정 수정 완료
         bool IsBlockedByObtacles()
         {
             Vector3 start = _eyeHeight + transform.position;
@@ -102,7 +100,7 @@ namespace MIssionOfMercenary
             Vector3 direction = end - start;
 
             bool hitWall = Physics.Raycast(start, direction.normalized, direction.magnitude, _obstaclesLayer, QueryTriggerInteraction.Ignore);
-            Debug.Log($"{hitWall}");
+            //Debug.Log($"{hitWall}");
 
             return hitWall;
         }

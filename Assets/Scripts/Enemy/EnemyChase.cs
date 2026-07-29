@@ -9,9 +9,7 @@ namespace MIssionOfMercenary
         //Enemy Detected Player Make A Sound.
 
         bool _hasSoundTarget = false;
-        Vector3 _sondTargetPosition; 
-
-        //public bool IsEnemyHeardSound { get; private set; }
+        Vector3 _sondTargetPosition = Vector3.zero; 
 
         public bool DoFind { get; private set; } = false;
         public bool HasSoundTarget { get { return _hasSoundTarget; } }
@@ -22,7 +20,6 @@ namespace MIssionOfMercenary
             EnemyHeardSound();
         }
 
-        //총 소리를 들어서 위치정보가 담겼냐 안담겼냐
         public void EnemyHeardSound()
         {
             if (!HasSoundTarget)
@@ -37,18 +34,18 @@ namespace MIssionOfMercenary
             }
         }
 
-        //GiveToEnemy에서 부르고 입력값을 넣어서 그 위치를 저장하고 Player의 소리를 들었다는 bool변수 관리(이동은 다른코드에서 하며 위치정보를 담는것만 함)
-        //DoFind 는 따로 관리함
         public void SetSoundTarget(Vector3 position)
         {
             _sondTargetPosition = position;
             _hasSoundTarget = true;
+            Debug.Log($"HasSoundTarget Value = {HasSoundTarget}");
         }
 
         public void ClearSoundTarget()
         {
             _sondTargetPosition = Vector3.zero;
             _hasSoundTarget = false;
+            Debug.Log($"HasSoundTarget Value = {HasSoundTarget}");
         }
     }
 }

@@ -7,34 +7,38 @@ namespace MIssionOfMercenary
     {
         readonly float _speed;
         readonly NavMeshAgent _nav;
-        readonly Vector3 _targetPosition;
-        readonly Vector3 _originPosition;
+        EnemyChase _enemyChase;
 
-        ChaseSoundPositionNode(float speed, NavMeshAgent nav, Vector3 combackPosition,Vector3 targetPosition)
+
+        public ChaseSoundPositionNode(float speed, NavMeshAgent nav, EnemyChase enemyChase)
         {
             _speed = speed;
             _nav = nav;
-            _originPosition = combackPosition;
-            _targetPosition = targetPosition;
+            _enemyChase = enemyChase;
         }
 
         public override State Evaluate()
         {
+            // SetDestination í˜¸ì¶œ ì „ _nav.enabledì™€ _nav.isOnNavMeshë„ í•¨ê»˜ ê²€ì‚¬í•´ì•¼ ì˜ˆì™¸ë¥¼ ë°©ì§€í•  ìˆ˜ ìˆë‹¤. By Codex
             if(_nav == null) { Debug.Log("NavMesh Agent Component Does Not Exist"); return State.Failure; }
-            if (_targetPosition == null) { Debug.Log("Target_Position Does Not Exist"); return State.Failure; }
+            if(_nav.enabled == false || !_nav.isOnNavMesh) { Debug.Log("NavMesh Agent Component is wrong option I guess"); return State.Failure; }
+            if (_enemyChase == null) { Debug.Log("Can't Find Component EnemyChase"); return State.Failure; }
+            if (!_enemyChase.HasSoundTarget) { Debug.Log("Can't heard the gunSound"); return State.Failure; }
 
+            Debug.Log($"Position to : {_enemyChase.SoundTargetPosition}");
             _nav.speed = _speed;
-            _nav.SetDestination(_targetPosition);
+            _nav.SetDestination(_enemyChase.SoundTargetPosition);
+
+            if(_nav.pathPending) { return State.Running; }
 
             if(_nav.remainingDistance <= _nav.stoppingDistance)
             {
-                //±× ÁÖº¯À¸·Î ÇÑ¹ø´õ ¿À¹ö·¦ ½ºÇÇ¾î·Î È®ÀÎÇØºÁ¼­ ÀÖÀ¸¸é ´Ù½Ã ÇÃ·¹ÀÌ¾îÂÊÀ¸·Î Å¸°ÙÀ» ÀâÀ½
-                //±× ÀÌÈÄ¿¡µµ ¾Èº¸ÀÎ´Ù¸é ´Ù½Ã _originPositionÀ¸·Î º¹±Í
+                _enemyChase.ClearSoundTarget();
+
+                return State.Success;
             }
 
             return State.Running;
-
-
         }
     }
 }

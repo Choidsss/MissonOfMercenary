@@ -5,10 +5,10 @@ namespace MIssionOfMercenary
 {
     public class EnemyBT : MonoBehaviour
     {
+        BTNode _root;
         EnemyChase _enemyChase;
 
         [SerializeField] EnemyFindArea _findArea;
-        // 일반 BTNode는 Inspector에서 연결할 수 없으므로 이 필드 대신 SetupTree에서 생성해야 한다. By Codex
         [SerializeField] NavMeshAgent _nav;
 
         [Header("Patrol Node Options")]
@@ -17,10 +17,6 @@ namespace MIssionOfMercenary
 
         [Header("MoveToSoundPosition Options")]
         [SerializeField] float _moveSoundPositionSpeed;
-        
-
-
-        BTNode _root;
 
         void Awake()
         {
@@ -38,6 +34,8 @@ namespace MIssionOfMercenary
         void Start()
         {
             _enemyChase = GetComponent<EnemyChase>();
+            if (_enemyChase == null) { Debug.Log("It's You!!!!!"); }
+
             _root = SetupTree();
         }
 
@@ -54,12 +52,16 @@ namespace MIssionOfMercenary
             chaseSeq.AddChild(new CanSeePlayerNode(_findArea));
             chaseSeq.AddChild(new ChasePlayerNode(_nav, _findArea));
 
+            Sequence soundPositionSeq = new Sequence();
+            soundPositionSeq.AddChild(new HasSoundTargetNode(_enemyChase));
+            soundPositionSeq.AddChild(new ChaseSoundPositionNode(_moveSoundPositionSpeed, _nav, _enemyChase));
+
             EnemyPatrolNode patrolNode = new EnemyPatrolNode(_nav, _wayPoints, _patrolSpeed);
 
             selector.AddChild(chaseSeq);
+            selector.AddChild(soundPositionSeq);
             selector.AddChild(patrolNode);
 
-            // PatrolNode를 (_agent, _wayPoint, _patrolSpeed)로 생성해 selector에 추가하지 않으면 플레이어가 없을 때 아무 행동도 하지 않는다. By Codex
 
             return selector;
         }

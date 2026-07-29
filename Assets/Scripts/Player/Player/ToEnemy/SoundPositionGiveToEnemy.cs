@@ -14,39 +14,42 @@ namespace MIssionOfMercenary
 
         private void OnEnable()
         {
-            _inputReader.OnshotEvent += GiveToPosition;
+            _inputReader.OnshotEvent += PositionGiveToEnemy;
         }
 
         private void OnDisable()
         {
-            _inputReader.OnshotEvent -= GiveToPosition;
+            _inputReader.OnshotEvent -= PositionGiveToEnemy;
         }
-
-        void GiveToPosition(float shot)
-        {
-            PositionGiveToEnemy();
-        }
-
-        public void PositionGiveToEnemy()
+        public void PositionGiveToEnemy(float shot)
         {
             Collider[] cols = Physics.OverlapSphere(transform.position, _radius, _enemyLayer, QueryTriggerInteraction.Ignore);
-            // 여러 래그돌 콜라이더에서 찾은 동일한 Enemy는 HashSet으로 중복을 제거하여 위치를 한 번만 전달함. By Codex
-            HashSet<EnemyChase> enemies = new HashSet<EnemyChase>();
+            HashSet<EnemyChase> foundEnemies = new HashSet<EnemyChase>();
+            HashSet<Collider> enemyColliders = new HashSet<Collider>();
+
 
             foreach (Collider col in cols)
             {
                 EnemyChase enemy = col.GetComponentInParent<EnemyChase>();
 
-                if (enemy != null)
+                if (enemy != null && foundEnemies.Add(enemy))
                 {
-                    enemies.Add(enemy);
+                    enemyColliders.Add(col);
                 }
             }
 
-            foreach (EnemyChase enemy in enemies)
+            foreach (Collider col in enemyColliders)
             {
-                enemy.SetSoundTarget(transform.position);
+                col.GetComponentInParent<EnemyChase>().SetSoundTarget(transform.position);
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.black;
+
+            Gizmos.DrawWireSphere(transform.position, _radius);
+
         }
     }
 }
