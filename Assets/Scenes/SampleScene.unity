@@ -43784,22 +43784,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySoldier
       objectReference: {fileID: 0}
-    - target: {fileID: 136470601843441061, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 136470601843441061, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 964461674852836799, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 964461674852836799, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1123068371421246509, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -43840,22 +43824,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1306406021583990268, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 1306406021583990268, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1416915692692542583, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 1416915692692542583, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4980520778223027922, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
       propertyPath: '_wayPoints.Array.data[0]'
       value: 
@@ -43868,62 +43836,6 @@ PrefabInstance:
       propertyPath: '_wayPoints.Array.data[2]'
       value: 
       objectReference: {fileID: 744597823}
-    - target: {fileID: 5293896117320385273, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 5293896117320385273, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5684722720688492297, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 5684722720688492297, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6202471458916072508, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 6202471458916072508, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6384953753042642847, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 6384953753042642847, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7382219005039437357, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 7382219005039437357, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8735586408715527982, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 8735586408715527982, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9220544701999215380, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 9220544701999215380, guid: a2e770e66919d9b4fbaa93d70759bf7b, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

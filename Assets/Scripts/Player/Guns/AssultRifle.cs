@@ -120,9 +120,10 @@ namespace MIssionOfMercenary
 
 
             EnemyHit enemyHit = muzzleHit.collider.GetComponent<EnemyHit>();
+
             if (enemyHit != null)
             {
-                enemyHit.TakeDameged(Damage);
+                enemyHit.RecieveHit(muzzleHit, Damage);
             }
 
             //if (_muzzle == null) { return; }

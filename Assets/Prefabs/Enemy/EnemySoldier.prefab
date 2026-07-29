@@ -10,8 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1123068371421246509}
   - component: {fileID: 1283119099787707937}
+  - component: {fileID: 871454874627165503}
   - component: {fileID: 4980520778223027922}
   - component: {fileID: 183303479098661019}
+  - component: {fileID: 5888893802044229746}
   - component: {fileID: 2377056269494213562}
   - component: {fileID: 782532795133213885}
   - component: {fileID: 5028263478182702197}
@@ -60,6 +62,18 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &871454874627165503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84371884054343226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a4218c7d1a0864883261ebd1e785da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4980520778223027922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,7 +93,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  _moveSoundPositionSpeed: 3
+  _moveSoundPositionSpeed: 6
 --- !u!114 &183303479098661019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,6 +120,18 @@ MonoBehaviour:
     m_Bits: 1048576
   _enemyTurnAmount: 17
   _lookAngleOffset: 35
+--- !u!114 &5888893802044229746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84371884054343226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a10aea0522173a4dae1f429b73e765a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2377056269494213562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,17 +156,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51fda67526692ae4ab31fe7b76dd1524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _leftArm1: {fileID: 0}
-  _leftArm2: {fileID: 0}
-  _righttArm1: {fileID: 0}
-  _rightArm2: {fileID: 0}
-  _lefLeg1: {fileID: 0}
-  _leftLeg2: {fileID: 0}
-  _rightLeg1: {fileID: 0}
-  _rightLeg2: {fileID: 0}
-  _pelvis: {fileID: 0}
-  _chest: {fileID: 0}
-  _head: {fileID: 0}
+  _leftArm1: {fileID: 5993612816261402716}
+  _leftArm2: {fileID: 1162921370631577717}
+  _righttArm1: {fileID: 9070981353683239753}
+  _rightArm2: {fileID: 2525881289703370295}
+  _lefLeg1: {fileID: 3735132119408645121}
+  _leftLeg2: {fileID: 1405446735322515471}
+  _rightLeg1: {fileID: 648872481028693362}
+  _rightLeg2: {fileID: 573586271244393810}
+  _pelvis: {fileID: 8202273599065057765}
+  _chest: {fileID: 8579503263739123834}
+  _head: {fileID: 746200728739471017}
 --- !u!114 &5028263478182702197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,9 +548,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!144 &6083412321168819252
 CharacterJoint:
@@ -621,9 +647,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!144 &6917257328318240676
 CharacterJoint:
@@ -722,9 +748,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!144 &3944659436332214240
 CharacterJoint:
@@ -823,9 +849,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!144 &3468100899426865693
 CharacterJoint:
@@ -924,9 +950,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!144 &1485438975979714926
 CharacterJoint:
@@ -1025,9 +1051,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!144 &2318742491445044390
 CharacterJoint:
@@ -1126,9 +1152,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!144 &1300574928269965215
 CharacterJoint:
@@ -1225,9 +1251,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &5032547044165874674 stripped
 GameObject:
@@ -1278,9 +1304,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!144 &8499795138831432233
 CharacterJoint:
@@ -1379,9 +1405,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!144 &501479333519759149
 CharacterJoint:
@@ -1480,9 +1506,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!144 &8712521041831027429
 CharacterJoint:

@@ -47,24 +47,10 @@ namespace MIssionOfMercenary
             _dicPartName.Add(_head, BodyPart.Head);
         }
 
-        public string GiveHitPart(Collider col)
+        public BodyPart GiveHitPart(RaycastHit muzzleHit)
         {
-            if (_dicPartName[col] == BodyPart.Arms)
-            {
-                return "Arms";
-            }
-            else if (_dicPartName[col] == BodyPart.Legs)
-            {
-                return "Legs";
-            }
-            else if (_dicPartName[col] == BodyPart.Body)
-            {
-                return "Body";
-            }
-            else
-            {
-                return "Head";
-            }
+            // 등록되지 않은 Collider에서는 예외가 발생하므로 TryGetValue(muzzleHit.collider, out BodyPart hitPart)로 확인한 뒤 hitPart 또는 기본 부위를 반환해야 한다. By Codex
+            return _dicPartName[muzzleHit.collider];
         }
     }
 }
