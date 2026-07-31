@@ -34,7 +34,7 @@ namespace MIssionOfMercenary
         void Start()
         {
             _enemyChase = GetComponent<EnemyChase>();
-            if (_enemyChase == null) { Debug.Log("It's You!!!!!"); }
+            //if (_enemyChase == null) { Debug.Log("It's You!!!!!"); }
 
             _root = SetupTree();
         }

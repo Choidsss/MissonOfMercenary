@@ -1,17 +1,31 @@
 using UnityEngine;
+using System.Collections;
+using UnityEngine.AI;
 
 namespace MIssionOfMercenary
 {
     public class EnemyHit : MonoBehaviour
     {
+        [SerializeField] Rigidbody _pelivisRb;
         EnemyBodyPart _part;
         EnemyHealth  _health;
-
         Rigidbody[] _rigidbodies;
 
-        int amount;
+        Animator _anim;
+        EnemyBT _bt;
+        NavMeshAgent _nav;
+        EnemyFindArea _area;
 
-        public bool IsDeath { get; private set; } = false;
+        [Header("Set Bonus Damage Numbers")]
+        [SerializeField] int _bonusDamageArms = 5;
+        [SerializeField] int _bonusDamageLegs = 5;
+        [SerializeField] int _bonusDamageHead = 20;
+        [SerializeField] int _bonusDamageBody = 10;
+
+        [Header("Enemy Death Delay Sec Option")]
+        [SerializeField] float _deathDelay = 3;
+
+        int _totalDamage;
 
         private void Start()
         {
@@ -19,59 +33,82 @@ namespace MIssionOfMercenary
             _health = GetComponent<EnemyHealth>();
             _rigidbodies = GetComponentsInChildren<Rigidbody>();
 
-            SetRagdoll(false);
-        }
+            _anim = GetComponentInChildren<Animator>();
+            _nav = GetComponent<NavMeshAgent>();
+            _bt = GetComponent<EnemyBT>();
+            _area = GetComponent<EnemyFindArea>();
 
-        private void Update()
-        {
-            EnemyOnDeath();
+            SetRagdoll(false);
         }
 
         void SetRagdoll(bool active)
         {
             foreach(Rigidbody rb in _rigidbodies)
             {
+                if (_anim == null) { Debug.Log("Animator Component is Not Exist!"); }
+                if (_bt == null) { Debug.Log("EnemyBT Component is Not Exist!"); }
+                if (_nav == null) { Debug.Log("NavMeshAgent Component is Not Exist!"); }
+                if (_area == null) { Debug.Log("EnemyFindArea Component is Not Exist!"); }
+
+                _anim.enabled = !active;
+                _bt.enabled = !active;
+                _nav.enabled = !active;
+                _area.enabled = !active;
+
                 rb.isKinematic = !active;
+
+                if (active)
+                {
+                    rb.WakeUp();
+                }
             }
         }
 
         public void RecieveHit(RaycastHit muzzleHit, int damage)
         {
-            if(muzzleHit.collider.gameObject.layer != 10) { Debug.Log("Does Not Equal Layer Enemy"); }//일단 이렇게 해놓음
+            if(muzzleHit.collider.gameObject.layer != 10) { Debug.Log("Does Not Equal Layer Enemy"); }// 일단 조건 이렇게 해놓음
 
             if(muzzleHit.collider.gameObject.layer == 10)
             {
                 BodyPart hitPart = _part.GiveHitPart(muzzleHit);
 
-                //**********************여기서 체력을 깎는 함수를 만들고 부르는게 낫나? 조금더 나은 구조가 있나??**********************
-                ////**********************그리고 상수코딩 수정**********************
-                ///**********************Ragdoll 로 만들어놓은 적, RigidBody 여러개 다 가져와서 Kinematic.enable = false로 만들고 날아가게 만들어야 함**********************
+                Debug.Log($"맞은 부위 : {hitPart}");
+
                 switch (hitPart)
                 {
                     case BodyPart.Arms:
-                        amount = damage + 5;
+                        _totalDamage = damage + _bonusDamageArms;
                         break;
                     case BodyPart.Legs:
-                        amount = damage + 10;
+                        _totalDamage = damage + _bonusDamageLegs;
                         break;
                     case BodyPart.Head:
-                        amount = damage + 20;
+                        _totalDamage = damage + _bonusDamageHead;
                         break;
                     default:
-                        amount = damage + 5;
+                        _totalDamage = damage + _bonusDamageBody;
                         break;
+                }
+                Debug.Log($"준 데미지 : {_totalDamage}");
+                _health.TakeDamege(_totalDamage);
+
+                if (_health.IsDeath)
+                {
+                    _health.EnemyOnDeath();//일단 비워놓음
+
+                    SetRagdoll(true);
+                    _pelivisRb.constraints = RigidbodyConstraints.FreezeRotationY;//Y만 체크(시선은 고정이되, 팔다리는 움직임)
+
+                    StartCoroutine(EnemyDeathDelay());
                 }
             }
         }
 
-        void EnemyOnDeath()
+        IEnumerator EnemyDeathDelay()
         {
-            if(_health.Health <= 0)
-            {
-                
-
-                Destroy(this.gameObject);
-            }
+            yield return new WaitForSeconds(_deathDelay);
+            Debug.Log("Dealyed");
+            Destroy(this.gameObject);
         }
     }
 }

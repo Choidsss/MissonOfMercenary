@@ -119,7 +119,7 @@ namespace MIssionOfMercenary
             IsShot = true;
 
 
-            EnemyHit enemyHit = muzzleHit.collider.GetComponent<EnemyHit>();
+            EnemyHit enemyHit = muzzleHit.collider.GetComponentInParent<EnemyHit>();
 
             if (enemyHit != null)
             {
