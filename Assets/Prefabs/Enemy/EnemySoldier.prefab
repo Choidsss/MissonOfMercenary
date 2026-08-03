@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5028263478182702197}
   - component: {fileID: 4980520778223027922}
   - component: {fileID: 183303479098661019}
+  - component: {fileID: 2637721524496996860}
   - component: {fileID: 2377056269494213562}
   - component: {fileID: 871454874627165503}
   - component: {fileID: 5888893802044229746}
@@ -121,6 +122,18 @@ MonoBehaviour:
     m_Bits: 1048576
   _enemyTurnAmount: 17
   _lookAngleOffset: 35
+--- !u!114 &2637721524496996860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84371884054343226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b50a5e0ceed6fa74ea0b00bf9a3fc680, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2377056269494213562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,10 +171,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a10aea0522173a4dae1f429b73e765a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pelivisRb: {fileID: 1306406021583990268}
   _bonusDamageArms: 5
   _bonusDamageLegs: 5
   _bonusDamageHead: 20
   _bonusDamageBody: 10
+  _deathDelay: 3
 --- !u!114 &782532795133213885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,7 +570,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!144 &6083412321168819252
 CharacterJoint:
@@ -654,7 +669,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!144 &6917257328318240676
 CharacterJoint:
@@ -755,7 +770,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!144 &3944659436332214240
 CharacterJoint:
@@ -856,7 +871,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!144 &3468100899426865693
 CharacterJoint:
@@ -957,7 +972,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!144 &1485438975979714926
 CharacterJoint:
@@ -1058,7 +1073,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!144 &2318742491445044390
 CharacterJoint:
@@ -1159,7 +1174,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!144 &1300574928269965215
 CharacterJoint:
@@ -1258,7 +1273,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!1 &5032547044165874674 stripped
 GameObject:
@@ -1311,7 +1326,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!144 &8499795138831432233
 CharacterJoint:
@@ -1412,7 +1427,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!144 &501479333519759149
 CharacterJoint:
@@ -1513,7 +1528,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!144 &8712521041831027429
 CharacterJoint:
