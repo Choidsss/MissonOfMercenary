@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1689c442e7e74f64b8f97c35f0d7a0f2
+timeCreated: 1534619622
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 64224
+  packageName: Assault Cyborg
+  packageVersion: 1.1
+  assetPath: Assets/AssaultCyborg/Meshes/Textures/ShotLight.controller
+  uploadId: 261898

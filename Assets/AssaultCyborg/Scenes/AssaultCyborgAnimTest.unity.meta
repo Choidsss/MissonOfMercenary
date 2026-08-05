@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 867614e7638925247bdce0811c0daeeb
+timeCreated: 1534555500
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 64224
+  packageName: Assault Cyborg
+  packageVersion: 1.1
+  assetPath: Assets/AssaultCyborg/Scenes/AssaultCyborgAnimTest.unity
+  uploadId: 261898

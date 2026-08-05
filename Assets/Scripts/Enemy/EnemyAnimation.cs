@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,6 +7,7 @@ namespace MIssionOfMercenary
     public class EnemyAnimation : MonoBehaviour
     {
         [SerializeField] NavMeshAgent _nav;
+        [SerializeField] float _delay = 2.5f;
 
         Animator _anim;
 
@@ -18,10 +20,10 @@ namespace MIssionOfMercenary
 
         void Update()
         {
-            EnemyMovementAnim();
+            PlayEnemyMovementAnim();
         }
 
-        void EnemyMovementAnim()
+        void PlayEnemyMovementAnim()
         {
             if(_nav == null || _anim == null)
             {
@@ -34,6 +36,18 @@ namespace MIssionOfMercenary
             {
                 _anim.SetFloat("Speed", _speed);
             }
+        }
+
+        public void PlayEnemyShotAnim()
+        {
+            StartCoroutine("EnemyShotDelay");
+            _anim.SetTrigger("Shot");
+        }
+
+        IEnumerator EnemyShotDelay()
+        {
+            yield return new WaitForSeconds(_delay);
+
         }
     }
 }

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 006fc381cb1cdb24b8d4db6585ed0d6c
+timeCreated: 1534580312
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 64224
+  packageName: Assault Cyborg
+  packageVersion: 1.1
+  assetPath: Assets/AssaultCyborg/Meshes/Materials/Muzzle.mat
+  uploadId: 261898

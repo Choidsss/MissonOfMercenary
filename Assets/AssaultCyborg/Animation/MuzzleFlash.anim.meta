@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: da36045ebb5785c41bdf2c94399913ef
+timeCreated: 1534580618
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 64224
+  packageName: Assault Cyborg
+  packageVersion: 1.1
+  assetPath: Assets/AssaultCyborg/Animation/MuzzleFlash.anim
+  uploadId: 261898

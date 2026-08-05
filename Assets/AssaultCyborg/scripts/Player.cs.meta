@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 3c6abfd1e28a44e46989b5a9f4f17c2e
+timeCreated: 1534628196
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 64224
+  packageName: Assault Cyborg
+  packageVersion: 1.1
+  assetPath: Assets/AssaultCyborg/scripts/Player.cs
+  uploadId: 261898

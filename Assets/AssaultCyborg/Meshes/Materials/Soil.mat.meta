@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ec098ce2a50429f4f83cfced88cd8d02
+timeCreated: 1534633552
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 64224
+  packageName: Assault Cyborg
+  packageVersion: 1.1
+  assetPath: Assets/AssaultCyborg/Meshes/Materials/Soil.mat
+  uploadId: 261898

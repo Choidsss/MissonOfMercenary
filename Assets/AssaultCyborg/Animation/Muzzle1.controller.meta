@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b3dbbb768705f5c45826dea67e5922b1
+timeCreated: 1534580385
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 64224
+  packageName: Assault Cyborg
+  packageVersion: 1.1
+  assetPath: Assets/AssaultCyborg/Animation/Muzzle1.controller
+  uploadId: 261898

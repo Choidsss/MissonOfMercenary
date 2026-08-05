@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4f07b6c437d5eb440b75ed81d8b5fbc4
+timeCreated: 1461458943
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 64224
+  packageName: Assault Cyborg
+  packageVersion: 1.1
+  assetPath: Assets/AssaultCyborg/README.txt
+  uploadId: 261898

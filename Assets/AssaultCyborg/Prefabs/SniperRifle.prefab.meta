@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 08950280b39e33142845cc5ce100153c
+timeCreated: 1534573398
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 64224
+  packageName: Assault Cyborg
+  packageVersion: 1.1
+  assetPath: Assets/AssaultCyborg/Prefabs/SniperRifle.prefab
+  uploadId: 261898

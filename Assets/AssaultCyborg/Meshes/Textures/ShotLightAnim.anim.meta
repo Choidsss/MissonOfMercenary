@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d63cdc84f99492647b99e5a2abd0ded6
+timeCreated: 1534619621
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 64224
+  packageName: Assault Cyborg
+  packageVersion: 1.1
+  assetPath: Assets/AssaultCyborg/Meshes/Textures/ShotLightAnim.anim
+  uploadId: 261898
