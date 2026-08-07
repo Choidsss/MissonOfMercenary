@@ -7,7 +7,6 @@ namespace MIssionOfMercenary
         EnemyHit _enemyHit;
 
         [SerializeField] int _enemyHealth = 100;
-
         bool _isDeath;
 
         public bool IsDeath { get { return _isDeath; } private set { _isDeath = value; } }
