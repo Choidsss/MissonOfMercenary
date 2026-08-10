@@ -2,7 +2,9 @@ using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace MIssionOfMercenary
 {
@@ -11,6 +13,7 @@ namespace MIssionOfMercenary
         EnemyAnimation _enemyAnim;
         EnemyFindArea _findArea;
         Animator _anim;
+        NavMeshAgent _nav;
         Queue<GameObject> _deleteQue = new Queue<GameObject>();
 
         [SerializeField] float _spreadAngle;
@@ -23,8 +26,9 @@ namespace MIssionOfMercenary
         [SerializeField] GameObject _muzzle;
         [SerializeField] GameObject _muzzleFire;
 
+        Vector3 _shotDirection;
+        //Vector3 _lookDirection;
 
-        Vector3 _target = Vector3.zero;
         bool _isAttackRoutineRunning;
 
         public AimType aimType { get; } = AimType.None;
@@ -33,9 +37,7 @@ namespace MIssionOfMercenary
 
         public int Damage { get; } = 30;
 
-        public float AttackRange { get; } = 150;
-
-        public Vector3 Target { get { return _target; } }
+        public float AttackRange { get; } = 30;
 
 
         void Start()
@@ -43,6 +45,7 @@ namespace MIssionOfMercenary
             _findArea = GetComponent<EnemyFindArea>();
             _enemyAnim = GetComponent<EnemyAnimation>();
             _anim = GetComponentInChildren<Animator>();
+            _nav = GetComponent<NavMeshAgent>();
         }
 
         private void Update()
@@ -50,13 +53,6 @@ namespace MIssionOfMercenary
             EnemyAttackOnPlayer();
         }
 
-        //돌린 머즐의 방향대로 그대로 탄약을 생성시켜 물리로 발사
-        /*
-         * ToDo : 총의 발사 주기 수정(현재 매 프레임마다 나가게 하고 있음)
-         *        총을 쏘게 되면 그 자리에 정지한 상태로 쏴야함
-         *        생성된 총알 삭제(플레이어한테 맞지 않은 총알들) => 완
-         *        플레이어 한테 맞았는지 안맞았는지 판단 -> 완
-         */
         void EnemyAttackOnPlayer()
         {
             if (_muzzle == null) { Debug.Log("Muzzle does not exist! Please Check the Component"); return; }
@@ -85,28 +81,21 @@ namespace MIssionOfMercenary
             }
 
             _deleteQue.Enqueue(ammo);
-            Vector3 shot = Target * _bulletSpeed;
+            Vector3 shot = _shotDirection * _bulletSpeed;
+
+            Debug.Log($"{_deleteQue.Count}");
 
             ammoRb.AddForce(shot, ForceMode.Impulse);
+
+            StartCoroutine("RemoveAmmoDelayRoutine");
         }
 
-        //공격하는 범위를 원뿔로 계산, 이후 방향을 구해서, 그 방향대로 레이캐스트
-        //정리하면 머즐을 돌리는 함수
         void CalculateShotArea()
         {
-            Vector2 spread = Random.insideUnitCircle * _spreadAngle;
-            Quaternion rotation = Quaternion.Euler(-spread.y, spread.x, 0);
-            Vector3 shotDirection = rotation * _muzzle.transform.forward;
+            Vector3 shotDirection =_muzzle.transform.forward;
 
-            _target = shotDirection;
-            Physics.Raycast(_muzzle.transform.position, shotDirection, out RaycastHit hit, AttackRange);
-
-            if(hit.point != Target)
-            {
-                //StartCoroutine(RemoveAmmoDelayRoutine());아 
-            }
-
-            if(_deleteQue == null) { StopCoroutine(RemoveAmmoDelayRoutine()); }
+            _shotDirection = shotDirection;
+            //Physics.Raycast(_muzzle.transform.position, shotDirection ,out RaycastHit hit, AttackRange);
         }
 
         IEnumerator RemoveAmmoDelayRoutine()
@@ -122,6 +111,8 @@ namespace MIssionOfMercenary
         {
             // 한 공격 사이클이 끝날 때까지 Update에서 새 코루틴이 생성되지 않게 잠근다. By Codex
             _isAttackRoutineRunning = true;
+
+            CalculateShotArea();
 
             // 무기 고유의 공격 간격을 기다린 뒤 다음 애니메이션을 시작한다. By Codex
             yield return new WaitForSeconds(_attackInterval);
@@ -165,7 +156,7 @@ namespace MIssionOfMercenary
             {
                 if (_findArea.DetectedTarget == null) { break; }
 
-                CalculateShotArea();
+                
                 FireAmmo();
 
                 if (shotIndex < _shotsPerAttack - 1)

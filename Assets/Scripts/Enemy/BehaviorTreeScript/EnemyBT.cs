@@ -7,6 +7,7 @@ namespace MIssionOfMercenary
     {
         BTNode _root;
         EnemyChase _enemyChase;
+        EnemyAttack _enemyAttack;
 
         [SerializeField] EnemyFindArea _findArea;
         [SerializeField] NavMeshAgent _nav;
@@ -29,6 +30,11 @@ namespace MIssionOfMercenary
             {
                 _nav = GetComponent<NavMeshAgent>();
             }
+
+            if (_enemyAttack == null)
+            {
+                _enemyAttack = GetComponent<EnemyAttack>();
+            }
         }
 
         void Start()
@@ -48,19 +54,22 @@ namespace MIssionOfMercenary
         {
             BehaviorSelector selector = new BehaviorSelector();
 
+            Sequence attackSeq = new Sequence();
+            attackSeq.AddChild(new CanSeePlayerNode(_findArea));
+            attackSeq.AddChild(new EnemyAttackNode(_enemyAttack, _findArea, _nav));
+
             Sequence chaseSeq = new Sequence();
             chaseSeq.AddChild(new CanSeePlayerNode(_findArea));
-            chaseSeq.AddChild(new ChasePlayerNode(_nav, _findArea));
+            chaseSeq.AddChild(new ChasePlayerNode(_nav, _findArea, _enemyAttack));
 
             Sequence soundPositionSeq = new Sequence();
             soundPositionSeq.AddChild(new HasSoundTargetNode(_enemyChase));
             soundPositionSeq.AddChild(new ChaseSoundPositionNode(_moveSoundPositionSpeed, _nav, _enemyChase));
 
-            EnemyPatrolNode patrolNode = new EnemyPatrolNode(_nav, _wayPoints, _patrolSpeed);
-
+            selector.AddChild(attackSeq);
             selector.AddChild(chaseSeq);
             selector.AddChild(soundPositionSeq);
-            selector.AddChild(patrolNode);
+            selector.AddChild(new EnemyPatrolNode(_nav, _wayPoints, _patrolSpeed));
 
 
             return selector;

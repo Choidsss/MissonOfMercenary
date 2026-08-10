@@ -24,19 +24,19 @@ namespace MIssionOfMercenary
         // Update is called once per frame
         void Update()
         {
-            CalculateAttackDistance();
+           // CalculateAttackDistance();
         }
 
-        void CalculateAttackDistance()
-        {
-            Vector3 target = _enemyAttack.Target;
+        //void CalculateAttackDistance()
+        //{
+        //    //Vector3 target = _enemyAttack.Target;
 
-            float distance = Vector3.Distance(transform.position, target);
+        //    float distance = Vector3.Distance(transform.position, target);
 
-            if(distance <= 0.01f)
-            {
-                Destroy(this.gameObject);
-            }
-        }
+        //    if(distance <= 0.01f)
+        //    {
+        //        Destroy(this.gameObject);
+        //    }
+        //}
     }
 }

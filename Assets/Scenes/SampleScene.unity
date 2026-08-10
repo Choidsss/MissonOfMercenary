@@ -23653,6 +23653,30 @@ PrefabInstance:
       propertyPath: '_wayPoints.Array.data[2]'
       value: 
       objectReference: {fileID: 744597823}
+    - target: {fileID: 1526003853508978161, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1526003853508978161, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1526003853508978161, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1526003853508978161, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1526003853508978161, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767810977815242391, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1767810977815242391, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
       propertyPath: _bulletSpeed
       value: 30
@@ -23660,6 +23684,10 @@ PrefabInstance:
     - target: {fileID: 1767810977815242391, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
       propertyPath: _spreadAngle
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767810977815242391, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
+      propertyPath: _attackInterval
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6497947262879388413, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
       propertyPath: m_Name

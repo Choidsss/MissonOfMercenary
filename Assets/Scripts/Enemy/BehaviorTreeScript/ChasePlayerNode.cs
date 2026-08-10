@@ -1,16 +1,19 @@
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace MIssionOfMercenary
 {
     public class ChasePlayerNode : BTNode
     {
+        readonly EnemyAttack _enemyAttack;
         readonly NavMeshAgent _agent;
         readonly EnemyFindArea _findArea;
 
-        public ChasePlayerNode(NavMeshAgent agent, EnemyFindArea findArea)
+        public ChasePlayerNode(NavMeshAgent agent, EnemyFindArea findArea, EnemyAttack enemyAttack)
         {
             _agent = agent;
             _findArea = findArea;
+            _enemyAttack = enemyAttack;
         }
 
         public override State Evaluate()
@@ -25,14 +28,26 @@ namespace MIssionOfMercenary
                 return State.Failure;
             }
 
-            _agent.SetDestination(_findArea.DetectedTarget.position);
+            float dis = Vector3.Distance(_findArea.transform.position, _findArea.DetectedTarget.position);
 
-            if (_agent.pathPending)
+            if (dis > _enemyAttack.AttackRange)
             {
+                _agent.isStopped = false;
+                _agent.updateRotation = true;
+                _agent.SetDestination(_findArea.DetectedTarget.position);
+
                 return State.Running;
             }
 
-            return _agent.remainingDistance <= _agent.stoppingDistance ? State.Success : State.Running;
+            //if (_agent.pathPending)
+            //{
+            //    return State.Running;
+            //}
+
+            return State.Failure;
+
+
+            //return _agent.remainingDistance > _enemyAttack.AttackRange ? State.Running : State.Success;
         }
     }
 }

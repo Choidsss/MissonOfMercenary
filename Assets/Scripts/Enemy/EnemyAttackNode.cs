@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace MIssionOfMercenary
 {
@@ -6,11 +7,13 @@ namespace MIssionOfMercenary
     {
         readonly EnemyAttack _enemyAttack;
         readonly EnemyFindArea _findArea;
+        readonly NavMeshAgent _nav;
 
-        public EnemyAttackNode(EnemyAttack enemyAttack, EnemyFindArea findArea)
+        public EnemyAttackNode(EnemyAttack enemyAttack, EnemyFindArea findArea, NavMeshAgent nav)
         {
             _enemyAttack = enemyAttack;
             _findArea = findArea;
+            _nav = nav;
         }
 
         public override State Evaluate()
@@ -20,8 +23,18 @@ namespace MIssionOfMercenary
 
             if(target == null || !_findArea.IsDetectedPlayer) { return State.Failure; }
 
-            return State.Running;
-        }
+            float dis = Vector3.Distance(_findArea.transform.position, _findArea.DetectedTarget.position);
 
+            if(dis <= _enemyAttack.AttackRange)
+            {
+                _nav.isStopped = true;
+                _nav.ResetPath();
+                _findArea.LookAtPlayer();
+
+                return State.Running;
+            }
+
+            return State.Failure;
+        }
     }
 }

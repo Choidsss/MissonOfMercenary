@@ -36,6 +36,8 @@ namespace MIssionOfMercenary
         public bool IsSensePlayer => _isSense;
         public Transform DetectedTarget => _detectedTarget;
 
+        //public Transform LookDirection = _lookDirection;
+
         // Update is called once per frame
         void Update()
         {
