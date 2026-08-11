@@ -1,5 +1,4 @@
 using System.Linq;
-// 현재 파일에서 Linq 기능을 쓰지 않으면 using System.Linq는 제거해도 됨. By Codex
 using UnityEngine;
 
 namespace MIssionOfMercenary
@@ -24,62 +23,64 @@ namespace MIssionOfMercenary
         [SerializeField] float _enemyTurnAmount;
         [SerializeField] float _lookAngleOffset;
         
-        
         Vector3 _playerPosition;
         Transform _detectedTarget;
         bool _isDetected = false;
         bool _isSense = false;
 
-        //Vector3 _testVec;
-
         public bool IsDetectedPlayer => _isDetected;
         public bool IsSensePlayer => _isSense;
         public Transform DetectedTarget => _detectedTarget;
 
-        //public Transform LookDirection = _lookDirection;
-
-        // Update is called once per frame
         void Update()
         {
             DetectPlayer();
+
+            if (_detectedTarget != null)
+            {
+                _playerPosition = _detectedTarget.position;
+            }
         }
 
         bool DetectPlayer()
         {
+            if (_detectedTarget != null)
+            {
+                _isDetected = true;
+                _playerPosition = _detectedTarget.position;
+                return true;
+            }
+
             Collider[] collider = Physics.OverlapSphere(transform.position, _distance, _playerLayer, QueryTriggerInteraction.Ignore);
 
-            _detectedTarget = null;
-
-            if(collider.Length == 0) { _isDetected = false;  return false; }
+            if (collider.Length == 0) { _isDetected = false;  return false; }
 
             foreach (Collider col in collider)
             {
-                _playerPosition = col.gameObject.transform.position;
+                Vector3 playerPosition = col.gameObject.transform.position;
 
-                //범위 안에 들었으면 인기척을 느꼈다라는 것이므로 이래야 맞지 않을까?
-                //원래는 계속 돌아다니다가, 벽체크가 없다는게 확인 되면 보는게 맞을듯 => 이거도 플레이어한테 은신상태인지 아닌지를 또 체크하도록 해야 현실감이 있지 않을까.
-                //일단은 이렇게 가자
                 LookAtPlayer();
 
-                //시야 안쪽인지 와 벽체크
-                if (IsPlayerInEnemyDegree() && !IsBlockedByObtacles())
+                if (IsPlayerInEnemyDegree(_playerPosition) && !IsBlockedByObtacles(_playerPosition))
                 {
+                    Debug.Log("ddd");
                     _detectedTarget = col.transform;
+                    _playerPosition = playerPosition;
                     _isDetected = true;
                     _isSense = false;
-                    
 
                     return true;
                 }
             }
             _isDetected = false;
-
             return false;
         }
 
         public void LookAtPlayer()
         {
-            Vector3 direction = _playerPosition - transform.position;
+            if (_detectedTarget == null) { return; }
+
+            Vector3 direction = _detectedTarget.position - transform.position;
             direction.y = 0;
 
             if(direction.sqrMagnitude <= 0.01f) { return; }
@@ -92,31 +93,28 @@ namespace MIssionOfMercenary
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _enemyTurnAmount * Time.deltaTime);
         }
 
-        bool IsBlockedByObtacles()
+        bool IsBlockedByObtacles(Vector3 playerPosition)
         {
             Vector3 start = _eyeHeight + transform.position;
-            Vector3 end = _targetHeight + _playerPosition;
-
-            //_testVec = start;
+            Vector3 end = _targetHeight + playerPosition;
 
             Vector3 direction = end - start;
 
             bool hitWall = Physics.Raycast(start, direction.normalized, direction.magnitude, _obstaclesLayer, QueryTriggerInteraction.Ignore);
-            //Debug.Log($"{hitWall}");
 
             return hitWall;
         }
 
-        //전방으로 각도 만들어서 Enemy의 시야각 안에 Player가 있는지 체크
-        bool IsPlayerInEnemyDegree()
+        bool IsPlayerInEnemyDegree(Vector3 playerPosition)
         {
-            Vector3 enemyLook = transform.forward; //적의 전방 벡터
-            Vector3 direction =  _playerPosition - transform.position; //Enemy 에서 Player로 가는 벡터
-            float fov = Vector3.Angle(enemyLook, direction); //둘 사이의 각도를 구함
+            Vector3 direction = playerPosition - transform.position;
+            float angle = Vector3.Angle(transform.forward, direction);
 
-            //각도가 _degree 안쪽인지 체크
-            if (fov < _degree) { return true; }
-            else return false;
+            //Vector3 enemyLook = transform.forward; //적의 전방 벡터
+            //Vector3 direction =  _playerPosition - transform.position; //Enemy 에서 Player로 가는 벡터
+            //float fov = Vector3.Angle(enemyLook, direction); //둘 사이의 각도를 구함
+
+            return angle < _degree;
         }
 
         private void OnDrawGizmos()
@@ -132,7 +130,6 @@ namespace MIssionOfMercenary
             Vector3 start = transform.position + _eyeHeight;
             Vector3 end = _playerPosition + _targetHeight;
 
-            // Draw one sight-check line only: green when detected, red when not detected. By Codex
             Gizmos.color = _isDetected ? Color.green : Color.red;
             Gizmos.DrawLine(start, end);
         }

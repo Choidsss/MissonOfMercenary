@@ -13,12 +13,12 @@ namespace MIssionOfMercenary
 
         public override State Evaluate()
         {
-            if(_findArea == null)
+            if(_findArea == null || _findArea.DetectedTarget == null)
             {
                 return State.Failure;
             }
 
-            return _findArea.IsDetectedPlayer ? State.Success : State.Failure;
+            return State.Success;
         }
 
     }

@@ -29,7 +29,6 @@ namespace MIssionOfMercenary
             {
                 _nav.isStopped = true;
                 _nav.ResetPath();
-                _findArea.LookAtPlayer();
 
                 return State.Running;
             }

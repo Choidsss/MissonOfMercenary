@@ -25,7 +25,6 @@ namespace MIssionOfMercenary
             if (_enemyChase == null) { Debug.Log("Can't Find Component EnemyChase"); return State.Failure; }
             if (!_enemyChase.HasSoundTarget) { Debug.Log("Can't heard the gunSound"); return State.Failure; }
 
-            Debug.Log($"Position to : {_enemyChase.SoundTargetPosition}");
             _nav.speed = _speed;
             _nav.SetDestination(_enemyChase.SoundTargetPosition);
 

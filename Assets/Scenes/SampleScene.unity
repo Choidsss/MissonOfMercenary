@@ -23689,6 +23689,14 @@ PrefabInstance:
       propertyPath: _attackInterval
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2921699445961997115, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
+      propertyPath: _distance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3639788585547508780, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6497947262879388413, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
       propertyPath: m_Name
       value: WarBot
@@ -43011,7 +43019,7 @@ PrefabInstance:
       objectReference: {fileID: 100443740}
     - target: {fileID: 6757284830440564949, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.18
+      value: 0.73
       objectReference: {fileID: 0}
     - target: {fileID: 6757284830440564949, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -43019,7 +43027,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6757284830440564949, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.25
+      value: -11.57
       objectReference: {fileID: 0}
     - target: {fileID: 6757284830440564949, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: m_LocalRotation.w

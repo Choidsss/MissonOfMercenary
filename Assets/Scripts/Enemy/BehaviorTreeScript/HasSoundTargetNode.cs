@@ -18,11 +18,9 @@ namespace MIssionOfMercenary
 
             if (_enemy.HasSoundTarget)
             {
-                Debug.Log("Hear sound");
                 return State.Success;
             }
 
-            Debug.Log("not heard sound");
             return State.Failure;
         }
     }
