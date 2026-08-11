@@ -57,7 +57,7 @@ namespace MIssionOfMercenary
             if(_findArea.DetectedTarget == null) { return; }
 
 
-            float distance = Vector3.Distance(transform.position, _findArea.DetectedTarget.position);
+            float distance = Vector3.Distance(transform.position, _findArea.DetectedTarget);
 
             if (distance > AttackRange)
             {
@@ -107,8 +107,6 @@ namespace MIssionOfMercenary
             _deleteQue.Dequeue();
         }
 
-        //이 함수가 불린다는건 이미 타겟을 발견했다는 것
-        //이안에서 공격, 총알발사, 추격까지 처리
         IEnumerator EnemyAttackRoutine()
         {
             if (!_isInRange)
@@ -121,7 +119,7 @@ namespace MIssionOfMercenary
             {
                 yield return new WaitForSeconds(_delay);
 
-                FireAmmo();
+                //FireAmmo();
                 _enemyAnim.PlayEnemyShotAnim();
                 
             }

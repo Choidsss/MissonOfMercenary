@@ -28,13 +28,13 @@ namespace MIssionOfMercenary
                 return State.Failure;
             }
 
-            float dis = Vector3.Distance(_findArea.transform.position, _findArea.DetectedTarget.position);
+            float dis = Vector3.Distance(_findArea.transform.position, _findArea.DetectedTarget);
 
             if (dis > _enemyAttack.AttackRange)
             {
                 _agent.isStopped = false;
                 _agent.updateRotation = true;
-                _agent.SetDestination(_findArea.DetectedTarget.position);
+                _agent.SetDestination(_findArea.DetectedTarget);
 
                 return State.Running;
             }

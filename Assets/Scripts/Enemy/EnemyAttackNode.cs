@@ -19,11 +19,11 @@ namespace MIssionOfMercenary
         public override State Evaluate()
         {
             if(_enemyAttack == null || !_enemyAttack.enabled || _findArea == null) { return State.Failure; }
-            Transform target = _findArea.DetectedTarget;
+            Vector3 target = _findArea.DetectedTarget;
 
             if(target == null || !_findArea.IsDetectedPlayer) { return State.Failure; }
 
-            float dis = Vector3.Distance(_findArea.transform.position, _findArea.DetectedTarget.position);
+            float dis = Vector3.Distance(_findArea.transform.position, _findArea.DetectedTarget);
 
             if(dis <= _enemyAttack.AttackRange)
             {

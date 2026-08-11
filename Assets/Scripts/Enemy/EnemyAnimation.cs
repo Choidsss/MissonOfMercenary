@@ -39,7 +39,6 @@ namespace MIssionOfMercenary
 
             if(_nav.speed > 0.1f)
             {
-                Debug.Log("Speed Parameter");
                 _anim.SetFloat("Speed", _speed);
             }
         }

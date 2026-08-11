@@ -24,30 +24,24 @@ namespace MIssionOfMercenary
         [SerializeField] float _lookAngleOffset;
         
         Vector3 _playerPosition;
-        Transform _detectedTarget;
+        Vector3 _detectedTarget;
         bool _isDetected = false;
         bool _isSense = false;
 
         public bool IsDetectedPlayer => _isDetected;
         public bool IsSensePlayer => _isSense;
-        public Transform DetectedTarget => _detectedTarget;
+        public Vector3 DetectedTarget => _playerPosition;
 
         void Update()
         {
             DetectPlayer();
-
-            if (_detectedTarget != null)
-            {
-                _playerPosition = _detectedTarget.position;
-            }
         }
 
         bool DetectPlayer()
         {
-            if (_detectedTarget != null)
+            if (_isDetected)
             {
-                _isDetected = true;
-                _playerPosition = _detectedTarget.position;
+                _playerPosition = _detectedTarget;
                 return true;
             }
 
@@ -57,17 +51,15 @@ namespace MIssionOfMercenary
 
             foreach (Collider col in collider)
             {
-                Vector3 playerPosition = col.gameObject.transform.position;
+                _detectedTarget = col.gameObject.transform.position;
 
                 LookAtPlayer();
 
-                if (IsPlayerInEnemyDegree(_playerPosition) && !IsBlockedByObtacles(_playerPosition))
+                if (IsPlayerInEnemyDegree(_detectedTarget) && !IsBlockedByObtacles(_detectedTarget))
                 {
-                    Debug.Log("ddd");
-                    _detectedTarget = col.transform;
-                    _playerPosition = playerPosition;
                     _isDetected = true;
                     _isSense = false;
+                    _playerPosition = _detectedTarget;
 
                     return true;
                 }
@@ -80,7 +72,7 @@ namespace MIssionOfMercenary
         {
             if (_detectedTarget == null) { return; }
 
-            Vector3 direction = _detectedTarget.position - transform.position;
+            Vector3 direction = _detectedTarget - transform.position;
             direction.y = 0;
 
             if(direction.sqrMagnitude <= 0.01f) { return; }
@@ -111,8 +103,10 @@ namespace MIssionOfMercenary
             float angle = Vector3.Angle(transform.forward, direction);
 
             //Vector3 enemyLook = transform.forward; //적의 전방 벡터
-            //Vector3 direction =  _playerPosition - transform.position; //Enemy 에서 Player로 가는 벡터
+            //Vector3 direction = _playerPosition - transform.position; //Enemy 에서 Player로 가는 벡터
             //float fov = Vector3.Angle(enemyLook, direction); //둘 사이의 각도를 구함
+
+            //return fov < _degree ? true : false;
 
             return angle < _degree;
         }
