@@ -66,7 +66,7 @@ namespace MIssionOfMercenary
             soundPositionSeq.AddChild(new HasSoundTargetNode(_enemyChase));
             soundPositionSeq.AddChild(new ChaseSoundPositionNode(_moveSoundPositionSpeed, _nav, _enemyChase));
 
-            selector.AddChild(attackSeq);
+            //selector.AddChild(attackSeq);
             selector.AddChild(chaseSeq);
             selector.AddChild(soundPositionSeq);
             selector.AddChild(new EnemyPatrolNode(_nav, _wayPoints, _patrolSpeed));

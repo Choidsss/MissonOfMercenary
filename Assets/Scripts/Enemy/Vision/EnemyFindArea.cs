@@ -34,42 +34,55 @@ namespace MIssionOfMercenary
 
         void Update()
         {
-            DetectPlayer();
+            DetectPlayer(_playerPosition);
         }
 
-        bool DetectPlayer()
+        //전방으로 _degree기준으로 180도 약간 안되게 반원을 그려서 그 안에 레이어가 플레이어인 오브젝트가 존재하는지
+        //존재한다면 위치를 갱신시키고 저장한 다음 계속 함수를 return시켜서 로직이 실행되지 않도록 만듦
+        //아니라면 계속 찾음
+        void DetectPlayer(Vector3 playerPosition)
         {
-            if (_isDetected)
-            {
-                _playerPosition = _detectedTarget;
-                return true;
-            }
+            if (_isDetected) { return; }
+            Vector3 dir = playerPosition - transform.position;
 
-            Collider[] collider = Physics.OverlapSphere(transform.position, _distance, _playerLayer, QueryTriggerInteraction.Ignore);
+            float fov = Vector3.Angle(transform.forward, dir);
 
-            if (collider.Length == 0) { _isDetected = false;  return false; }
+            _isDetected = fov < _degree ? true : false;
 
-            foreach (Collider col in collider)
-            {
-                _detectedTarget = col.gameObject.transform.position;
+            _playerPosition = playerPosition;
+            return;
+            //if (_isDetected)
+            //{
+            //    _playerPosition = _detectedTarget;
+            //    return true;
+            //}
 
-                LookAtPlayer();
+            //Collider[] collider = Physics.OverlapSphere(transform.position, _distance, _playerLayer, QueryTriggerInteraction.Ignore);
 
-                if (IsPlayerInEnemyDegree(_detectedTarget) && !IsBlockedByObtacles(_detectedTarget))
-                {
-                    _isDetected = true;
-                    _isSense = false;
-                    _playerPosition = _detectedTarget;
+            //if (collider.Length == 0) { _isDetected = false;  return false; }
 
-                    return true;
-                }
-            }
-            _isDetected = false;
-            return false;
+            //foreach (Collider col in collider)
+            //{
+            //    _detectedTarget = col.gameObject.transform.position;
+
+            //    LookAtPlayer();
+
+            //    if (IsPlayerInEnemyDegree(_detectedTarget) && !IsBlockedByObtacles(_detectedTarget))
+            //    {
+            //        _isDetected = true;
+            //        _isSense = false;
+            //        _playerPosition = _detectedTarget;
+
+            //        return true;
+            //    }
+            //}
+            //_isDetected = false;
+            //return false;
         }
 
         public void LookAtPlayer()
         {
+            Debug.Log("before");
             if (_detectedTarget == null) { return; }
 
             Vector3 direction = _detectedTarget - transform.position;
@@ -83,6 +96,7 @@ namespace MIssionOfMercenary
             targetRotation = targetRotation * Quaternion.Euler(0f, _lookAngleOffset, 0f);
 
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _enemyTurnAmount * Time.deltaTime);
+            Debug.Log("after");
         }
 
         bool IsBlockedByObtacles(Vector3 playerPosition)
