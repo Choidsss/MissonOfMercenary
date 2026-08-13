@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace MIssionOfMercenary
 {
-    public class CanSeePlayerNode : BTNode
+    public class IsDetectedPlayerNode : BTNode
     {
         EnemyFindArea _findArea;
 
-        public CanSeePlayerNode(EnemyFindArea findArea)
+        public IsDetectedPlayerNode(EnemyFindArea findArea)
         {
             _findArea = findArea;
         }

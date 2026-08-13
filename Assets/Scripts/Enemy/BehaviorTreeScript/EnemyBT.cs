@@ -8,8 +8,8 @@ namespace MIssionOfMercenary
         BTNode _root;
         EnemyChase _enemyChase;
         EnemyAttack _enemyAttack;
+        EnemyFindArea _findArea;
 
-        [SerializeField] EnemyFindArea _findArea;
         [SerializeField] NavMeshAgent _nav;
 
         [Header("Patrol Node Options")]
@@ -18,6 +18,8 @@ namespace MIssionOfMercenary
 
         [Header("MoveToSoundPosition Options")]
         [SerializeField] float _moveSoundPositionSpeed;
+
+        public Vector3 PlayerPosition => _findArea.DetectedTarget;
 
         void Awake()
         {
@@ -40,7 +42,6 @@ namespace MIssionOfMercenary
         void Start()
         {
             _enemyChase = GetComponent<EnemyChase>();
-            //if (_enemyChase == null) { Debug.Log("It's You!!!!!"); }
 
             _root = SetupTree();
         }
@@ -52,27 +53,32 @@ namespace MIssionOfMercenary
 
         BTNode SetupTree()
         {
-            BehaviorSelector selector = new BehaviorSelector();
+            BehaviorSelector selectorTree = new BehaviorSelector();
 
+            //공격 시퀀스 => 공격범위 안쪽인지 확인하는 노드, 공격하는 노드
             Sequence attackSeq = new Sequence();
-            attackSeq.AddChild(new CanSeePlayerNode(_findArea));
-            attackSeq.AddChild(new EnemyAttackNode(_enemyAttack, _findArea, _nav));
+            attackSeq.AddChild(new IsPlayerInEnemyAttackRange(_enemyAttack, _findArea));
+            attackSeq.AddChild(new EnemyFireNode());
 
-            Sequence chaseSeq = new Sequence();
-            chaseSeq.AddChild(new CanSeePlayerNode(_findArea));
-            chaseSeq.AddChild(new ChasePlayerNode(_nav, _findArea, _enemyAttack));
+            //셀렉터 생성
+            BehaviorSelector combatSelector = new BehaviorSelector();
+            combatSelector.AddChild(attackSeq);//공격 시퀀스 실행
+            combatSelector.AddChild(new ChaseToPlayerNode());//위 시퀀스가 실패했을 경우 Player를 쫓음
 
-            Sequence soundPositionSeq = new Sequence();
-            soundPositionSeq.AddChild(new HasSoundTargetNode(_enemyChase));
-            soundPositionSeq.AddChild(new ChaseSoundPositionNode(_moveSoundPositionSpeed, _nav, _enemyChase));
+            Sequence combatSeq = new Sequence();
+            combatSeq.AddChild(new IsDetectedPlayerNode(_findArea)); //먼저 플레이어의 위치를 아는지 확인하는 노드
+            combatSeq.AddChild(combatSelector);//시퀀스 조립
 
-            //selector.AddChild(attackSeq);
-            selector.AddChild(chaseSeq);
-            selector.AddChild(soundPositionSeq);
-            selector.AddChild(new EnemyPatrolNode(_nav, _wayPoints, _patrolSpeed));
+            Sequence moveToSoundPositionSeq = new Sequence();
+            moveToSoundPositionSeq.AddChild(new HasSoundTargetNode(_enemyChase));
+            moveToSoundPositionSeq.AddChild(new ChaseSoundPositionNode(_moveSoundPositionSpeed, _nav, _enemyChase));
+
+            selectorTree.AddChild(combatSeq);
+            selectorTree.AddChild(moveToSoundPositionSeq);
+            selectorTree.AddChild(new EnemyPatrolNode(_nav, _wayPoints, _patrolSpeed));
 
 
-            return selector;
+            return selectorTree;
         }
     }
 }

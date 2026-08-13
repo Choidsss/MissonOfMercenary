@@ -23690,7 +23690,15 @@ PrefabInstance:
       value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 2921699445961997115, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 1634569297}
+    - target: {fileID: 2921699445961997115, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
       propertyPath: _distance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2921699445961997115, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
+      propertyPath: _eyeSightDistance
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3639788585547508780, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
@@ -32374,6 +32382,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2214970806106760202, guid: 9b501bc9f33120643ab08a177d24ce93, type: 3}
   m_PrefabInstance: {fileID: 1631707603}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1634569297 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5289674846794416690, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+  m_PrefabInstance: {fileID: 946757081343618496}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1635982438
 PrefabInstance:

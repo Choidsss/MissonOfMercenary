@@ -59,18 +59,18 @@ namespace MIssionOfMercenary
 
             float distance = Vector3.Distance(transform.position, _findArea.DetectedTarget);
 
-            if (distance > AttackRange)
-            {
-                _enemyAnim.PlayEnemyChaseAnimation();
-                _isInRange = false;
-            }
-            else
-            {
-                _enemyAnim.PlayEnemyAimAnimation();
-                _isInRange = true;
-            }
+            //if (distance > AttackRange)
+            //{
+            //    _enemyAnim.PlayEnemyChaseAnimation();
+            //    _isInRange = false;
+            //}
+            //else
+            //{
+            //    _enemyAnim.PlayEnemyAimAnimation();
+            //    _isInRange = true;
+            //}
 
-            StartCoroutine(EnemyAttackRoutine());
+            //StartCoroutine(EnemyAttackRoutine());
         }
 
         void FireAmmo()
