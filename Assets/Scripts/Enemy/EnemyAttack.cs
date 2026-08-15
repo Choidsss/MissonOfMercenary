@@ -10,24 +10,19 @@ namespace MIssionOfMercenary
 {
     public class EnemyAttack : MonoBehaviour
     {
-        EnemyAnimation _enemyAnim;
-        EnemyFindArea _findArea;
         Queue<GameObject> _deleteQue = new Queue<GameObject>();
 
         [SerializeField] float _spreadAngle;
         [SerializeField] float _bulletSpeed;
         [SerializeField] float _delay = 3.0f;
+        [SerializeField] float _attackDelay = 3.0f;
         [SerializeField] float _attackInterval = 3.0f;
-        [SerializeField, Min(1)] int _shotsPerAttack = 1;
-        [SerializeField, Min(0.01f)] float _burstShotInterval = 0.1f;
         [SerializeField] GameObject _ammo;
         [SerializeField] GameObject _muzzle;
         [SerializeField] GameObject _muzzleFire;
 
         Vector3 _shotDirection;
 
-        bool _isInRange = false;
-        bool _isAttackRoutineRunning;
 
         public AimType aimType { get; } = AimType.None;
 
@@ -35,42 +30,16 @@ namespace MIssionOfMercenary
 
         public int Damage { get; } = 30;
 
-        public float AttackRange { get; } = 30;
+        public float AttackRange { get; } = 100;
 
-
-        void Start()
+        public void AttackStart()
         {
-            _findArea = GetComponent<EnemyFindArea>();
-            _enemyAnim = GetComponent<EnemyAnimation>();
+            StartCoroutine(EnemyFireRoutine());
         }
 
-        private void Update()
+        public void StopAttack()
         {
-            EnemyAttackOnPlayer();
-        }
-
-        void EnemyAttackOnPlayer()
-        {
-            if (_muzzle == null) { Debug.Log("Muzzle does not exist! Please Check the Component"); return; }
-            if(_findArea == null) { Debug.Log("EnemyFindArea Script does not exist! Please Check the Component"); return; }
-            if (_isAttackRoutineRunning) { return; }
-            if(_findArea.DetectedTarget == null) { return; }
-
-
-            float distance = Vector3.Distance(transform.position, _findArea.DetectedTarget);
-
-            //if (distance > AttackRange)
-            //{
-            //    _enemyAnim.PlayEnemyChaseAnimation();
-            //    _isInRange = false;
-            //}
-            //else
-            //{
-            //    _enemyAnim.PlayEnemyAimAnimation();
-            //    _isInRange = true;
-            //}
-
-            //StartCoroutine(EnemyAttackRoutine());
+            StopCoroutine(EnemyFireRoutine());
         }
 
         void FireAmmo()
@@ -93,8 +62,6 @@ namespace MIssionOfMercenary
             Debug.Log($"{_deleteQue.Count}");
 
             ammoRb.AddForce(shot, ForceMode.Impulse);
-
-            StartCoroutine(RemoveAmmoDelayRoutine());
         }
 
 
@@ -107,22 +74,14 @@ namespace MIssionOfMercenary
             _deleteQue.Dequeue();
         }
 
-        IEnumerator EnemyAttackRoutine()
+        IEnumerator EnemyFireRoutine()
         {
-            if (!_isInRange)
-            {
-                _enemyAnim.PlayEnemyAimCancelAnimation();
-                _enemyAnim.PlayEnemyChaseAnimation();
-                yield return null;
-            }
-            else
-            {
-                yield return new WaitForSeconds(_delay);
+            FireAmmo();
 
-                //FireAmmo();
-                _enemyAnim.PlayEnemyShotAnim();
-                
-            }
+            yield return new WaitForSeconds(_attackDelay);
+
+            StartCoroutine(RemoveAmmoDelayRoutine());
+
         }
     }
 }

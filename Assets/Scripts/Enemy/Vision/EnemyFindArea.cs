@@ -55,7 +55,6 @@ namespace MIssionOfMercenary
             if(isInSight && !isBlocked)
             {
                 Debug.Log($"InSight");
-                LookAtPlayer();
                 _isDetected = true;
                 _playerPosition = playerPosition;
                 return;
@@ -65,22 +64,21 @@ namespace MIssionOfMercenary
             return;
         }
 
-        //ToDo : 수정 필요
-        public void LookAtPlayer()
-        {
-            if (_detectedTarget == null) { return; }
+        //public void LookAtPlayer()
+        //{
+        //    if (_detectedTarget == null) { return; }
 
-            Vector3 direction = _player.transform.position - transform.position;
-            direction.y = 0;
+        //    Vector3 direction = _player.transform.position - transform.position;
+        //    direction.y = 0;
 
-            if(direction.sqrMagnitude <= 0.01f) { return; }
+        //    if(direction.sqrMagnitude <= 0.01f) { return; }
 
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
+        //    Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-            targetRotation = targetRotation * Quaternion.Euler(0f, _lookAngleOffset, 0f);
+        //    targetRotation = targetRotation * Quaternion.Euler(0f, _lookAngleOffset, 0f);
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _enemyTurnAmount * Time.deltaTime);
-        }
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _enemyTurnAmount * Time.deltaTime);
+        //}
 
         bool IsBlockedByObtacles(Vector3 playerPosition)
         {

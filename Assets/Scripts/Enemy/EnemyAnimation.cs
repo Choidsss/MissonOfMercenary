@@ -65,6 +65,12 @@ namespace MIssionOfMercenary
         {
             _anim.SetTrigger("Chase");
         }
+
+        public void PlayEnemyChaseAnimationReset()
+        {
+            _anim.ResetTrigger("Chase");
+        }
+
         IEnumerator EnemyShotDelay()
         {
             yield return new WaitForSeconds(_delay);

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace MIssionOfMercenary
 {
@@ -8,8 +9,14 @@ namespace MIssionOfMercenary
         BTNode _root;
         EnemyChase _enemyChase;
         EnemyAttack _enemyAttack;
+        EnemyAnimation _enemyAnimation;
         EnemyFindArea _findArea;
+        EnemyHealth _enemyHealth;
 
+        [Header("Look Player options")]
+        [SerializeField] float _aaa;
+
+        [Header("Nav Mesh Agent")]
         [SerializeField] NavMeshAgent _nav;
 
         [Header("Patrol Node Options")]
@@ -23,6 +30,9 @@ namespace MIssionOfMercenary
 
         void Awake()
         {
+            _enemyAnimation = GetComponent<EnemyAnimation>();
+            _enemyHealth = GetComponent<EnemyHealth>();
+
             if (_findArea == null)
             {
                 _findArea = GetComponent<EnemyFindArea>();
@@ -58,12 +68,12 @@ namespace MIssionOfMercenary
             //공격 시퀀스 => 공격범위 안쪽인지 확인하는 노드, 공격하는 노드
             Sequence attackSeq = new Sequence();
             attackSeq.AddChild(new IsPlayerInEnemyAttackRange(_enemyAttack, _findArea));
-            attackSeq.AddChild(new EnemyFireNode());
+            attackSeq.AddChild(new EnemyFireNode(_enemyHealth , _enemyAnimation,_enemyAttack, _findArea));
 
             //셀렉터 생성
             BehaviorSelector combatSelector = new BehaviorSelector();
             combatSelector.AddChild(attackSeq);//공격 시퀀스 실행
-            combatSelector.AddChild(new ChaseToPlayerNode());//위 시퀀스가 실패했을 경우 Player를 쫓음
+            combatSelector.AddChild(new ChaseToPlayerNode(_enemyAttack, _enemyAnimation, _findArea, _nav));//위 시퀀스가 실패했을 경우 Player를 쫓음
 
             Sequence combatSeq = new Sequence();
             combatSeq.AddChild(new IsDetectedPlayerNode(_findArea)); //먼저 플레이어의 위치를 아는지 확인하는 노드
@@ -79,6 +89,11 @@ namespace MIssionOfMercenary
 
 
             return selectorTree;
+        }
+
+        public void LookAtPlayer()
+        {
+            
         }
     }
 }
