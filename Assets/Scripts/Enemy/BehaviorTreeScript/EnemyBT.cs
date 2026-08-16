@@ -7,14 +7,15 @@ namespace MIssionOfMercenary
     public class EnemyBT : MonoBehaviour
     {
         BTNode _root;
+        EnemyBT _enemyBT;
         EnemyChase _enemyChase;
         EnemyAttack _enemyAttack;
         EnemyAnimation _enemyAnimation;
         EnemyFindArea _findArea;
         EnemyHealth _enemyHealth;
 
-        [Header("Look Player options")]
-        [SerializeField] float _aaa;
+        //[Header("Look Player options")]
+        //[SerializeField] float _aaa;
 
         [Header("Nav Mesh Agent")]
         [SerializeField] NavMeshAgent _nav;
@@ -26,10 +27,10 @@ namespace MIssionOfMercenary
         [Header("MoveToSoundPosition Options")]
         [SerializeField] float _moveSoundPositionSpeed;
 
-        public Vector3 PlayerPosition => _findArea.DetectedTarget;
 
         void Awake()
         {
+            _enemyBT = GetComponent<EnemyBT>();
             _enemyAnimation = GetComponent<EnemyAnimation>();
             _enemyHealth = GetComponent<EnemyHealth>();
 
@@ -67,8 +68,8 @@ namespace MIssionOfMercenary
 
             //공격 시퀀스 => 공격범위 안쪽인지 확인하는 노드, 공격하는 노드
             Sequence attackSeq = new Sequence();
-            attackSeq.AddChild(new IsPlayerInEnemyAttackRange(_enemyAttack, _findArea));
-            attackSeq.AddChild(new EnemyFireNode(_enemyHealth , _enemyAnimation,_enemyAttack, _findArea));
+            attackSeq.AddChild(new IsPlayerInEnemyAttackRange(_enemyAttack, _enemyAnimation,_findArea, _nav));
+            attackSeq.AddChild(new EnemyFireNode(_enemyBT , _enemyHealth , _enemyAnimation,_enemyAttack, _findArea));
 
             //셀렉터 생성
             BehaviorSelector combatSelector = new BehaviorSelector();
@@ -87,13 +88,32 @@ namespace MIssionOfMercenary
             selectorTree.AddChild(moveToSoundPositionSeq);
             selectorTree.AddChild(new EnemyPatrolNode(_nav, _wayPoints, _patrolSpeed));
 
-
             return selectorTree;
         }
 
+        /*
+         * ToDo : Will Be Fix To Look Player Well.
+         */
         public void LookAtPlayer()
         {
-            
+            Vector3 direction = _findArea.DetectedTarget - transform.position;
+            direction.y = 0;
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            //targetRotation = targetRotation * Quaternion.Euler();
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime);
+            Debug.Log("Look At Player Success");
+
+            //    Vector3 direction = _player.transform.position - transform.position;
+            //    direction.y = 0;
+
+            //    if(direction.sqrMagnitude <= 0.01f) { return; }
+
+            //    Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            //    targetRotation = targetRotation * Quaternion.Euler(0f, _lookAngleOffset, 0f);
+
+            //    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _enemyTurnAmount * Time.deltaTime);
         }
     }
 }

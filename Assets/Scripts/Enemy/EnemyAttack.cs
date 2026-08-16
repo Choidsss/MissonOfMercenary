@@ -12,6 +12,7 @@ namespace MIssionOfMercenary
     {
         Queue<GameObject> _deleteQue = new Queue<GameObject>();
 
+        [SerializeField] float _attackRange;
         [SerializeField] float _spreadAngle;
         [SerializeField] float _bulletSpeed;
         [SerializeField] float _delay = 3.0f;
@@ -30,7 +31,7 @@ namespace MIssionOfMercenary
 
         public int Damage { get; } = 30;
 
-        public float AttackRange { get; } = 100;
+        public float AttackRange { get { return _attackRange; } }
 
         public void AttackStart()
         {

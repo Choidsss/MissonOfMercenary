@@ -26,7 +26,6 @@ namespace MIssionOfMercenary
         [SerializeField] float _lookAngleOffset;
 
         Vector3 _playerPosition;
-        Vector3 _detectedTarget;
         bool _isDetected = false;
 
         public bool IsDetectedPlayer => _isDetected;
@@ -63,22 +62,6 @@ namespace MIssionOfMercenary
             _isDetected = false;
             return;
         }
-
-        //public void LookAtPlayer()
-        //{
-        //    if (_detectedTarget == null) { return; }
-
-        //    Vector3 direction = _player.transform.position - transform.position;
-        //    direction.y = 0;
-
-        //    if(direction.sqrMagnitude <= 0.01f) { return; }
-
-        //    Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-        //    targetRotation = targetRotation * Quaternion.Euler(0f, _lookAngleOffset, 0f);
-
-        //    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _enemyTurnAmount * Time.deltaTime);
-        //}
 
         bool IsBlockedByObtacles(Vector3 playerPosition)
         {
