@@ -69,7 +69,7 @@ namespace MIssionOfMercenary
             //공격 시퀀스 => 공격범위 안쪽인지 확인하는 노드, 공격하는 노드
             Sequence attackSeq = new Sequence();
             attackSeq.AddChild(new IsPlayerInEnemyAttackRange(_enemyAttack, _enemyAnimation,_findArea, _nav));
-            attackSeq.AddChild(new EnemyFireNode(_enemyBT , _enemyHealth , _enemyAnimation,_enemyAttack, _findArea));
+            attackSeq.AddChild(new EnemyFireNode(_enemyBT , _enemyHealth , _enemyAnimation,_enemyAttack, _findArea, _nav));
 
             //셀렉터 생성
             BehaviorSelector combatSelector = new BehaviorSelector();

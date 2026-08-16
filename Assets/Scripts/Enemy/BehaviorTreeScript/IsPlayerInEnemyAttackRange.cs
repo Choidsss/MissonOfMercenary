@@ -27,13 +27,15 @@ namespace MIssionOfMercenary
 
             if(distanceToPlayer <= attackRange)
             {
-                Debug.Log($"**************************Stop!!!!!!!**************************");
                 _nav.isStopped = true;
-                _enemyAnimation.PlayEnemyChaseAnimationReset();
+                _nav.updateRotation = true;
+                _enemyAnimation.StopEnemyChaseAnimationReset();
+
                 return State.Success;
             }
             else
             {
+                _enemyAnimation.StopEnemyShotAnim();
                 return State.Failure;
             }
         }

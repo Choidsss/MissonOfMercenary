@@ -13,9 +13,11 @@ namespace MIssionOfMercenary
         Animator _anim;
 
         float _speed;
+        bool _isChase = false;
+        bool _isShot = false;
         bool _aim = false;
 
-
+        public bool IsChase { get { return _isChase; }  }
 
         void Start()
         {
@@ -45,8 +47,14 @@ namespace MIssionOfMercenary
 
         public void PlayEnemyShotAnim()
         {
-            StartCoroutine(EnemyShotDelay());
-            _anim.SetTrigger("Shot");
+            _isShot = true;
+            _anim.SetBool("Shot", _isShot);
+        }
+
+        public void StopEnemyShotAnim()
+        {
+            _isShot = false;
+            _anim.SetBool("Shot", _isShot);
         }
 
         public void PlayEnemyAimAnimation()
@@ -55,7 +63,7 @@ namespace MIssionOfMercenary
             _anim.SetBool("Aim", _aim);
         }
 
-        public void PlayEnemyAimCancelAnimation()
+        public void StopEnemyAimCancelAnimation()
         {
             _aim = false;
             _anim.SetBool("Aim", _aim);
@@ -63,18 +71,20 @@ namespace MIssionOfMercenary
 
         public void PlayEnemyChaseAnimation()
         {
-            _anim.SetTrigger("Chase");
+            _isChase = true;
+            _anim.SetBool("Chase", _isChase);
         }
 
-        public void PlayEnemyChaseAnimationReset()
+        public void StopEnemyChaseAnimationReset()
         {
-            _anim.ResetTrigger("Chase");
+            _isChase = false;
+            _anim.SetBool("Chase", _isChase);
         }
 
-        IEnumerator EnemyShotDelay()
-        {
-            yield return new WaitForSeconds(_delay);
-        }
+        //IEnumerator EnemyShotDelay()
+        //{
+        //    yield return new WaitForSeconds(_delay);
+        //}
 
     }
 }
