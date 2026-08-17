@@ -31,12 +31,13 @@ namespace MIssionOfMercenary
             //그냥 가만히 있으면서 러닝중 반환
             if(_wayPoint.Length == 1) { _nav.SetDestination(_wayPoint[_wayPointIndex].transform.position); return State.Running; }
 
+            _nav.isStopped = false;
             _nav.speed = _speed;
             _nav.SetDestination(_wayPoint[_wayPointIndex].transform.position);
 
             if (_nav.pathPending) { return State.Running; }
 
-            if (_nav.remainingDistance <= _nav.stoppingDistance)
+            if (_nav.remainingDistance <= Mathf.Max(_nav.stoppingDistance, 0.2f))
             {
                 if (_wayPointIndex == _wayPoint.Length - 1)
                 {

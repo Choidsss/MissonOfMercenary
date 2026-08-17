@@ -54,7 +54,6 @@ namespace MissionOfMercenary
             DoMove();
         }
 
-        //character 의 transform을 움직이는 함수(***************카메라를 기준으로 움직이도록 수정********************)
         void DoMove()
         {
             float moveAnim = _move.magnitude;

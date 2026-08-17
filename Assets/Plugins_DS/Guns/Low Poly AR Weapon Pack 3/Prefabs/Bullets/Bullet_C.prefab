@@ -98,7 +98,9 @@ GameObject:
   - component: {fileID: 5107876460368566867}
   - component: {fileID: 6991317090087595673}
   - component: {fileID: -3422158455171261887}
+  - component: {fileID: 5288416035799220060}
   - component: {fileID: -8608900618796304195}
+  - component: {fileID: -6012793789878940582}
   m_Layer: 22
   m_Name: Bullet_C
   m_TagString: Untagged
@@ -201,7 +203,28 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
+--- !u!65 &5288416035799220060
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8792954647265824588}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.012149228, y: 0.01402872, z: 0.088870905}
+  m_Center: {x: 9.313226e-10, y: 0, z: -0.0035645403}
 --- !u!96 &-8608900618796304195
 TrailRenderer:
   serializedVersion: 3
@@ -256,8 +279,8 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.10664368
-        value: 0.13157845
+        time: 0.07318115
+        value: 0.13108635
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -309,3 +332,16 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!114 &-6012793789878940582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8792954647265824588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 415bae0035ebd634ab78df993cf68ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _delay: 5

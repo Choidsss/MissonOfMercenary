@@ -28,16 +28,17 @@ namespace MIssionOfMercenary
         public override State Evaluate()
         {
             if(_enemyAttack == null || _findArea == null) { Debug.Log("Can't Find A Component"); return State.Failure; }
-
-            _nav.updateRotation = false;
-
-            _enemyBT.LookAtPlayer();
-            _enemyAnimation.PlayEnemyShotAnim();
-
             if (_enemyHealth.IsDeath)
             {
                 return State.Failure;
             }
+
+            _nav.updateRotation = false;
+
+            //총알은 이벤트로 생성
+            _enemyBT.LookAtPlayer();
+            _enemyAnimation.PlayEnemyShotAnim();
+
 
             return State.Running;
         }

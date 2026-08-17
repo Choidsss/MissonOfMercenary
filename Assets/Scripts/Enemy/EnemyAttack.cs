@@ -10,20 +10,13 @@ namespace MIssionOfMercenary
 {
     public class EnemyAttack : MonoBehaviour
     {
-        Queue<GameObject> _deleteQue = new Queue<GameObject>();
+        EnemyFindArea _findArea;
 
         [SerializeField] float _attackRange;
-        [SerializeField] float _spreadAngle;
         [SerializeField] float _bulletSpeed;
-        [SerializeField] float _delay = 3.0f;
-        [SerializeField] float _attackDelay = 3.0f;
-        [SerializeField] float _attackInterval = 3.0f;
         [SerializeField] GameObject _ammo;
         [SerializeField] GameObject _muzzle;
         [SerializeField] GameObject _muzzleFire;
-
-        Vector3 _shotDirection;
-
 
         public AimType aimType { get; } = AimType.None;
 
@@ -33,19 +26,17 @@ namespace MIssionOfMercenary
 
         public float AttackRange { get { return _attackRange; } }
 
-        public void AttackStart()
+        private void Start()
         {
-            StartCoroutine(EnemyFireRoutine());
+            _findArea = GetComponent<EnemyFindArea>();
         }
 
-        public void StopAttack()
-        {
-            StopCoroutine(EnemyFireRoutine());
-        }
-
-        void FireAmmo()
+        public void OnFire()
         {
             if (_ammo == null || _muzzle == null) { return; }
+
+            Vector3 target = _findArea.DetectedTarget + Vector3.up;
+            Vector3 direction = (target - _muzzle.transform.position).normalized;
 
             GameObject ammo = Instantiate(_ammo, _muzzle.transform.position, _muzzle.transform.rotation);
             Rigidbody ammoRb = ammo.GetComponent<Rigidbody>();
@@ -57,32 +48,9 @@ namespace MIssionOfMercenary
                 return;
             }
 
-            _deleteQue.Enqueue(ammo);
-            Vector3 shot = _shotDirection * _bulletSpeed;
-
-            Debug.Log($"{_deleteQue.Count}");
-
-            ammoRb.AddForce(shot, ForceMode.Impulse);
-        }
-
-
-        IEnumerator RemoveAmmoDelayRoutine()
-        {
-            if(_deleteQue == null) { yield return null; }
-            yield return new WaitForSeconds(_delay);
-
-            //먼저 들어갔던 총알 삭제
-            _deleteQue.Dequeue();
-        }
-
-        IEnumerator EnemyFireRoutine()
-        {
-            FireAmmo();
-
-            yield return new WaitForSeconds(_attackDelay);
-
-            StartCoroutine(RemoveAmmoDelayRoutine());
-
+            ammoRb.useGravity = false;
+            ammoRb.linearVelocity = direction * _bulletSpeed;
+            Debug.Log("Enemy Fire!");
         }
     }
 }

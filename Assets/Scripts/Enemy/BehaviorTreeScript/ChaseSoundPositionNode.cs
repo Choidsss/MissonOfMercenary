@@ -9,6 +9,8 @@ namespace MIssionOfMercenary
         readonly NavMeshAgent _nav;
         EnemyChase _enemyChase;
 
+        Vector3 _lastSoundPosition;
+        bool _hasDestinaiton;
 
         public ChaseSoundPositionNode(float speed, NavMeshAgent nav, EnemyChase enemyChase)
         {
@@ -25,13 +27,26 @@ namespace MIssionOfMercenary
             if (_enemyChase == null) { Debug.Log("Can't Find Component EnemyChase"); return State.Failure; }
             if (!_enemyChase.HasSoundTarget) { Debug.Log("Can't heard the gunSound"); return State.Failure; }
 
+            Vector3 newTarget = _enemyChase.SoundTargetPosition;
+            _nav.isStopped = false;
             _nav.speed = _speed;
-            _nav.SetDestination(_enemyChase.SoundTargetPosition);
+            
+            if(!_hasDestinaiton || _lastSoundPosition != newTarget)
+            {
+                _lastSoundPosition = newTarget;
+                _hasDestinaiton = true;
+
+                _nav.SetDestination(newTarget);
+                return State.Running;
+            }
 
             if(_nav.pathPending) { return State.Running; }
 
-            if(_nav.remainingDistance <= _nav.stoppingDistance)
+            float arriveDistance = Mathf.Max(_nav.stoppingDistance, 0.2f);
+
+            if(_nav.remainingDistance <= arriveDistance && (!_nav.hasPath || _nav.velocity.sqrMagnitude < 0.01f))
             {
+                _hasDestinaiton = false;
                 _enemyChase.ClearSoundTarget();
 
                 return State.Success;

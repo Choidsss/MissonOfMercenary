@@ -80,6 +80,33 @@ namespace MIssionOfMercenary
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, _eyeSightDistance);
 
+            // By Codex - Draws the forward field of view used by DetectPlayer.
+            Vector3 forward = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
+
+            if (forward != Vector3.zero && _eyeSightDistance > 0f)
+            {
+                const int arcSegments = 30;
+                Vector3 center = transform.position;
+                Vector3 leftBoundary = Quaternion.AngleAxis(-_degree, Vector3.up) * forward;
+                Vector3 rightBoundary = Quaternion.AngleAxis(_degree, Vector3.up) * forward;
+
+                Gizmos.color = new Color(1f, 0.75f, 0f, 0.9f);
+                Gizmos.DrawLine(center, center + leftBoundary * _eyeSightDistance);
+                Gizmos.DrawLine(center, center + rightBoundary * _eyeSightDistance);
+
+                Vector3 previousPoint = center + leftBoundary * _eyeSightDistance;
+
+                for (int i = 1; i <= arcSegments; i++)
+                {
+                    float angle = Mathf.Lerp(-_degree, _degree, i / (float)arcSegments);
+                    Vector3 arcDirection = Quaternion.AngleAxis(angle, Vector3.up) * forward;
+                    Vector3 currentPoint = center + arcDirection * _eyeSightDistance;
+
+                    Gizmos.DrawLine(previousPoint, currentPoint);
+                    previousPoint = currentPoint;
+                }
+            }
+
             if (_playerPosition == Vector3.zero)
             {
                 return;

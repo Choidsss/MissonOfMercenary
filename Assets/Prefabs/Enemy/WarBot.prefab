@@ -111,13 +111,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5602695520439483302}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -67.47, z: 2.63}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: -53.57, z: 2.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8113997172826132065}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &6324960419076644664
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,6 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nav: {fileID: 4680511968600166622}
+  _delay: 2.5
 --- !u!114 &1237284861444829311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,7 +239,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c1515554b12524dab6b14a3a143e0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _findArea: {fileID: 2921699445961997115}
+  _turnSpeed: 5
+  _lookAngleOffset: 1
+  _lookVerticalOffset: 0.5
   _nav: {fileID: 4680511968600166622}
   _patrolSpeed: 3
   _wayPoints:
@@ -258,12 +261,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4624696a2ecfd7b45944bec9c41935c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 0}
   _degree: 70
-  _distance: 10
+  _eyeSightDistance: 10
   _backsideDegree: 30
   _backsideDistance: 1
-  _eyeHeight: {x: 0, y: 2, z: 0}
-  _targetHeight: {x: 0, y: 1.5, z: 0}
+  _eyeHeight: {x: 0, y: 1.7, z: 0}
+  _targetHeight: {x: 0, y: 1.7, z: 0}
   _obstaclesLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -284,8 +288,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b50a5e0ceed6fa74ea0b00bf9a3fc680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spreadAngle: 0
-  _bulletSpeed: 0
+  _attackRange: 15
+  _bulletSpeed: 150
   _ammo: {fileID: 8792954647265824588, guid: afad03405a8b4914c97c78e992bed72e, type: 3}
   _muzzle: {fileID: 5602695520439483302}
   _muzzleFire: {fileID: 100000, guid: 52fb49b52a6ebba4297b09fded839a72, type: 3}
@@ -3497,6 +3501,7 @@ GameObject:
   - component: {fileID: 8113997172826132461}
   - component: {fileID: 8113997172816846863}
   - component: {fileID: 6374509234149617443}
+  - component: {fileID: 6714302489841525047}
   m_Layer: 10
   m_Name: AssaultCyborg2
   m_TagString: Untagged
@@ -3536,7 +3541,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: e2cf68ff4b1ffda45a77f7307dd789b9, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -3561,6 +3566,18 @@ MonoBehaviour:
   - m_Rig: {fileID: 7231703995608071555}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &6714302489841525047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8113997172826231757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4928a6d6fe8415248b9bfab168232b09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8113997172826231759
 GameObject:
   m_ObjectHideFlags: 0

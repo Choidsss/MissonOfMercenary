@@ -17,6 +17,11 @@ namespace MIssionOfMercenary
         //[Header("Look Player options")]
         //[SerializeField] float _aaa;
 
+        [Header("Enemy Turn Speed Amount")]
+        [SerializeField] float _turnSpeed = 1.0f;
+        [SerializeField] float _lookAngleOffset = 1.0f;
+        [SerializeField] float _lookVerticalOffset = 1.0f; //양수면 아래, 음수면 위
+
         [Header("Nav Mesh Agent")]
         [SerializeField] NavMeshAgent _nav;
 
@@ -91,29 +96,14 @@ namespace MIssionOfMercenary
             return selectorTree;
         }
 
-        /*
-         * ToDo : Will Be Fix To Look Player Well.
-         */
         public void LookAtPlayer()
         {
             Vector3 direction = _findArea.DetectedTarget - transform.position;
             direction.y = 0;
 
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            //targetRotation = targetRotation * Quaternion.Euler();
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime);
-            Debug.Log("Look At Player Success");
-
-            //    Vector3 direction = _player.transform.position - transform.position;
-            //    direction.y = 0;
-
-            //    if(direction.sqrMagnitude <= 0.01f) { return; }
-
-            //    Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-            //    targetRotation = targetRotation * Quaternion.Euler(0f, _lookAngleOffset, 0f);
-
-            //    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _enemyTurnAmount * Time.deltaTime);
+            //targetRotation = targetRotation * Quaternion.Euler(_lookVerticalOffset, _lookAngleOffset, 0);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _turnSpeed * Time.deltaTime);
         }
     }
 }
