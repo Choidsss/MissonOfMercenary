@@ -27,13 +27,16 @@ namespace MIssionOfMercenary
 
         Vector3 _playerPosition;
         bool _isDetected = false;
+        bool _canAssasin = false;
 
+        public bool CanAssasin => _canAssasin;
         public bool IsDetectedPlayer => _isDetected;
         public Vector3 DetectedTarget => _playerPosition;
 
         void Update()
         {
             DetectPlayer();
+            AssasinBackside();
         }
 
         void DetectPlayer()
@@ -75,6 +78,28 @@ namespace MIssionOfMercenary
             return hitWall;
         }
 
+        void AssasinBackside()
+        {
+            Vector3 backDirection = (_player.transform.position - transform.forward).normalized;
+            backDirection.y = 0;
+
+            if(backDirection.sqrMagnitude > _backsideDistance * _backsideDistance)
+            {
+                _canAssasin = false;
+            }
+
+            float backAngle = Vector3.Angle(-transform.forward, backDirection);
+
+            if(backAngle <= _backsideDegree)
+            {
+                _canAssasin = true;
+            }
+            else
+            {
+                _canAssasin = false;
+            }
+        }
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
@@ -101,6 +126,31 @@ namespace MIssionOfMercenary
                     float angle = Mathf.Lerp(-_degree, _degree, i / (float)arcSegments);
                     Vector3 arcDirection = Quaternion.AngleAxis(angle, Vector3.up) * forward;
                     Vector3 currentPoint = center + arcDirection * _eyeSightDistance;
+
+                    Gizmos.DrawLine(previousPoint, currentPoint);
+                    previousPoint = currentPoint;
+                }
+            }
+
+            if (forward != Vector3.zero && _backsideDistance > 0f)
+            {
+                const int arcSegments = 30;
+                Vector3 center = transform.position;
+                Vector3 backward = -forward;
+                Vector3 leftBoundary = Quaternion.AngleAxis(-_backsideDegree, Vector3.up) * backward;
+                Vector3 rightBoundary = Quaternion.AngleAxis(_backsideDegree, Vector3.up) * backward;
+
+                Gizmos.color = new Color(0.7f, 0.2f, 1f, 0.9f);
+                Gizmos.DrawLine(center, center + leftBoundary * _backsideDistance);
+                Gizmos.DrawLine(center, center + rightBoundary * _backsideDistance);
+
+                Vector3 previousPoint = center + leftBoundary * _backsideDistance;
+
+                for (int i = 1; i <= arcSegments; i++)
+                {
+                    float angle = Mathf.Lerp(-_backsideDegree, _backsideDegree, i / (float)arcSegments);
+                    Vector3 arcDirection = Quaternion.AngleAxis(angle, Vector3.up) * backward;
+                    Vector3 currentPoint = center + arcDirection * _backsideDistance;
 
                     Gizmos.DrawLine(previousPoint, currentPoint);
                     previousPoint = currentPoint;
