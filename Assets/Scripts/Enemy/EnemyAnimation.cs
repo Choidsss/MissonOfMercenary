@@ -7,7 +7,7 @@ namespace MIssionOfMercenary
     public class EnemyAnimation : MonoBehaviour
     {
         [SerializeField] NavMeshAgent _nav;
-        [SerializeField] float _delay = 2.5f;
+        //[SerializeField] float _delay = 2.5f;
 
         EnemyFindArea _findArea;
         Animator _anim;

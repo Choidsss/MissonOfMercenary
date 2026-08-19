@@ -15,6 +15,8 @@ namespace MIssionOfMercenary
 
         int _currentHealth;
 
+
+
         private void Start()
         {
             _currentHealth = _maxHealth;
@@ -35,6 +37,7 @@ namespace MIssionOfMercenary
         }
 
         //만약 플레이어가 체력이 까여도 일정시간동안 공격을 받지 않으면 체력이 회복되도록 만든다.
+        //**********************동작 확인 필요******************************
         public void PlayerHealthRecovery()
         {
             if(_currentHealth != _maxHealth)

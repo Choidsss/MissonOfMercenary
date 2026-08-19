@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 4032807633238968760}
   - component: {fileID: 7812074923575429974}
   - component: {fileID: 8822844103384651955}
+  - component: {fileID: 1299056999373807507}
   m_Layer: 20
   m_Name: Player
   m_TagString: Untagged
@@ -270,7 +271,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -312,7 +313,7 @@ MonoBehaviour:
   _enemyAttack: {fileID: 0}
   _recoveryAmount: 30
   _maxHealth: 200
-  _delay: 1
+  _delay: 5
 --- !u!114 &111921809067059592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -441,6 +442,26 @@ MonoBehaviour:
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 1024
+--- !u!114 &1299056999373807507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5289674846794416690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 352156df228dff242a2b7235d9dfac07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputReader: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
+  _enemyLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  _distance: 10
+  _offsetX: 0
+  _offsetY: 1
+  _assasinDamage: 1000
 --- !u!1 &8280731064724997918
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,7 +538,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4193783
+    m_Bits: 8388087
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

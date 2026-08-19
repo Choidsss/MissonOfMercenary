@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 namespace MIssionOfMercenary
 {
@@ -6,10 +7,19 @@ namespace MIssionOfMercenary
     {
         EnemyHit _enemyHit;
 
+        [Header("Enemy Health Option")]
         [SerializeField] int _enemyHealth = 100;
+
+        [Header("Enemy Death Delay Sec Option")]
+        [SerializeField] float _deathDelay = 3.0f;
         bool _isDeath;
 
         public bool IsDeath { get { return _isDeath; } private set { _isDeath = value; } }
+
+        private void Awake()
+        {
+            _enemyHit = GetComponent<EnemyHit>();
+        }
 
         public void TakeDamege(int damaged)
         {
@@ -21,6 +31,8 @@ namespace MIssionOfMercenary
             if (_enemyHealth <= 0)
             {
                 _isDeath = true;
+                _enemyHit.SetRagdoll(true);
+                EnemyOnDeath();
             }
         }
 
@@ -29,8 +41,16 @@ namespace MIssionOfMercenary
             if (_isDeath)
             {
                 Debug.Log("적이 사살 되었습니다.");
-                //Death;
+
+                StartCoroutine(EnemyDeathDelay());
             }
+        }
+
+        IEnumerator EnemyDeathDelay()
+        {
+            yield return new WaitForSeconds(_deathDelay);
+            Debug.Log("Dealyed");
+            Destroy(this.gameObject);
         }
     }
 }

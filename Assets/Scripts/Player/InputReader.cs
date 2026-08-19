@@ -20,6 +20,7 @@ namespace MissionOfMercenary
         InputAction _runAction;
         InputAction _reloadAction;
         InputAction _zoomInAction;
+        InputAction _assasinAction;
 
         public event Action<Vector2> OnMoveEvent;
         public event Action OnRunToggleEvent;
@@ -29,6 +30,7 @@ namespace MissionOfMercenary
         public event Action OnAttackTypeToggleEvent;
         public event Action<float> OnReloadEvent;
         public event Action OnZoomInToggleAction;
+        public event Action OnAssasinAction;
 
         private void OnEnable()
         {
@@ -40,6 +42,7 @@ namespace MissionOfMercenary
             _runAction = _inputActionAsset.FindAction("Run");
             _reloadAction = _inputActionAsset.FindAction("Reload");
             _zoomInAction = _inputActionAsset.FindAction("ZoomIn");
+            _assasinAction = _inputActionAsset.FindAction("Assasin");
 
             _moveAction.Enable();
             _runAction.Enable();
@@ -48,6 +51,7 @@ namespace MissionOfMercenary
             _switchFireAction.Enable();
             _reloadAction.Enable();
             _zoomInAction.Enable();
+            _assasinAction.Enable();
 
             // 이벤트 콜백 등록
             _moveAction.performed += MoveEventCallback;
@@ -66,6 +70,8 @@ namespace MissionOfMercenary
             _reloadAction.performed += WeponReloadActionCallBack;
 
             _zoomInAction.performed += ZoomInActionCallBack;
+
+            _assasinAction.performed += AssasinActionCallBack;
         }
 
         private void OnDisable()
@@ -92,6 +98,8 @@ namespace MissionOfMercenary
             _reloadAction.performed -= WeponReloadActionCallBack;
 
             _zoomInAction.performed -= ZoomInActionCallBack;
+
+            _assasinAction.performed -= AssasinActionCallBack;
         }
 
         //*************이벤트 처리 함수들*******************
@@ -143,6 +151,12 @@ namespace MissionOfMercenary
         void ZoomInActionCallBack(InputAction.CallbackContext context)
         {
             OnZoomInToggleAction?.Invoke();
+        }
+
+        void AssasinActionCallBack(InputAction.CallbackContext context)
+        {
+            //bool value = context.ReadValue<bool>();
+            OnAssasinAction?.Invoke();
         }
     }
 }

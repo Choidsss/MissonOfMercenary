@@ -80,15 +80,19 @@ namespace MIssionOfMercenary
 
         void AssasinBackside()
         {
-            Vector3 backDirection = (_player.transform.position - transform.forward).normalized;
-            backDirection.y = 0;
+            //position, forward 잘못사용 이슈
+            Vector3 directionToPlayer = (_player.transform.position - transform.position).normalized;
+            directionToPlayer.y = 0;
 
-            if(backDirection.sqrMagnitude > _backsideDistance * _backsideDistance)
+            float sqrDistance = directionToPlayer.sqrMagnitude;
+
+            if(sqrDistance > _backsideDistance * _backsideDistance)
             {
                 _canAssasin = false;
+                return;
             }
 
-            float backAngle = Vector3.Angle(-transform.forward, backDirection);
+            float backAngle = Vector3.Angle(-transform.forward, directionToPlayer.normalized);
 
             if(backAngle <= _backsideDegree)
             {

@@ -22,9 +22,6 @@ namespace MIssionOfMercenary
         [SerializeField] int _bonusDamageHead = 20;
         [SerializeField] int _bonusDamageBody = 10;
 
-        [Header("Enemy Death Delay Sec Option")]
-        [SerializeField] float _deathDelay = 3;
-
         int _totalDamage;
 
         private void Start()
@@ -41,14 +38,15 @@ namespace MIssionOfMercenary
             SetRagdoll(false);
         }
 
-        void SetRagdoll(bool active)
+        //수정 필요 => foreach검사를 밖에서 한번만 하도록
+        public void SetRagdoll(bool active)
         {
             foreach(Rigidbody rb in _rigidbodies)
             {
-                if (_anim == null) { Debug.Log("Animator Component is Not Exist!"); }
-                if (_bt == null) { Debug.Log("EnemyBT Component is Not Exist!"); }
-                if (_nav == null) { Debug.Log("NavMeshAgent Component is Not Exist!"); }
-                if (_area == null) { Debug.Log("EnemyFindArea Component is Not Exist!"); }
+                if (_anim == null) { Debug.Log("Animator Component is Not Exist!"); return; }
+                if (_bt == null) { Debug.Log("EnemyBT Component is Not Exist!"); return; }
+                if (_nav == null) { Debug.Log("NavMeshAgent Component is Not Exist!"); return; }
+                if (_area == null) { Debug.Log("EnemyFindArea Component is Not Exist!"); return; }
 
                 _anim.enabled = !active;
                 _bt.enabled = !active;
@@ -91,24 +89,8 @@ namespace MIssionOfMercenary
                 }
                 Debug.Log($"준 데미지 : {_totalDamage}");
                 _health.TakeDamege(_totalDamage);
-
-                if (_health.IsDeath)
-                {
-                    _health.EnemyOnDeath();//일단 비워놓음
-
-                    SetRagdoll(true);
-                    _pelivisRb.constraints = RigidbodyConstraints.FreezeRotationY;//Y만 체크(시선은 고정이되, 팔다리는 움직임)
-
-                    StartCoroutine(EnemyDeathDelay());
-                }
+                _pelivisRb.constraints = RigidbodyConstraints.FreezeRotationY;//Y만 체크(시선은 고정이되, 팔다리는 움직임)
             }
-        }
-
-        IEnumerator EnemyDeathDelay()
-        {
-            yield return new WaitForSeconds(_deathDelay);
-            Debug.Log("Dealyed");
-            Destroy(this.gameObject);
         }
     }
 }

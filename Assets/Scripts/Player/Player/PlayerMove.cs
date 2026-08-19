@@ -18,7 +18,6 @@ namespace MissionOfMercenary
         public float walkSpeed { get; private set; } = 0.0f;
 
         Vector2 _move;
-        bool _isShot = false;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()

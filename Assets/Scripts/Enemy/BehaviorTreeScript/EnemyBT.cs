@@ -19,8 +19,8 @@ namespace MIssionOfMercenary
 
         [Header("Enemy Turn Speed Amount")]
         [SerializeField] float _turnSpeed = 1.0f;
-        [SerializeField] float _lookAngleOffset = 1.0f;
-        [SerializeField] float _lookVerticalOffset = 1.0f; //양수면 아래, 음수면 위
+        //[SerializeField] float _lookAngleOffset = 1.0f;
+        //[SerializeField] float _lookVerticalOffset = 1.0f; //양수면 아래, 음수면 위
 
         [Header("Nav Mesh Agent")]
         [SerializeField] NavMeshAgent _nav;
