@@ -60,8 +60,6 @@ namespace MIssionOfMercenary
 
         float _reloadDelay = 2.0f;
 
-        
-
         private void Start()
         {
             _shell = GetComponent<ShellEjector>();
