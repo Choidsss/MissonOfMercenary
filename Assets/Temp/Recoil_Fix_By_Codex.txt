@@ -1,0 +1,264 @@
+반동 시스템 충돌 문제 정리
+===========================
+
+[현재 증상]
+
+1. 총 자체는 화면에서 반동하는 것처럼 보인다.
+2. 총에 연결된 LeftGripPoint와 LeftHandIKTarget이 반동을 제대로 따라가지 않는다.
+3. 왼손과 팔이 총의 반동에 맞춰 움직이지 않는다.
+4. 자식 오브젝트의 Local Position/Rotation 수치가 변하지 않아 부모 관계 문제처럼 보였다.
+
+
+[먼저 알아둘 점]
+
+부모 Transform이 움직일 때 자식의 Local Position과 Local Rotation은 변하지 않는 것이 정상이다.
+
+WeaponPivot 이동
+→ 자식의 Local Position은 그대로 유지
+→ 자식의 World Position은 변경
+
+따라서 Inspector의 Local Transform 수치만 보고 자식이 움직이지 않는다고 판단하면 안 된다.
+Scene 창의 실제 위치 또는 World Position을 확인해야 한다.
+
+
+[현재 정상적으로 만들어진 Hierarchy]
+
+WeaponBox
+└─ WeaponPivot
+   └─ AR_M 총 루트
+      └─ LeftGripPoint
+         └─ LeftHandIKTarget
+
+IKController의 _weaponPivot 필드도 실제 WeaponPivot을 참조하도록 연결되어 있다.
+
+이 Hierarchy 자체는 정상이다.
+
+
+[현재 발견된 핵심 문제]
+
+현재 프로젝트에는 반동을 처리하는 코드가 여러 곳에 나뉘어 있다.
+
+1. IKController
+
+- WeaponPivot의 Position과 Rotation을 변경한다.
+- InputReader.OnshotEvent의 HandleRecoil()을 구독한다.
+- AssultRifle에서도 ApplyRecoil()을 호출한다.
+
+즉, 비조준 사격 한 번에 같은 IKController의 반동이 두 경로로 적용될 수 있다.
+
+경로 1:
+
+InputReader.OnshotEvent
+→ IKController.HandleRecoil()
+
+경로 2:
+
+AssultRifle.HandleShot() 또는 AutoFireRoutine()
+→ IKController.ApplyRecoil()
+
+
+2. WeaponRecoil
+
+AR_M 원본 총 프리팹에는 WeaponRecoil 컴포넌트가 붙어 있다.
+
+WeaponRecoil은 매 프레임 다음 작업을 한다.
+
+_weapon.localPosition = _originPos + _currentRecoilPos;
+_weapon.localRotation = _originRot * Quaternion.Euler(_currentRecoilRotation);
+
+현재 WeaponRecoilApply()는 다른 코드에서 호출되지 않는 것으로 확인되었다.
+그런데도 Update()에서 총 Transform을 매 프레임 원래 값으로 다시 기록한다.
+
+따라서 IKController가 부모 WeaponPivot을 움직이는 동안에도 총 루트 Transform을 별도 시스템이 계속 제어하는 복잡한 상태가 된다.
+
+
+3. AimController
+
+조준 상태에서는 AimController가 다음 코드를 실행한다.
+
+_ik.enabled = false;
+
+여기서 _ik는 IKController다.
+
+IKController가 비활성화되면 UpdateRecoil()도 실행되지 않는다.
+따라서 조준 중에는 WeaponPivot 반동이 업데이트되지 않는다.
+
+조준 중 반동은 AimController.ApplyRecoilDuringAiming()이 카메라 위치를 움직이는 방식으로 따로 처리한다.
+
+결과적으로 현재 반동은 다음처럼 나뉘어 있다.
+
+비조준 상태:
+- IKController가 WeaponPivot 반동 처리
+- HandleRecoil()과 ApplyRecoil()이 중복 적용될 가능성 있음
+- WeaponRecoil이 AR_M Transform을 매 프레임 별도 제어
+
+조준 상태:
+- IKController 전체가 비활성화됨
+- WeaponPivot 반동이 실행되지 않음
+- AimController가 카메라 반동만 처리
+
+
+[프리팹 문제인지에 대한 결론]
+
+원본 총 프리팹에 LeftGripPoint가 없고 Player 프리팹에서 추가했더라도 Unity에서는 정상적인 자식으로 동작한다.
+
+현재 저장된 Player 프리팹에도 다음 관계가 기록되어 있다.
+
+AR_M
+└─ LeftGripPoint
+   └─ LeftHandIKTarget
+
+따라서 원본 총 프리팹에 GripPoint가 없다는 사실 자체가 문제 원인은 아니다.
+
+현재 문제는 프리팹 자식 인식 문제보다 여러 반동 스크립트가 동시에 Transform과 상태를 제어하는 구조에 가깝다.
+
+
+[지금 바로 할 테스트]
+
+아직 코드를 크게 수정하지 않고 다음 순서로 원인을 분리한다.
+
+1. AR_M에 붙은 WeaponRecoil 컴포넌트를 임시로 비활성화한다.
+2. Play Mode를 완전히 종료했다가 다시 실행한다.
+3. 조준하지 않은 상태에서 사격한다.
+4. WeaponPivot이 움직이는지 확인한다.
+5. LeftGripPoint와 LeftHandIKTarget의 Scene Gizmo가 같이 움직이는지 확인한다.
+6. 왼손이 LeftHandIKTarget을 따라가는지 확인한다.
+
+테스트할 때 확인할 Weight:
+
+Rig1 Weight                  = 1
+LeftHandIK Weight            = 1
+Target Position Weight       = 1
+Target Rotation Weight       = 1
+
+
+[테스트 결과에 따른 판단]
+
+결과 A:
+WeaponPivot, 총, GripPoint, IKTarget이 모두 같이 움직이고 손도 따라간다.
+
+→ WeaponRecoil의 중복 Transform 제어가 주요 원인이었다.
+
+결과 B:
+WeaponPivot과 Target은 움직이지만 손만 따라가지 않는다.
+
+→ Animation Rigging의 평가 순서 또는 Rig 설정 문제를 확인해야 한다.
+
+결과 C:
+WeaponPivot은 움직이지만 Target이 움직이지 않는다.
+
+→ Play 중 실제 Target의 부모 관계 또는 다른 스크립트의 Target 덮어쓰기를 확인해야 한다.
+
+결과 D:
+WeaponPivot 자체가 움직이지 않는다.
+
+→ IKController 활성화 상태, _weaponPivot 참조, Ammo 조건, 반동 이벤트 호출 여부를 확인해야 한다.
+
+
+[최종적으로 권장하는 반동 구조]
+
+반동은 한 시스템에서만 계산하도록 통합한다.
+
+권장 흐름:
+
+AssultRifle에서 실제 발사가 성공함
+→ IKController.ApplyRecoil() 한 번 호출
+→ IKController가 WeaponPivot 반동 계산
+→ WeaponPivot 아래의 총, GripPoint, IKTarget이 같이 움직임
+→ Two Bone IK가 손을 Target에 맞춤
+
+Hierarchy:
+
+WeaponBox
+├─ Arms / Armature / Rig
+└─ WeaponPivot
+   └─ 현재 무기
+      ├─ Muzzle
+      └─ LeftGripPoint
+         └─ LeftHandIKTarget
+
+역할:
+
+WeaponBox
+- 전체 팔과 무기의 Sway
+- 조준 위치 전환의 기준
+
+WeaponPivot
+- 발사 시 총 전용 반동
+- 총, Muzzle, GripPoint, IKTarget을 함께 이동
+
+Arms / Rig
+- WeaponPivot 밖에 유지
+- Two Bone IK를 통해 움직인 Target을 따라감
+
+
+[코드 정리 예정 순서]
+
+1. 반동 계산 주체를 IKController 하나로 정한다.
+2. IKController의 OnshotEvent → HandleRecoil() 직접 구독을 제거한다.
+3. AssultRifle에서 실제 총알이 발사될 때 ApplyRecoil()만 한 번 호출한다.
+4. AR_M의 WeaponRecoil 컴포넌트를 제거하거나 사용하지 않도록 한다.
+5. IKController의 _weaponPivot만 총 Transform 반동을 담당하게 한다.
+6. 조준 중에도 IKController 전체를 비활성화하지 않도록 수정한다.
+7. 조준 상태에서는 필요하면 IK Weight 또는 Sway만 따로 제어한다.
+8. 조준 카메라 반동과 총기 Pivot 반동을 동시에 사용할지 결정한다.
+9. _arOriginPos, _arOriginRot 변수명을 Pivot 기준 이름으로 정리한다.
+
+권장 변수명:
+
+_arOriginPos → _pivotOriginPosition
+_arOriginRot → _pivotOriginRotation
+
+
+[조준 시스템 수정 시 주의]
+
+현재 AimController는 조준할 때 IKController 전체를 끈다.
+
+if (IsAiming)
+{
+    _ik.enabled = false;
+}
+
+이 구조에서는 IKController 안에 들어 있는 다음 기능이 모두 멈춘다.
+
+- WeaponPivot 반동
+- Sway
+- 이후 추가할 공용 IK 관련 갱신
+
+따라서 나중에는 IKController 전체를 끄지 말고 필요한 기능만 Weight 또는 별도 bool로 제어하는 것이 좋다.
+
+예시 방향:
+
+- 조준 중 Sway 강도 감소
+- 조준 중에도 WeaponPivot 반동 유지
+- 조준 중에도 LeftHandIK 유지
+- 필요할 때만 특정 손 IK Weight 변경
+
+
+[WASD 이동 시 팔 흔들림 문제]
+
+이 문제는 반동 충돌과 별개의 문제다.
+
+HeadBob이 카메라와 그 아래 팔/총을 움직이는 동안 ElbowHint가 Player 루트 기준에 남아 있으면 IK의 팔꿈치 방향이 계속 재계산될 수 있다.
+
+확인할 구조:
+
+- 팔, 총, IKTarget은 카메라/WeaponBox를 따라 움직임
+- ElbowHint는 Player 루트 기준
+
+이 경우 걷거나 화면을 회전할 때 팔이 좌우로 흔들릴 수 있다.
+
+반동 시스템 정리가 끝난 뒤 ElbowHint를 팔 본의 자식이 아닌 카메라 또는 WeaponBox와 동일한 회전 기준 아래로 옮겨 테스트한다.
+
+
+[최종 요약]
+
+1. WeaponPivot Hierarchy와 Inspector 참조는 현재 정상이다.
+2. 자식의 Local Transform 수치가 안 변하는 것은 정상이다.
+3. 현재 반동은 IKController, WeaponRecoil, AimController 세 곳에 나뉘어 있다.
+4. IKController에는 HandleRecoil()과 ApplyRecoil()의 중복 적용 가능성도 있다.
+5. 조준하면 IKController 전체가 꺼져 WeaponPivot 반동이 정지한다.
+6. 먼저 AR_M의 WeaponRecoil을 비활성화하고 비조준 사격을 테스트한다.
+7. 이후 반동을 IKController.ApplyRecoil() 한 경로로 통합한다.
+8. 반동 정리 후 WASD/화면 이동 시 팔 흔들림을 ElbowHint 기준 문제로 따로 해결한다.
+

@@ -20,12 +20,12 @@ namespace MIssionOfMercenary
 
         private void OnEnable()
         {
-            
+            _inputReader.OnshotEvent += Attack;
         }
 
         private void OnDisable()
         {
-            
+            _inputReader.OnshotEvent += Attack;
         }
 
         public void Attack(float isShot)

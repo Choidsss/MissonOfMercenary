@@ -1,0 +1,359 @@
+무기 교체를 위한 양손 IK 구조 정리
+====================================
+
+[목표]
+
+현재 주무기 IK를 먼저 정리하고, 그 구조를 권총과 칼에서도 재사용한다.
+IK가 완성된 뒤 마지막에 무기 교체 시스템과 연결한다.
+
+전체 작업 순서
+--------------
+
+1. 공용 오른손/왼손 IK 기반 만들기
+2. 현재 주무기의 왼손 IK를 공용 구조로 변경
+3. 주무기가 기존처럼 작동하는지 확인
+4. 권총 양손 IK 만들기
+5. 칼 오른손 IK 만들기
+6. 무기 교체 시스템과 연결
+
+
+[핵심 개념]
+
+GripPoint
+---------
+
+각 무기에서 손목이 와야 하는 위치다.
+
+- 주무기 LeftGripPoint: 주무기를 잡는 왼손 위치
+- 권총 RightGripPoint: 권총을 잡는 오른손 위치
+- 권총 LeftGripPoint: 오른손을 감싸는 왼손 위치
+- 칼 RightGripPoint: 칼을 잡는 오른손 위치
+
+IKTarget
+--------
+
+캐릭터의 Two Bone IK Constraint가 항상 따라가는 공용 Transform이다.
+
+- RightHandIKTarget: 오른손 공용 Target
+- LeftHandIKTarget: 왼손 공용 Target
+
+무기가 바뀌면 Constraint의 Target을 바꾸는 것이 아니다.
+공용 IKTarget을 현재 무기의 GripPoint 아래로 옮긴다.
+
+
+[무기별 IK Weight]
+
+주무기
+- RightHandIK = 0
+- LeftHandIK  = 1
+
+권총
+- RightHandIK = 1
+- LeftHandIK  = 1
+
+칼
+- RightHandIK = 1
+- LeftHandIK  = 0
+
+맨손
+- RightHandIK = 0
+- LeftHandIK  = 0
+
+주무기는 오른손까지 IK로 바꿀 필요가 없다.
+기존 오른손 애니메이션이 자연스럽다면 그대로 사용한다.
+
+
+[목표 Hierarchy]
+
+Player
+├─ WeaponBox
+│  ├─ AssaultRifle
+│  │  └─ LeftGripPoint
+│  ├─ HandGun
+│  │  ├─ RightGripPoint
+│  │  └─ LeftGripPoint
+│  └─ Knife
+│     └─ RightGripPoint
+│
+├─ IKTargets
+│  ├─ RightHandIKTarget
+│  ├─ LeftHandIKTarget
+│  ├─ RightElbowHint
+│  └─ LeftElbowHint
+│
+└─ Rig1
+   ├─ RightHandIK
+   └─ LeftHandIK
+
+
+[지금 가장 먼저 할 작업]
+
+1. Player에 IKTargets 생성
+
+IKTargets 아래에 다음 빈 GameObject를 만든다.
+
+IKTargets
+├─ RightHandIKTarget
+├─ LeftHandIKTarget
+├─ RightElbowHint
+└─ LeftElbowHint
+
+각 오브젝트의 Scale은 (1, 1, 1)로 유지한다.
+
+
+2. 기존 LeftElbowHint 이동
+
+현재 LeftElbowHint가 왼쪽 아래팔 본의 자식으로 되어 있다.
+IK로 움직이는 팔 본의 자식이면 계산이 불안정할 수 있다.
+
+변경 전:
+
+LeftForeArm
+└─ LeftElbowHint
+
+변경 후:
+
+IKTargets
+└─ LeftElbowHint
+
+옮길 때 World Position을 유지한다.
+왼쪽 팔꿈치보다 약간 왼쪽, 아래쪽, 뒤쪽에 배치한다.
+
+RightElbowHint는 오른쪽 팔꿈치보다 약간 오른쪽, 아래쪽, 뒤쪽에 배치한다.
+
+
+3. 기존 LeftHandIK Target 변경
+
+변경 전:
+
+LeftHandIK.Target = AssaultRifle/LeftGripPoint
+
+변경 후:
+
+LeftHandIK.Target = IKTargets/LeftHandIKTarget
+LeftHandIK.Hint   = IKTargets/LeftElbowHint
+
+
+4. LeftHandIKTarget을 주무기에 연결
+
+LeftHandIKTarget을 주무기 LeftGripPoint의 자식으로 옮긴다.
+
+AssaultRifle
+└─ LeftGripPoint
+   └─ LeftHandIKTarget
+
+옮긴 뒤 다음 값으로 초기화한다.
+
+Local Position = (0, 0, 0)
+Local Rotation = (0, 0, 0)
+Local Scale    = (1, 1, 1)
+
+이제 다음 순서로 왼손이 움직인다.
+
+주무기 이동
+→ LeftGripPoint 이동
+→ LeftHandIKTarget 이동
+→ LeftHandIK가 왼손을 Target에 고정
+
+
+5. LeftHandIK 테스트 값
+
+LeftHandIK Constraint Weight = 1
+Target Position Weight       = 1
+Target Rotation Weight       = 1
+Hint Weight                  = 1
+
+현재 프리팹의 전체 Weight 약 0.094와 Position Weight 약 0.612는 테스트하기에 낮다.
+손 위치가 어색하면 Weight를 낮추지 말고 LeftGripPoint 위치와 회전을 먼저 수정한다.
+
+
+6. 기존 IKController 직접 본 이동 제거
+
+현재 다음 코드는 왼손이 아니라 왼쪽 위팔 본을 직접 움직인다.
+
+void UpdateIK()
+{
+    _leftArm.position = _leftGripPoint.position;
+    _leftArm.rotation = _leftGripPoint.rotation;
+}
+
+Two Bone IK와 충돌할 수 있으므로 호출을 제거한다.
+
+private void LateUpdate()
+{
+    // UpdateIK(); 호출 제거
+}
+
+공용 IK 전환 후 UpdateIK() 함수도 제거할 수 있다.
+_leftGripPoint, _leftArm, _leftForceArm, _leftHand 필드도 다른 곳에서 사용하지 않으면 정리할 수 있다.
+
+주무기 반동과 Sway 코드는 그대로 유지한다.
+무기가 움직이면 GripPoint와 IKTarget이 같이 움직이기 때문에 왼손도 따라온다.
+
+
+7. 오른손 IK 틀 생성
+
+Rig1 아래에 RightHandIK를 만들고 Two Bone IK Constraint를 추가한다.
+
+Root   = RightUpperArm
+Mid    = RightForeArm
+Tip    = RightHand
+Target = RightHandIKTarget
+Hint   = RightElbowHint
+
+현재 주무기 상태에서는 다음처럼 둔다.
+
+RightHandIK Constraint Weight = 0
+
+오른손 IK는 권총과 칼을 위한 틀만 준비한 것이다.
+주무기 오른팔은 기존 애니메이션을 그대로 사용한다.
+
+
+[주무기 1차 테스트]
+
+- 주무기가 기존 위치에 정상적으로 보이는가?
+- 오른팔은 기존 애니메이션 그대로인가?
+- RightHandIK Weight가 0인가?
+- LeftHandIK Weight가 1인가?
+- 왼손 손목이 LeftGripPoint에 정확히 붙는가?
+- Sway가 발생해도 왼손이 따라가는가?
+- 반동이 발생해도 왼손이 총에서 떨어지지 않는가?
+- 왼팔이 뒤집히거나 비정상적으로 꺾이지 않는가?
+- Console에 Missing Reference 또는 Rig 오류가 없는가?
+
+팔꿈치가 이상하게 꺾이면 LeftElbowHint 위치를 먼저 조정한다.
+이 테스트가 끝난 다음에 권총 작업으로 넘어간다.
+
+
+[권총 작업]
+
+1. 권총에 GripPoint 두 개 생성
+
+HandGun
+├─ RightGripPoint
+└─ LeftGripPoint
+
+RightGripPoint는 오른손 손목 위치다.
+권총 손잡이가 손바닥 안으로 들어오고 검지가 방아쇠 근처에 오도록 위치와 회전을 맞춘다.
+
+LeftGripPoint는 오른손을 감싸는 왼손 손목 위치다.
+권총 손잡이의 왼쪽 또는 왼쪽 아래에 놓고 손바닥이 오른손 쪽을 향하게 한다.
+
+2. 권총 테스트 중 Target 연결
+
+HandGun
+├─ RightGripPoint
+│  └─ RightHandIKTarget
+└─ LeftGripPoint
+   └─ LeftHandIKTarget
+
+두 Target의 Local Position과 Local Rotation을 0으로 초기화한다.
+
+3. 권총 Weight
+
+RightHandIK Weight = 1
+LeftHandIK Weight  = 1
+
+4. 권총 작업 순서
+
+- 권총용 기본 상체 포즈를 적용한다.
+- 왼손 IK를 0으로 두고 오른손부터 맞춘다.
+- RightGripPoint를 조정한다.
+- 오른손이 완성되면 왼손 IK를 1로 올린다.
+- LeftGripPoint를 조정한다.
+- 양쪽 ElbowHint를 조정한다.
+- 마지막에 손가락 포즈를 만든다.
+
+권총 자세를 IK만으로 처음부터 만들지 않는다.
+기본 애니메이션에서 어깨와 팔을 대략 앞으로 뻗게 하고 IK는 손목 위치를 정확하게 맞추는 데 사용한다.
+
+
+[칼 작업]
+
+Knife
+└─ RightGripPoint
+   └─ RightHandIKTarget
+
+기본 Weight:
+
+RightHandIK Weight = 1
+LeftHandIK Weight  = 0
+
+처음에는 한 손 칼 자세로 만든다.
+왼손이 필요한 공격이 생기면 나중에 애니메이션이나 별도 GripPoint를 추가한다.
+
+
+[나중에 무기 교체 시스템이 할 일]
+
+무기 교체 시스템은 다음 세 가지를 처리한다.
+
+1. 선택한 무기 활성화
+2. 공용 IKTarget을 선택한 무기의 GripPoint 아래로 이동
+3. 무기 종류에 맞는 양손 IK Weight 설정
+
+주무기 장착:
+- LeftHandIKTarget → 주무기 LeftGripPoint
+- RightHandIK Weight = 0
+- LeftHandIK Weight  = 1
+
+권총 장착:
+- RightHandIKTarget → 권총 RightGripPoint
+- LeftHandIKTarget  → 권총 LeftGripPoint
+- RightHandIK Weight = 1
+- LeftHandIK Weight  = 1
+
+칼 장착:
+- RightHandIKTarget → 칼 RightGripPoint
+- RightHandIK Weight = 1
+- LeftHandIK Weight  = 0
+
+
+[중요 주의사항]
+
+1. 무기와 손의 순환 구조 금지
+
+오른손 IK를 사용하는 권총이나 칼을 RightHand 본의 자식으로 두면 안 된다.
+
+잘못된 구조:
+
+RightHand
+└─ HandGun
+   └─ RightGripPoint
+       └─ RightHandIKTarget
+
+오른손이 권총을 움직이고, 오른손 IK가 다시 권총을 따라가는 순환 관계가 된다.
+
+권장 구조:
+
+WeaponBox
+└─ HandGun
+   └─ RightGripPoint
+       └─ RightHandIKTarget
+
+2. 손가락은 Two Bone IK가 처리하지 않는다
+
+- 방아쇠 위의 오른손 검지
+- 손잡이를 감싸는 나머지 손가락
+- 오른손을 감싸는 왼손 손가락
+
+위 항목은 별도의 손가락 애니메이션이나 손가락 본 회전으로 만든다.
+
+3. 팔이 Target에 닿지 않을 때 확인 순서
+
+- 무기와 GripPoint가 몸에서 너무 멀지 않은지 확인
+- 기본 애니메이션에서 어깨와 위팔이 앞으로 나와 있는지 확인
+- ElbowHint가 반대편에 있지 않은지 확인
+- IK Weight와 Target Position Weight가 1인지 확인
+
+
+[가장 짧은 요약]
+
+1. 공용 RightHandIKTarget과 LeftHandIKTarget을 만든다.
+2. 기존 주무기의 왼손 IK를 공용 Target 방식으로 바꾼다.
+3. 기존 UpdateIK()의 직접 팔 본 이동을 제거한다.
+4. 주무기가 정상인지 먼저 확인한다.
+5. 오른손 IK는 만들어 두되 주무기에서는 Weight 0으로 둔다.
+6. 권총에서는 오른손과 왼손 Weight를 모두 1로 사용한다.
+7. 칼에서는 오른손 Weight만 1로 사용한다.
+8. 마지막에 무기 교체 시스템이 Target 부모와 Weight를 변경하게 만든다.
+

@@ -14,7 +14,7 @@ namespace MIssionOfMercenary
         [Header("References")]
         [SerializeField] PlayerMove _playerMove;
         [SerializeField] Transform _weaponBox;
-        [SerializeField] Transform _ar;
+        [SerializeField] Transform _weaponPivot;
         [SerializeField] Transform _leftGripPoint;
         [SerializeField] Transform _leftArm;
         [SerializeField] Transform _leftForceArm;
@@ -65,8 +65,8 @@ namespace MIssionOfMercenary
             _assultRifle = GetComponentInChildren<AssultRifle>();
 
             _weaponBoxOrigin = _weaponBox.localPosition;
-            _arOriginPos = _ar.localPosition;
-            _arOriginRot = _ar.localRotation;
+            _arOriginPos = _weaponPivot.localPosition;
+            _arOriginRot = _weaponPivot.localRotation;
 
             _armOriginPos = _leftArm.localPosition;
             _foreArmOriginPos = _leftForceArm.localPosition;
@@ -82,7 +82,7 @@ namespace MIssionOfMercenary
 
         private void LateUpdate()
         {
-            UpdateIK();
+            //UpdateIK();
         }
 
         void HandleSway(Vector2 value)
@@ -140,9 +140,9 @@ namespace MIssionOfMercenary
             _currentRecoilRot = Vector3.Lerp(_currentRecoilRot, _targetRecoilRot, _snapSpeed * Time.deltaTime);
 
             //현재 AR의 위치에 현재 반동값을 적용
-            _ar.localPosition = _arOriginPos + _currentRecoilPos;
+            _weaponPivot.localPosition = _arOriginPos + _currentRecoilPos;
             //_ar.localPosition = Mathf.Clamp(_ar.localPosition, )
-            _ar.localRotation = _arOriginRot * Quaternion.Euler(_currentRecoilRot);
+            _weaponPivot.localRotation = _arOriginRot * Quaternion.Euler(_currentRecoilRot);
 
 
 
@@ -153,10 +153,10 @@ namespace MIssionOfMercenary
 
         }
 
-        void UpdateIK()
-        {
-            _leftArm.position = _leftGripPoint.position;
-            _leftArm.rotation = _leftGripPoint.rotation;
-        }
+        //void UpdateIK()
+        //{
+        //    _leftArm.position = _leftGripPoint.position;
+        //    _leftArm.rotation = _leftGripPoint.rotation;
+        //}
     }
 }

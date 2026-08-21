@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 95ed086a9d7953649ab08e81ab9e50a0
+guid: 7fbf1ea1cdd7d9d42b47ab8b494cc615
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,8 +117,8 @@ TextureImporter:
   assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
-  productId: 322992
-  packageName: Low Poly Pistol Weapon Pack 3
+  productId: 304296
+  packageName: Low Poly Pistol Weapon Pack 2
   packageVersion: 1.0
   assetPath: Assets/Plugins_DS/Guns/Low Poly AR Weapon Pack 3/Texture/Low Poly Weapon.png
-  uploadId: 774705
+  uploadId: 714056
