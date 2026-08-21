@@ -59,7 +59,6 @@ namespace MIssionOfMercenary
             _inputReader.OnshotEvent -= HandleRecoil;
         }
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             _assultRifle = GetComponentInChildren<AssultRifle>();
@@ -72,12 +71,10 @@ namespace MIssionOfMercenary
             _foreArmOriginPos = _leftForceArm.localPosition;
         }
 
-        // Update is called once per frame
         void Update()
         {
             UpdateSway();
             UpdateRecoil();
-            //UpdateWeaponBox();
         }
 
         private void LateUpdate()
@@ -108,9 +105,7 @@ namespace MIssionOfMercenary
 
         void HandleRecoil(float shot)
         {
-            //뒤로 밀려서 -
             _targetRecoilPos += new Vector3(0, 0, -_kickBack);
-            //vibration은 랜덤하게
             _targetRecoilRot += new Vector3(-_upDown, Random.Range(-_vibration , _vibration), 0);
         }
 
