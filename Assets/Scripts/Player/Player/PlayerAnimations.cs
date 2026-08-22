@@ -34,7 +34,7 @@ namespace MIssionOfMercenary
         // Update is called once per frame
         void Update()
         {
-            PlayMovementAnimation();
+            //PlayMovementAnimation();
 
             if (_ar == null) { Debug.Log("AssultRifle Not Exist"); return; }
 

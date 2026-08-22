@@ -7,9 +7,6 @@ namespace MIssionOfMercenary
 {
     public class IKController : MonoBehaviour
     {
-        /*
-         * Sway랑 HeadBob의 영향을 받는데????????? 왜 ????????Recoil은 영향???을????/안받아???????????????????????????
-         */
         AssultRifle _assultRifle;
 
         [SerializeField] InputReader _inputReader;
@@ -50,13 +47,11 @@ namespace MIssionOfMercenary
         private void OnEnable()
         {
             _inputReader.OnLookEvent += HandleSway;
-            _inputReader.OnshotEvent += HandleRecoil;
         }
 
         private void OnDisable()
         {
             _inputReader.OnLookEvent -= HandleSway;
-            _inputReader.OnshotEvent -= HandleRecoil;
         }
 
         void Start()
@@ -67,6 +62,8 @@ namespace MIssionOfMercenary
             _arOriginPos = _weaponPivot.localPosition;
             _arOriginRot = _weaponPivot.localRotation;
 
+            MoveLeftHandTargetOutsideAnimator();
+
             //_armOriginPos = _leftArm.localPosition;
             //_foreArmOriginPos = _leftForceArm.localPosition;
         }
@@ -75,10 +72,43 @@ namespace MIssionOfMercenary
         {
             UpdateSway();
             UpdateRecoil();
+            SyncLeftHandTargetToGrip();
         }
 
+        Transform _leftHandIKTarget;
+        Vector3 _leftHandTargetLocalPosition;
+        Quaternion _leftHandTargetLocalRotation;
+
+        void MoveLeftHandTargetOutsideAnimator()
+        {
+            if (_leftGripPoint == null || _leftGripPoint.childCount == 0) return;
+
+            _leftHandIKTarget = _leftGripPoint.GetChild(0);
+            _leftHandTargetLocalPosition = _leftHandIKTarget.localPosition;
+            _leftHandTargetLocalRotation = _leftHandIKTarget.localRotation;
+            _leftHandIKTarget.SetParent(transform, true);
+
+            // The IK target must be outside the Animator hierarchy so the rig reads its current scene transform. // By Codex
+            RigBuilder rigBuilder = GetComponentInChildren<RigBuilder>();
+            if (rigBuilder != null)
+            {
+                rigBuilder.Clear();
+                rigBuilder.Build();
+            }
+        }
+
+        void SyncLeftHandTargetToGrip()
+        {
+            if (_leftHandIKTarget == null || _leftGripPoint == null) return;
+
+            // Preserve the hand-placement offset authored under LeftGripPoint. // By Codex
+            _leftHandIKTarget.SetPositionAndRotation(
+                _leftGripPoint.TransformPoint(_leftHandTargetLocalPosition),
+                _leftGripPoint.rotation * _leftHandTargetLocalRotation);
+        }
         private void LateUpdate()
         {
+
             //UpdateIK();
         }
 
@@ -102,13 +132,8 @@ namespace MIssionOfMercenary
         }
 
 
-        void HandleRecoil(float shot)
-        {
-            _targetRecoilPos += new Vector3(0, 0, -_kickBack);
-            _targetRecoilRot += new Vector3(-_upDown, Random.Range(-_vibration , _vibration), 0);
-        }
-
-        //AssultRifle Script Call this Function
+        // AssultRifle calls this only after a bullet is actually fired.
+        // Do not also subscribe to OnshotEvent here: that would apply recoil twice per shot. // By Codex
         public void ApplyRecoil()
         {
             _targetRecoilPos += new Vector3(0, 0, -_kickBack);
