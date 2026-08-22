@@ -7,6 +7,9 @@ namespace MIssionOfMercenary
 {
     public class IKController : MonoBehaviour
     {
+        /*
+         * Sway랑 HeadBob의 영향을 받는데????????? 왜 ????????Recoil은 영향???을????/안받아???????????????????????????
+         */
         AssultRifle _assultRifle;
 
         [SerializeField] InputReader _inputReader;
@@ -44,9 +47,6 @@ namespace MIssionOfMercenary
         Vector3 _arOriginPos;
         Quaternion _arOriginRot;
 
-        Vector3 _armOriginPos;
-        Vector3 _foreArmOriginPos;
-
         private void OnEnable()
         {
             _inputReader.OnLookEvent += HandleSway;
@@ -67,8 +67,8 @@ namespace MIssionOfMercenary
             _arOriginPos = _weaponPivot.localPosition;
             _arOriginRot = _weaponPivot.localRotation;
 
-            _armOriginPos = _leftArm.localPosition;
-            _foreArmOriginPos = _leftForceArm.localPosition;
+            //_armOriginPos = _leftArm.localPosition;
+            //_foreArmOriginPos = _leftForceArm.localPosition;
         }
 
         void Update()
@@ -84,7 +84,6 @@ namespace MIssionOfMercenary
 
         void HandleSway(Vector2 value)
         {
-            //Vector2로 들어오는 입력갑 Vector3 으로 변환(y가 축이 되어야 X로 움직임, x가 축이되어야 Y가 움직임, 부호반대는 관성의 느낌을 주기 위해)
             _swayInput = value;
         }
 
