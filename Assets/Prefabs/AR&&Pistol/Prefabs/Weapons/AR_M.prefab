@@ -203,6 +203,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1931573900437590981
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2043236371932323224}
+  m_Layer: 9
+  m_Name: RightGripPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2043236371932323224
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931573900437590981}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7419260731707568730}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2084172497748923263
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,6 +1051,7 @@ GameObject:
   - component: {fileID: 2229139433681805245}
   - component: {fileID: -7741671296081472078}
   - component: {fileID: 3967898025216811483}
+  - component: {fileID: 9145070371036713036}
   m_Layer: 9
   m_Name: AR_M
   m_TagString: Untagged
@@ -1054,6 +1086,7 @@ Transform:
   - {fileID: 4516120713199074927}
   - {fileID: 4702738985958861489}
   - {fileID: 7358105736846860347}
+  - {fileID: 2043236371932323224}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2229139433681805245
@@ -1068,7 +1101,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0431b3be5cf177c49804f597eb40bf5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recoil: {fileID: 0}
+  _ikController: {fileID: 0}
+  _aimController: {fileID: 0}
+  _bullet: {fileID: 0}
+  _trailRendererSpeed: 0
   _inputReader: {fileID: 0}
   _muzzle: {fileID: 4702738985958861489}
   _muzzleFlash: {fileID: 199458, guid: 51b76f616384d4946bed4ecc9a6c2c3e, type: 3}
@@ -1114,6 +1150,21 @@ MonoBehaviour:
   _cartridgeRightForce: 0
   _lifeTime: 0
   _torque: 0
+--- !u!114 &9145070371036713036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907567775967570144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fd1c61b8f21e4548b20e97b8810a258, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _leftGripPoint: {fileID: 0}
+  _rightGripPoint: {fileID: 0}
+  _useLeftHandIK: 0
 --- !u!1 &8540855330252511450
 GameObject:
   m_ObjectHideFlags: 0

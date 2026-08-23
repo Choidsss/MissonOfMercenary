@@ -16,9 +16,8 @@ namespace MIssionOfMercenary
         [SerializeField] Transform _weaponBox;
         [SerializeField] Transform _weaponPivot;
         [SerializeField] Transform _leftGripPoint;
-        [SerializeField] Transform _leftArm;
-        [SerializeField] Transform _leftForceArm;
-        [SerializeField] Transform _leftHand;
+        [SerializeField] Transform _rightGripPoint;
+        [SerializeField] Transform _rightHandIKTarget;
 
         [Header("Recoil")]
         [SerializeField] float _kickBack;
@@ -62,19 +61,20 @@ namespace MIssionOfMercenary
             _arOriginPos = _weaponPivot.localPosition;
             _arOriginRot = _weaponPivot.localRotation;
 
-            MoveLeftHandTargetOutsideAnimator();
-
-            //_armOriginPos = _leftArm.localPosition;
-            //_foreArmOriginPos = _leftForceArm.localPosition;
+            //MoveLeftHandTargetOutsideAnimator();
+            //MoveRightHandTargetOutsideAnimator();
         }
 
         void Update()
         {
             UpdateSway();
             UpdateRecoil();
-            SyncLeftHandTargetToGrip();
+
+            //SyncLeftHandTargetToGrip();
+            //SyncRightHandTargetToGrip();
         }
 
+        Transform _ikTargetRoot;
         Transform _leftHandIKTarget;
         Vector3 _leftHandTargetLocalPosition;
         Quaternion _leftHandTargetLocalRotation;
@@ -97,15 +97,30 @@ namespace MIssionOfMercenary
             }
         }
 
-        void SyncLeftHandTargetToGrip()
+        Transform GetIKTargetRoot()
         {
-            if (_leftHandIKTarget == null || _leftGripPoint == null) return;
+            if (_ikTargetRoot != null) return _ikTargetRoot;
 
-            // Preserve the hand-placement offset authored under LeftGripPoint. // By Codex
-            _leftHandIKTarget.SetPositionAndRotation(
-                _leftGripPoint.TransformPoint(_leftHandTargetLocalPosition),
-                _leftGripPoint.rotation * _leftHandTargetLocalRotation);
+            _ikTargetRoot = new GameObject("IKTargetRoot").transform;
+            _ikTargetRoot.SetParent(null);
+            // Keep runtime-driven IK targets completely outside the Player Animator hierarchy. // By Codex
+            return _ikTargetRoot;
         }
+        void MoveRightHandTargetOutsideAnimator()
+        {
+            if (_rightHandIKTarget == null) return;
+
+            _rightHandIKTarget.SetParent(GetIKTargetRoot(), true);
+
+            // The IK target must be outside the Animator hierarchy so the rig reads its current scene transform. // By Codex
+            RigBuilder rigBuilder = GetComponentInChildren<RigBuilder>();
+            if (rigBuilder != null)
+            {
+                rigBuilder.Clear();
+                rigBuilder.Build();
+            }
+        }
+
         private void LateUpdate()
         {
 
@@ -148,7 +163,10 @@ namespace MIssionOfMercenary
          */
         void UpdateRecoil()
         {
-            if (_assultRifle.Ammo == 0) { return; }
+            if (_assultRifle == null || _assultRifle.Ammo == 0)
+            {
+                return;
+            }
 
             //매 프레임마다 0으로 복귀하도록 함
             _targetRecoilPos = Vector3.Lerp(_targetRecoilPos, Vector3.zero, _recoverySpeed * Time.deltaTime);
@@ -163,13 +181,28 @@ namespace MIssionOfMercenary
             //_ar.localPosition = Mathf.Clamp(_ar.localPosition, )
             _weaponPivot.localRotation = _arOriginRot * Quaternion.Euler(_currentRecoilRot);
 
+        }
+        void SyncLeftHandTargetToGrip()
+        {
+            if (_leftHandIKTarget == null || _leftGripPoint == null) return;
+
+            // Preserve the hand-placement offset authored under LeftGripPoint. // By Codex
+            _leftHandIKTarget.SetPositionAndRotation(
+                _leftGripPoint.TransformPoint(_leftHandTargetLocalPosition),
+                _leftGripPoint.rotation * _leftHandTargetLocalRotation);
+        }
+
+        void SyncRightHandTargetToGrip()
+        {
+            if (_rightGripPoint == null || _rightHandIKTarget == null) { return; }
+
+            if(!_rightGripPoint.gameObject.activeInHierarchy) { return; }
 
 
-
-            // 원래 위치 + 현재 반동값
-            //_leftArm.localPosition = _armOriginPos + _currentRecoilPos;
-            //_leftForceArm.localPosition = _foreArmOriginPos + _currentRecoilPos;
-
+            _rightHandIKTarget.SetPositionAndRotation(_rightGripPoint.position, _rightGripPoint.rotation);
+            Debug.Log(
+        $"IKController Grip: {_rightGripPoint.name} / {_rightGripPoint.position}\n" +
+        $"IKController Target: {_rightHandIKTarget.name} / {_rightHandIKTarget.position}");
         }
 
         //void UpdateIK()

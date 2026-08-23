@@ -21,6 +21,9 @@ namespace MissionOfMercenary
         InputAction _reloadAction;
         InputAction _zoomInAction;
         InputAction _assasinAction;
+        InputAction _equipPrimaryAction;
+        InputAction _equipSecondaryAction;
+        InputAction _equipMeleeAction;
 
         public event Action<Vector2> OnMoveEvent;
         public event Action OnRunToggleEvent;
@@ -31,6 +34,9 @@ namespace MissionOfMercenary
         public event Action<float> OnReloadEvent;
         public event Action OnZoomInToggleAction;
         public event Action OnAssasinAction;
+        public event Action OnEquipPrimaryAction;
+        public event Action OnEquipSecondaryAction;
+        public event Action OnEquipMeleeAction;
 
         private void OnEnable()
         {
@@ -43,6 +49,9 @@ namespace MissionOfMercenary
             _reloadAction = _inputActionAsset.FindAction("Reload");
             _zoomInAction = _inputActionAsset.FindAction("ZoomIn");
             _assasinAction = _inputActionAsset.FindAction("Assasin");
+            _equipPrimaryAction = _inputActionAsset.FindAction("EquipPrimary");
+            _equipSecondaryAction = _inputActionAsset.FindAction("EquipSecondary");
+            _equipMeleeAction = _inputActionAsset.FindAction("EquipMelee");
 
             _moveAction.Enable();
             _runAction.Enable();
@@ -52,6 +61,9 @@ namespace MissionOfMercenary
             _reloadAction.Enable();
             _zoomInAction.Enable();
             _assasinAction.Enable();
+            _equipPrimaryAction.Enable();
+            _equipSecondaryAction.Enable();
+            _equipMeleeAction.Enable();
 
             // 이벤트 콜백 등록
             _moveAction.performed += MoveEventCallback;
@@ -72,6 +84,10 @@ namespace MissionOfMercenary
             _zoomInAction.performed += ZoomInActionCallBack;
 
             _assasinAction.performed += AssasinActionCallBack;
+
+            _equipPrimaryAction.performed += EquipPrimaryActionCallBack;
+            _equipSecondaryAction.performed += EquipSecondaryActionCallBack;
+            _equipMeleeAction.performed += EquipMeleeActionCallBack;
         }
 
         private void OnDisable()
@@ -81,6 +97,17 @@ namespace MissionOfMercenary
             _lookAction.Disable();
             _runAction.Disable();
             _switchFireAction.Disable();
+
+
+            _reloadAction.Disable();
+
+            _zoomInAction.Disable();
+
+            _assasinAction.Disable();
+
+            _equipPrimaryAction.Disable();
+            _equipSecondaryAction.Disable();
+            _equipMeleeAction.Disable();
 
             //이벤트 콜백 해제
             _moveAction.performed -= MoveEventCallback;
@@ -100,6 +127,10 @@ namespace MissionOfMercenary
             _zoomInAction.performed -= ZoomInActionCallBack;
 
             _assasinAction.performed -= AssasinActionCallBack;
+
+            _equipPrimaryAction.performed -= EquipPrimaryActionCallBack;
+            _equipSecondaryAction.performed -= EquipSecondaryActionCallBack;
+            _equipMeleeAction.performed -= EquipMeleeActionCallBack;
         }
 
         //*************이벤트 처리 함수들*******************
@@ -157,6 +188,21 @@ namespace MissionOfMercenary
         {
             //bool value = context.ReadValue<bool>();
             OnAssasinAction?.Invoke();
+        }
+
+        void EquipPrimaryActionCallBack(InputAction.CallbackContext context)
+        {
+            OnEquipPrimaryAction?.Invoke();
+        }
+
+        void EquipSecondaryActionCallBack(InputAction.CallbackContext context)
+        {
+            OnEquipSecondaryAction?.Invoke();
+        }
+
+        void EquipMeleeActionCallBack(InputAction.CallbackContext context)
+        {
+            OnEquipMeleeAction?.Invoke();
         }
     }
 }
