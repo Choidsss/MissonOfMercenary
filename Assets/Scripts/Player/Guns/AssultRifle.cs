@@ -109,15 +109,15 @@ namespace MIssionOfMercenary
 
             Vector3 muzzleDir = (targetPoint - _muzzle.position).normalized;
             if(!Physics.Raycast(_muzzle.position, muzzleDir, out RaycastHit muzzleHit, AttackRange)) { return; }
+            EnemyHit enemyHit = muzzleHit.collider.GetComponentInParent<EnemyHit>();
 
-
-            Instantiate(_bulletMarkObj, muzzleHit.point, Quaternion.LookRotation(muzzleHit.normal));
-            StartCoroutine(BulletMarkEffectDestoryRoutine(_bulletMarkObj));
+            if (enemyHit == null)
+            {
+                Instantiate(_bulletMarkObj, muzzleHit.point, Quaternion.LookRotation(muzzleHit.normal));
+                StartCoroutine(BulletMarkEffectDestoryRoutine(_bulletMarkObj));
+            }
 
             IsShot = true;
-
-
-            EnemyHit enemyHit = muzzleHit.collider.GetComponentInParent<EnemyHit>();
 
             if (enemyHit != null)
             {

@@ -18,6 +18,7 @@ namespace MIssionOfMercenary
         [SerializeField] InputReader _inputReader;
         [SerializeField] GameObject _muzzle;
         [SerializeField] GameObject _bullet;
+        [SerializeField] GameObject _bulletTrail;
         [SerializeField] GameObject _bulletMark;
         [SerializeField] GameObject _muzzleFlash;
         [SerializeField] GameObject _shellEjector;
@@ -28,10 +29,8 @@ namespace MIssionOfMercenary
         [SerializeField] float _reloadDelay = 2.0f;
         [SerializeField] float _attackRange = 1.0f;
         [SerializeField] int _hgDamage = 1;
-        [SerializeField] int _hgCurrentAmmo = 1;
         [SerializeField] int _hgMaxAmmo = 12;
         [SerializeField] float _trailSpeeds = 1.0f;
-        //[SerializeField] LayerMask _layer;
 
         public AimType aimType { get; } = AimType.None;
 
@@ -44,6 +43,7 @@ namespace MIssionOfMercenary
         public int Ammo { get { return _hgCurrentAmmo; } private set { _hgCurrentAmmo = value; } }
         public bool IsShot { get; private set;} = false;
 
+        int _hgCurrentAmmo = 1;
         bool _isReloading = false;
 
         private void OnEnable()
@@ -62,21 +62,6 @@ namespace MIssionOfMercenary
         void Start()
         {
             _hgCurrentAmmo = _hgMaxAmmo;
-        }
-
-        void Update()
-        {
-        //    if (_rightHandIKTarget == null || _rightGripPoint == null)
-        //    {
-        //        Debug.Log("dddd");
-        //        return;
-        //    }
-            
-        //    _rightHandIKTarget.SetPositionAndRotation(_rightGripPoint.position, _rightGripPoint.rotation);
-
-        //    Debug.Log(
-        //$"Grip: {_rightGripPoint.name} / {_rightGripPoint.position}\n" +
-        //$"Target: {_rightHandIKTarget.name} / {_rightHandIKTarget.position}");
         }
 
         public void Attack(float isShot)
@@ -109,13 +94,14 @@ namespace MIssionOfMercenary
             _weaponRecoil?.WeaponRecoilApply();
 
             if (!Physics.Raycast(ray, out RaycastHit hitInfo, AttackRange)) { return; }
+            EnemyHit enemyHit = hitInfo.collider.GetComponentInParent<EnemyHit>();
 
-            //총알 맞은곳 총알자국 생성
-            GameObject bulletMark = Instantiate(_bulletMark, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-
-            StartCoroutine(BulletMarkDestroyRoutine(bulletMark));
-
-            EnemyHit enemyHit = hitInfo.collider.GetComponent<EnemyHit>();
+            if (enemyHit == null)
+            {
+                //총알 맞은곳 총알자국 생성
+                GameObject bulletMark = Instantiate(_bulletMark, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                StartCoroutine(BulletMarkDestroyRoutine(bulletMark));
+            }
 
             if (enemyHit != null) { enemyHit.RecieveHit(hitInfo, Damage); }
             else { Debug.Log("맞은 적이 없어 컴포넌트를 가져올수 없습니다!"); }
@@ -156,7 +142,7 @@ namespace MIssionOfMercenary
         IEnumerator SpawnBulletTrail(Vector3 targetPoint, Vector3 muzzleDirection)
         {
             float moveDistance = 0;
-            GameObject go = Instantiate(_bullet, _muzzle.transform.position, _muzzle.transform.rotation);
+            GameObject go = Instantiate(_bulletTrail, _muzzle.transform.position, _muzzle.transform.rotation);
 
             float totalDistance = Vector3.Distance(go.transform.position, targetPoint);
 

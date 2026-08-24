@@ -12,6 +12,8 @@ namespace MIssionOfMercenary
 
         public float AttackRange { get; }
 
+        public int Ammo { get; }
+
 
         void Attack(float isShot);
     }

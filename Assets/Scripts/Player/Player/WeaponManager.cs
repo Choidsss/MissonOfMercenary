@@ -23,6 +23,9 @@ namespace MIssionOfMercenary
         [Header("InputReader Asset")]
         [SerializeField] InputReader _inputReader;
 
+        [Header("UI Changed")]
+        [SerializeField] WeaponUI _weaponUI;
+
         [Header("Weapon Slot")]
         [SerializeField] GameObject _primaryWeapon; //주무기
         [SerializeField] GameObject _secondaryWeapon; //보조무기
@@ -36,7 +39,7 @@ namespace MIssionOfMercenary
         WeaponSlot _currentSlot; //현재 슬롯
 
         public WeaponSlot CurrentSlot => _currentSlot; // 프로퍼티로 현재슬롯 반환
-        public GameObject CurrentWeapon => _weapons[(int)_currentSlot]; //얘가 좀 헷갈리네.......
+        public GameObject CurrentWeapon => _weapons[(int)_currentSlot];
 
         public WeaponIKData CurrentWeaponIKData
         {
@@ -47,9 +50,6 @@ namespace MIssionOfMercenary
                 return CurrentWeapon.GetComponent<WeaponIKData>();
             }
         }
-
-
-        int _currentindex;
 
         private void OnEnable()
         {
@@ -96,7 +96,11 @@ namespace MIssionOfMercenary
                 //}
             }
 
+            
             _currentSlot = slot;
+
+            IWeapons currentWeaponInterface = CurrentWeapon.GetComponentInParent<IWeapons>();
+            _weaponUI.GetCurrentWeaponType(currentWeaponInterface);
 
             WeaponIKData weaponIKData = CurrentWeaponIKData;
 
