@@ -10,9 +10,9 @@ namespace MIssionOfMercenary
         [Header("Recoil")]
         [SerializeField] WeaponRecoil _weaponRecoil;
 
-        [Header("IK")]
-        [SerializeField] Transform _rightGripPoint;
-        [SerializeField] Transform _rightHandIKTarget;
+        //[Header("IK")]
+        //[SerializeField] Transform _rightGripPoint;
+        //[SerializeField] Transform _rightHandIKTarget;
 
         [Header("Needed Assets")]
         [SerializeField] InputReader _inputReader;

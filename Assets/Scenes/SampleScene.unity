@@ -31315,6 +31315,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2214970806106760202, guid: 9b501bc9f33120643ab08a177d24ce93, type: 3}
   m_PrefabInstance: {fileID: 1594299038}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1598725091 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6459494780213377508, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+  m_PrefabInstance: {fileID: 946757081343618496}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1599420777
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39845,6 +39850,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2024828026}
   m_CullTransparentMesh: 1
+--- !u!4 &2028278074 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4276832941789085783, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+  m_PrefabInstance: {fileID: 946757081343618496}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2030389985
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43280,6 +43290,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1232632838066653154, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1232632838066653154, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _weaponPivot
+      value: 
+      objectReference: {fileID: 2028278074}
+    - target: {fileID: 3044476225129617369, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.255
+      objectReference: {fileID: 0}
+    - target: {fileID: 3044476225129617369, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.9538
+      objectReference: {fileID: 0}
+    - target: {fileID: 3044476225129617369, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.354
+      objectReference: {fileID: 0}
     - target: {fileID: 3623376667837324982, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _crossHair
       value: 
@@ -43296,6 +43326,14 @@ PrefabInstance:
       propertyPath: _rightGripPoint
       value: 
       objectReference: {fileID: 1070061505}
+    - target: {fileID: 4032807633238968760, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _weaponBox
+      value: 
+      objectReference: {fileID: 1598725091}
+    - target: {fileID: 4032807633238968760, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _weaponBoxMultiply
+      value: 0.07
+      objectReference: {fileID: 0}
     - target: {fileID: 5289674846794416690, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: m_Name
       value: Player

@@ -9,6 +9,7 @@ namespace MIssionOfMercenary
         [Header("References")]
         [SerializeField] Transform _camera;
         [SerializeField] PlayerMove _playerMove;
+        [SerializeField] GameObject _weaponBox;
 
         [Header("HeadBob Options")]
         [SerializeField] float _bobFrequency;//흔들리는 속도(주파수)
@@ -16,15 +17,18 @@ namespace MIssionOfMercenary
         [SerializeField] float _amountX; // 좌우 흔들리는 폭
         [SerializeField] float _amountY; //상하 흔들리는 폭
         [SerializeField] float _runMultiply;
+        [SerializeField] float _weaponBoxMultiply;
 
         float _bobTimer; 
         Vector3 _bobOffset; //처음 위치 저장
 
         Vector3 _originPosition;
+        Vector3 _weaponBoxOriginPosition; // 추가
 
         private void Start()
         {
             _originPosition = _camera.localPosition;
+            _weaponBoxOriginPosition = _weaponBox.transform.localPosition; // 추가
         }
 
         // Update is called once per frame
@@ -52,6 +56,7 @@ namespace MIssionOfMercenary
             }
 
             _camera.localPosition = _originPosition + _bobOffset;
+            _weaponBox.transform.localPosition = _weaponBoxOriginPosition + _bobOffset * _weaponBoxMultiply; // 추가
         }
 
     }

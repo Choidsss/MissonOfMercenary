@@ -143,7 +143,7 @@ namespace MIssionOfMercenary
             _weaponBox.localPosition = Vector3.Lerp(_weaponBox.localPosition, _weaponBoxOrigin + _swayOffset, _swayAmount * Time.deltaTime);
             _weaponBox.rotation = Quaternion.Lerp(_weaponBox.rotation, rot, _swayAmount * Time.deltaTime);
 
-            _swayInput = Vector2.zero; //초기화? 왜??????
+            _swayInput = Vector2.zero;
         }
 
 
