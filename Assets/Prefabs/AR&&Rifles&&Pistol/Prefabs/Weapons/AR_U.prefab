@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5586734073353551581}
   - component: {fileID: 5121153821319899466}
   - component: {fileID: 2992390110866214016}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AR_U_BarrelGuard_Rail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 5313430477382430715}
   - component: {fileID: 8072512396134041962}
   - component: {fileID: 5606423964927532943}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AR_U_Mag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 2952253130705476399}
   - component: {fileID: 6095217192224690444}
   - component: {fileID: 5872338482438986564}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AR_U_Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -258,6 +258,68 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1635476576826597508
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8652672281563001668}
+  m_Layer: 9
+  m_Name: Muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8652672281563001668
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635476576826597508}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.053, z: 0.502}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6961536937032393521}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2130854701723502449
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3703610628042265874}
+  m_Layer: 9
+  m_Name: LeftGripPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3703610628042265874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130854701723502449}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6961536937032393521}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2951451254905423918
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,7 +331,7 @@ GameObject:
   - component: {fileID: 6641065338839344607}
   - component: {fileID: 2305512392418419902}
   - component: {fileID: 868438212898322220}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AR_U_Grip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,7 +417,7 @@ GameObject:
   - component: {fileID: 7649004411012880150}
   - component: {fileID: 4892501726426853084}
   - component: {fileID: 1471811746783488781}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AR_U_Receiver_Up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -441,7 +503,7 @@ GameObject:
   - component: {fileID: 8135937310258979077}
   - component: {fileID: 3586322211359359647}
   - component: {fileID: 5887170697258909135}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AR_U_Receiver_Down
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -527,7 +589,7 @@ GameObject:
   - component: {fileID: 7835132130714359204}
   - component: {fileID: 3500110930271314767}
   - component: {fileID: 7311504913901710362}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AR_U_Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -602,6 +664,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4730846596717524609
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2709161609707955864}
+  m_Layer: 9
+  m_Name: ShellEjector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2709161609707955864
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4730846596717524609}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0202, y: 0.0681, z: 0.0702}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6961536937032393521}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5404243979624235176
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,7 +706,7 @@ GameObject:
   - component: {fileID: 41203783630895338}
   - component: {fileID: 1402049038041690524}
   - component: {fileID: 4373074211661085557}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AR_U_Sight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -688,6 +781,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5604753733662163108
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9013828035414448355}
+  m_Layer: 9
+  m_Name: RightGripPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9013828035414448355
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5604753733662163108}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.3619}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6961536937032393521}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7319903435566214677
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,7 +823,7 @@ GameObject:
   - component: {fileID: 7237428888470531202}
   - component: {fileID: 6317852997051897549}
   - component: {fileID: 2426213244549564191}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AR_U_Stock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -783,7 +907,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6961536937032393521}
-  m_Layer: 0
+  - component: {fileID: 6655030955435087469}
+  - component: {fileID: 4805540506211358218}
+  - component: {fileID: 5895763099437874652}
+  - component: {fileID: 5685893099318318630}
+  - component: {fileID: 2058046314874696568}
+  m_Layer: 9
   m_Name: AR_U
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -800,8 +929,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7835132130714359204}
   - {fileID: 1739419365214493636}
@@ -814,8 +943,101 @@ Transform:
   - {fileID: 41203783630895338}
   - {fileID: 7237428888470531202}
   - {fileID: 2952253130705476399}
+  - {fileID: 2709161609707955864}
+  - {fileID: 3703610628042265874}
+  - {fileID: 9013828035414448355}
+  - {fileID: 8652672281563001668}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6655030955435087469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7770829599027755403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0431b3be5cf177c49804f597eb40bf5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ikController: {fileID: 0}
+  _aimController: {fileID: 0}
+  _bullet: {fileID: 0}
+  _trailRendererSpeed: 0
+  _inputReader: {fileID: 0}
+  _muzzle: {fileID: 0}
+  _muzzleFlash: {fileID: 0}
+  _bulletMarkObj: {fileID: 0}
+  _flashDestroyedTime: 2
+  _bulletMarkDestroyedTime: 2
+  _autoSpeed: 1
+  _maxAmmo: 30
+--- !u!114 &4805540506211358218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7770829599027755403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afd39fe2894156a46948e5a8f5a8ac87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cartridgePosition: {fileID: 0}
+  _cartridge: {fileID: 0}
+  _cartridgeUpForce: 0
+  _cartridgeRightForce: 0
+  _lifeTime: 0
+  _torque: 0
+--- !u!114 &5895763099437874652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7770829599027755403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fd1c61b8f21e4548b20e97b8810a258, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _leftGripPoint: {fileID: 0}
+  _rightGripPoint: {fileID: 0}
+  _useLeftHandIK: 0
+--- !u!114 &5685893099318318630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7770829599027755403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f6568d0909d394fbc33c9b727b7d7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponPivot: {fileID: 0}
+  _recoilKickBack: 0
+  _recoilUpDown: 0
+  _recoilVibration: 0
+  _snapSpeed: 0
+  _recoverySpeed: 0
+--- !u!114 &2058046314874696568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7770829599027755403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e737dfadb4ff104884f0980fe355061, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _triggerObjectName: PickupTrigger
+  _padding: 0.1
 --- !u!1 &8154561275838983216
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,7 +1049,7 @@ GameObject:
   - component: {fileID: 188408934010288563}
   - component: {fileID: 3175846032147456941}
   - component: {fileID: 4110646560248825000}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AR_U_Bolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -913,7 +1135,7 @@ GameObject:
   - component: {fileID: 1739419365214493636}
   - component: {fileID: 423433464628363297}
   - component: {fileID: 6429467197149429957}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AR_U_BarrelGuard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1000,7 +1222,7 @@ GameObject:
   - component: {fileID: 2401049531574651662}
   - component: {fileID: 7038809052612256928}
   - component: {fileID: 5402393622680303012}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AR_U_Rail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
