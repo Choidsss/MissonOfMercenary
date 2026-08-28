@@ -12,6 +12,7 @@ namespace MIssionOfMercenary
         [SerializeField] IKController _ikController;
         [SerializeField] AimController _aimController;
         [SerializeField] GameObject _bullet;
+        [SerializeField] PlayerBulletTrailPooling _bulletTrailPooling;
         [SerializeField] float _trailRendererSpeed;
 
         ShellEjector _shell;
@@ -78,7 +79,7 @@ namespace MIssionOfMercenary
             _inputReader.OnShotCancled -= HandleShotCancled;
         }
 
-        //2¥‹ RayCast∑Œ ±∏¡∂ ∫Ø∞Ê
+        //2Îã® RayCastÎ°ú Íµ¨Ï°∞ Î≥ÄÍ≤Ω
         public void Attack(float isShot)
         {
             IsShot = false;
@@ -100,10 +101,17 @@ namespace MIssionOfMercenary
                 targetPoint = ray.origin + ray.direction * AttackRange;
             }
 
-            //Debug.Log(Vector3.Distance(_muzzle.position, targetPoint));
-            StartCoroutine(SpawnBulletTrail(targetPoint));
+            if (_bulletTrailPooling != null)
+            {
+                _bulletTrailPooling.PlayTrail(_muzzle.position, _muzzle.forward, AttackRange, _trailRendererSpeed);
+            }
+            //else
+            //{
+            //    //StartCoroutine(SpawnBulletTrail(targetPoint));
+            //    _bulletTrailPooling.PlayTrail(_muzzle.transform.position, _muzzle.transform.forward, totalDistance, _trailRendererSpeed);
+            //}
 
-            //  ∏”¡Ò«√∑°Ω√¥¬ «◊ªÛ ª˝º∫
+            //  Î®∏Ï¶êÌîåÎûòÏãúÎäî Ìï≠ÏÉÅ ÏÉùÏÑ±
             GameObject flash = Instantiate(_muzzleFlash, _muzzle.position, _muzzle.rotation);
             StartCoroutine(FlashEffectDestoryRoutine(flash));
 
@@ -175,7 +183,7 @@ namespace MIssionOfMercenary
         void HandledReload(float value)
         {
             if (!canReload) { return; }
-            if (_reloadRoutine != null) StopCoroutine(_reloadRoutine); // ¿Á¿Â¿¸ ƒ⁄∑Á∆æ ∏ÿ√„
+            if (_reloadRoutine != null) StopCoroutine(_reloadRoutine); // Ïû¨Ïû•Ï†Ñ ÏΩîÎ£®Ìã¥ Î©àÏ∂§
             _reloadRoutine = StartCoroutine(ReloadDelayRoutine());
             Debug.Log("Reloading");
         }
@@ -232,27 +240,28 @@ namespace MIssionOfMercenary
             Ammo = _maxAmmo;    
         }
 
-        IEnumerator SpawnBulletTrail(Vector3 targetPoint)
-        {
-            float movedDistance = 0;
-            GameObject go = Instantiate(_bullet, _muzzle.position, _muzzle.rotation);
-            Vector3 dir = (targetPoint - _muzzle.position).normalized;
+        //IEnumerator SpawnBulletTrail(Vector3 targetPoint)
+        //{
+        //    float movedDistance = 0;
+        //    //GameObject go = Instantiate(_bullet, _muzzle.position, _muzzle.rotation);
 
-            float totalDistance = Vector3.Distance(go.transform.position, targetPoint);
+        //    Vector3 dir = (targetPoint - _muzzle.position).normalized;
+        //    float totalDistance = Vector3.Distance(_muzzle.transform.position, targetPoint);
+        //    _bulletTrailPooling.PlayTrail(_muzzle.transform.position, _muzzle.transform.forward, totalDistance, _trailRendererSpeed);
 
-            //∏≈ «¡∑π¿”∏∂¥Ÿ ¿Ãµø«ÿæﬂ«‘
-            while (movedDistance < totalDistance)
-            {
-                if (go == null) break;
+        //    //Îß§ ÌîÑÎ†àÏûÑÎßàÎã§ Ïù¥ÎèôÌï¥ÏïºÌï®
+        //    while (movedDistance < totalDistance)
+        //    {
+        //        if (_bulletTrailPooling == null) break;
 
-                float step = _trailRendererSpeed * Time.deltaTime;
+        //        float step = _trailRendererSpeed * Time.deltaTime;
 
-                go.transform.position += dir * step;
-                movedDistance += step;
+        //        go.transform.position += dir * step;
+        //        movedDistance += step;
 
-                yield return null;
-            }
-            Destroy(go);
-        }
+        //        yield return null;
+        //    }
+        //    Destroy(go);
+        //}
     }
 }

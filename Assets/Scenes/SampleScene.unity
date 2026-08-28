@@ -481,7 +481,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.1
+  m_fontSize: 21.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -10931,6 +10931,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AR_U
       objectReference: {fileID: 0}
+    - target: {fileID: 7770829599027755403, guid: c288c4ea6ee2d4c49bc45812e5b05a2e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -13762,7 +13766,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36.55
+  m_fontSize: 18
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -20210,7 +20214,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42
+  m_fontSize: 39.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -25786,7 +25790,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 33.6
+  m_fontSize: 23.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -29811,14 +29815,6 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 1634569297}
-    - target: {fileID: 2921699445961997115, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
-      propertyPath: _backsideDegree
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 2921699445961997115, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
-      propertyPath: _backsideDistance
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6497947262879388413, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
       propertyPath: m_Name
       value: WarBot (1)
@@ -34267,7 +34263,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 59.9
+  m_fontSize: 40.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -36639,7 +36635,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45.7
+  m_fontSize: 41.7
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -43598,34 +43594,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 945273554716447586, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 945273554716447586, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 945273554716447586, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 945273554716447586, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 945273554716447586, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.016
-      objectReference: {fileID: 0}
-    - target: {fileID: 945273554716447586, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 945273554716447586, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3623376667837324982, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _crossHair
       value: 
@@ -43638,42 +43606,6 @@ PrefabInstance:
       propertyPath: _enemyAttack
       value: 
       objectReference: {fileID: 100443740}
-    - target: {fileID: 6304039944796355247, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.0327
-      objectReference: {fileID: 0}
-    - target: {fileID: 6304039944796355247, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0298
-      objectReference: {fileID: 0}
-    - target: {fileID: 6304039944796355247, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.2026
-      objectReference: {fileID: 0}
-    - target: {fileID: 6304039944796355247, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.12125572
-      objectReference: {fileID: 0}
-    - target: {fileID: 6304039944796355247, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.3062059
-      objectReference: {fileID: 0}
-    - target: {fileID: 6304039944796355247, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.6939852
-      objectReference: {fileID: 0}
-    - target: {fileID: 6304039944796355247, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.64024955
-      objectReference: {fileID: 0}
-    - target: {fileID: 6304039944796355247, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -54.527
-      objectReference: {fileID: 0}
-    - target: {fileID: 6304039944796355247, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 105.057
-      objectReference: {fileID: 0}
     - target: {fileID: 6757284830440564949, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 166
@@ -43713,10 +43645,6 @@ PrefabInstance:
     - target: {fileID: 6757284830440564949, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7812074923575429974, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
-      propertyPath: _kickBack
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8316585890996079863, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _weaponUI

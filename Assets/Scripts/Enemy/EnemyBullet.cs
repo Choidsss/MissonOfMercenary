@@ -5,13 +5,14 @@ namespace MIssionOfMercenary
 {
     public class EnemyBullet : MonoBehaviour
     {
-        [SerializeField] EnemyBulletPooling _enemyBulletPooling;
-        [SerializeField] float _delay = 5.0f;
+        EnemyBulletPooling _enemyBulletPooling;
+        Coroutine _returnRoutine;
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        [SerializeField] float _lifeTime = 3f;
+
+        private void OnEnable()
         {
-            StartCoroutine(DestroyBulletRoutine());
+            _returnRoutine = StartCoroutine(ReturnAfterTime());
         }
 
         public void SetPool(EnemyBulletPooling pool)
@@ -19,24 +20,22 @@ namespace MIssionOfMercenary
             _enemyBulletPooling = pool;
         }
 
-        IEnumerator DestroyBulletRoutine()
+        private IEnumerator ReturnAfterTime()
         {
-            yield return new WaitForSeconds(_delay);
-            Destroy(this.gameObject);
-
-            Debug.Log("Enemy Bullet Destroyed");
+            yield return new WaitForSeconds(_lifeTime);
+            _enemyBulletPooling.ReturnBullet(gameObject);
         }
+
 
         private void OnCollisionEnter(Collision collision)
         {
-            //데미지 주는것도 여기서 할까?????
-
-            Destroy(this.gameObject);
-
             if(collision.gameObject.layer == 20)
             {
                 Debug.Log("******************Player Hit******************");
             }
+
+            //탄환에 붙어있으므로 이오브젝트 자체를 다시 큐에 넣음
+            _enemyBulletPooling.ReturnBullet(this.gameObject);
         }
     }
 }

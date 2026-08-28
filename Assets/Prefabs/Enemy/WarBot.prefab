@@ -168,6 +168,7 @@ GameObject:
   - component: {fileID: 4163511538565772403}
   - component: {fileID: 6732519933495941861}
   - component: {fileID: 6228981446649428413}
+  - component: {fileID: 1027264630943828315}
   m_Layer: 10
   m_Name: WarBot
   m_TagString: Untagged
@@ -226,7 +227,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nav: {fileID: 4680511968600166622}
-  _delay: 2.5
 --- !u!114 &1237284861444829311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,8 +240,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _turnSpeed: 5
-  _lookAngleOffset: 1
-  _lookVerticalOffset: 0.5
   _nav: {fileID: 4680511968600166622}
   _patrolSpeed: 3
   _wayPoints:
@@ -264,8 +262,8 @@ MonoBehaviour:
   _player: {fileID: 0}
   _degree: 70
   _eyeSightDistance: 10
-  _backsideDegree: 30
-  _backsideDistance: 1
+  _backsideDegree: 70
+  _backsideDistance: 3
   _eyeHeight: {x: 0, y: 1.7, z: 0}
   _targetHeight: {x: 0, y: 1.7, z: 0}
   _obstaclesLayer:
@@ -288,6 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b50a5e0ceed6fa74ea0b00bf9a3fc680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyBulletPooling: {fileID: 1027264630943828315}
   _attackRange: 15
   _bulletSpeed: 150
   _ammo: {fileID: 8792954647265824588, guid: afad03405a8b4914c97c78e992bed72e, type: 3}
@@ -322,7 +321,6 @@ MonoBehaviour:
   _bonusDamageLegs: 5
   _bonusDamageHead: 20
   _bonusDamageBody: 10
-  _deathDelay: 3
 --- !u!114 &6732519933495941861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,6 +334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyHealth: 100
+  _deathDelay: 3
 --- !u!114 &6228981446649428413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +358,20 @@ MonoBehaviour:
   _pelvis: {fileID: 2643655722855557179}
   _chest: {fileID: 2285750672468006876}
   _head: {fileID: 9195372458757217788}
+--- !u!114 &1027264630943828315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6497947262879388413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03f326045616ae44389444fed8b2a2d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bulletEnemy: {fileID: 8792954647265824588, guid: afad03405a8b4914c97c78e992bed72e, type: 3}
+  _poolingCount: 20
 --- !u!1 &8113997172826231361
 GameObject:
   m_ObjectHideFlags: 0

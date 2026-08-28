@@ -22,8 +22,13 @@ namespace MIssionOfMercenary
             for (int i = 0;i < _poolingCount;i++)
             {
                 GameObject bullet = Instantiate(_bulletEnemy, transform);
+
+                EnemyBullet enemyBullet = bullet.GetComponent<EnemyBullet>();
+                enemyBullet.SetPool(this);
+
                 bullet.SetActive(false);
                 _prefabPool.Enqueue(bullet);
+
             }
         }
 
@@ -33,7 +38,7 @@ namespace MIssionOfMercenary
 
             GameObject bullet = _prefabPool.Dequeue();
 
-            bullet.transform.SetLocalPositionAndRotation(position, rotation); //뺀 총알을 머즐위치로 이동,월드 좌표니까 월드로 이동해야 더 적합
+            bullet.transform.SetPositionAndRotation(position, rotation); //뺀 총알을 머즐위치로 이동,월드 좌표니까 월드로 이동해야 더 적합
             bullet.SetActive(true);
 
             return bullet;

@@ -73,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 2716896382243603288}
   serializedVersion: 2
   m_LocalRotation: {x: 0.3062059, y: 0.6939852, z: 0.64024955, w: 0.12125572}
-  m_LocalPosition: {x: -0.0516, y: 0.0219, z: 0.2079}
+  m_LocalPosition: {x: -0.0327, y: 0.0298, z: 0.2026}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -345,6 +345,7 @@ GameObject:
   - component: {fileID: 7812074923575429974}
   - component: {fileID: 8822844103384651955}
   - component: {fileID: 1299056999373807507}
+  - component: {fileID: 7548385756913417618}
   m_Layer: 20
   m_Name: Player
   m_TagString: Untagged
@@ -557,7 +558,7 @@ MonoBehaviour:
   _leftGripPoint: {fileID: 6304039944796355247}
   _rightGripPoint: {fileID: 3353032701897753745}
   _rightHandIKTarget: {fileID: 3392991865281133022}
-  _kickBack: 0.3
+  _kickBack: 1
   _upDown: 10
   _vibration: 10
   _snapSpeed: 10
@@ -603,6 +604,20 @@ MonoBehaviour:
   _offsetX: 0
   _offsetY: 1
   _assasinDamage: 1000
+--- !u!114 &7548385756913417618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5289674846794416690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd12ba47ceb4a1a4fac05dbace52cac3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _trailPrefab: {fileID: 1604896179436244731, guid: a6fbbf3c38fda814593cbde6967ceb1a, type: 3}
+  _poolingCount: 30
 --- !u!1 &5917594908819430115
 GameObject:
   m_ObjectHideFlags: 0
@@ -1028,6 +1043,10 @@ PrefabInstance:
       propertyPath: _rightHandIKTarget
       value: 
       objectReference: {fileID: 3392991865281133022}
+    - target: {fileID: -229417214632560481, guid: ea1ad08618ee1794b816f11a5aebd849, type: 3}
+      propertyPath: _bulletTrailPooling
+      value: 
+      objectReference: {fileID: 7548385756913417618}
     - target: {fileID: 88317814946030486, guid: ea1ad08618ee1794b816f11a5aebd849, type: 3}
       propertyPath: m_Name
       value: Pistol_J
@@ -1933,6 +1952,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3623376667837324982}
     - target: {fileID: 3723843891446055213, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: _bulletTrailPooling
+      value: 
+      objectReference: {fileID: 7548385756913417618}
+    - target: {fileID: 3723843891446055213, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: _flashDestroyedTime
       value: 0.001
       objectReference: {fileID: 0}
@@ -1969,16 +1992,28 @@ PrefabInstance:
       value: 0.1033
       objectReference: {fileID: 0}
     - target: {fileID: 5455051674980904138, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5455051674980904138, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5455051674980904138, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5455051674980904138, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.026
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 5455051674980904138, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0
+      value: -0.016
       objectReference: {fileID: 0}
     - target: {fileID: 5455051674980904138, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.09
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 5455051674980904138, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2007,6 +2042,10 @@ PrefabInstance:
     - target: {fileID: 5455051674980904138, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5455051674980904138, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5475307012204706637, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: m_Layer

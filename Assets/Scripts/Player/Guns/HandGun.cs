@@ -19,6 +19,7 @@ namespace MIssionOfMercenary
         [SerializeField] GameObject _muzzle;
         [SerializeField] GameObject _bullet;
         [SerializeField] GameObject _bulletTrail;
+        [SerializeField] PlayerBulletTrailPooling _bulletTrailPooling;
         [SerializeField] GameObject _bulletMark;
         [SerializeField] GameObject _muzzleFlash;
         [SerializeField] GameObject _shellEjector;
@@ -66,7 +67,7 @@ namespace MIssionOfMercenary
 
         public void Attack(float isShot)
         {
-            if (_hgCurrentAmmo <= 0) { Debug.Log("ÀçÀåÀüÀÌ ÇÊ¿äÇÕ´Ï´Ù!"); IsShot = false; return; }
+            if (_hgCurrentAmmo <= 0) { Debug.Log("ìž¬ìž¥ì „ì´ í•„ìš”í•©ë‹ˆë‹¤!"); IsShot = false; return; }
             IsShot = false;
             Vector3 targetPoint;
 
@@ -81,15 +82,22 @@ namespace MIssionOfMercenary
                 targetPoint = ray.origin + ray.direction * AttackRange;
             }
 
-            //ÃÑ ¹ß»ç½Ã È­¿° »ý¼º
+            //ì´ ë°œì‚¬ì‹œ í™”ì—¼ ìƒì„±
             GameObject flash = Instantiate(_muzzleFlash, _muzzle.transform.position, _muzzle.transform.rotation);
             Vector3 direction = (targetPoint - _muzzle.transform.position).normalized;
 
             StartCoroutine(MuzzleFlashDestroyRoutine(flash));
-            StartCoroutine(SpawnBulletTrail(targetPoint, direction)); //ÃÑ ¹ß»ç½Ã ÃÑ¾Ë(Æ®·¹ÀÏ) »ý¼º
+            if (_bulletTrailPooling != null)
+            {
+                _bulletTrailPooling.PlayTrail(_muzzle.transform.position, _muzzle.transform.forward, AttackRange, _trailSpeeds);
+            }
+            else
+            {
+                StartCoroutine(SpawnBulletTrail(targetPoint, direction));
+            }
 
             _hgCurrentAmmo--;
-            IsShot = true; //Æ®·¹ÀÏÀÌ »ý¼ºµÉ ¶§ IsShot = true
+            IsShot = true; //íŠ¸ë ˆì¼ì´ ìƒì„±ë  ë•Œ IsShot = true
 
             _weaponRecoil?.WeaponRecoilApply();
 
@@ -98,13 +106,13 @@ namespace MIssionOfMercenary
 
             if (enemyHit == null)
             {
-                //ÃÑ¾Ë ¸ÂÀº°÷ ÃÑ¾ËÀÚ±¹ »ý¼º
+                //ì´ì•Œ ë§žì€ê³³ ì´ì•Œìžêµ­ ìƒì„±
                 GameObject bulletMark = Instantiate(_bulletMark, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
                 StartCoroutine(BulletMarkDestroyRoutine(bulletMark));
             }
 
             if (enemyHit != null) { enemyHit.RecieveHit(hitInfo, Damage); }
-            else { Debug.Log("¸ÂÀº ÀûÀÌ ¾ø¾î ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿Ã¼ö ¾ø½À´Ï´Ù!"); }
+            else { Debug.Log("ë§žì€ ì ì´ ì—†ì–´ ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì ¸ì˜¬ìˆ˜ ì—†ìŠµë‹ˆë‹¤!"); }
         }
 
         void HandledReload(float shot)
@@ -125,7 +133,7 @@ namespace MIssionOfMercenary
 
         IEnumerator BulletMarkDestroyRoutine(GameObject bulletMark)
         {
-            if (bulletMark == null) { Debug.Log("ÆÄ±«ÇÒ bulletMark°¡ ¾ø½À´Ï´Ù"); } //yield return null;
+            if (bulletMark == null) { Debug.Log("íŒŒê´´í•  bulletMarkê°€ ì—†ìŠµë‹ˆë‹¤"); } //yield return null;
             yield return new WaitForSeconds(_bulletMarkDestroyDelay);
 
             Destroy(bulletMark);
@@ -133,7 +141,7 @@ namespace MIssionOfMercenary
 
         IEnumerator MuzzleFlashDestroyRoutine(GameObject flash)
         {
-            if (flash == null) { Debug.Log("ÆÄ±«ÇÒ MuzzleFlash°¡ ¾ø½À´Ï´Ù"); } //yield return null;
+            if (flash == null) { Debug.Log("íŒŒê´´í•  MuzzleFlashê°€ ì—†ìŠµë‹ˆë‹¤"); } //yield return null;
             yield return new WaitForSeconds(_muzzleFlashDestroyDelay);
 
             Destroy(flash);
@@ -148,7 +156,7 @@ namespace MIssionOfMercenary
 
             while (moveDistance < totalDistance)
             {
-                if(go == null) { Debug.Log("TrailÀÌ »ý¼ºµÇÁö ¾Ê¾Ò½À´Ï´Ù."); break; }
+                if(go == null) { Debug.Log("Trailì´ ìƒì„±ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤."); break; }
 
                 float step = _trailSpeeds * Time.deltaTime;
                 go.transform.position += step * muzzleDirection;
