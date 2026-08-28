@@ -1,0 +1,67 @@
+지금 Enemy 총알 오브젝트 풀링 적용 가이드
+=====================================
+
+목적
+----
+기존 방식은 발사할 때 Instantiate하고 충돌 또는 5초 후 Destroy합니다.
+풀링 방식은 시작할 때 총알을 여러 개 만들어 두고, 발사할 때 활성화하고,
+사용이 끝나면 비활성화하여 같은 총알을 다시 사용합니다.
+
+예제 파일
+---------
+1. EnemyBulletPool.cs
+   총알을 미리 생성하고 대여/반환하는 관리자입니다.
+
+2. PooledEnemyBullet.cs
+   충돌하거나 수명이 끝났을 때 Destroy하지 않고 풀로 돌아가는 총알입니다.
+
+3. EnemyAttackPoolingExample.cs
+   기존 EnemyAttack.OnFire()에서 Instantiate 부분을 어떻게 바꾸는지 보여주는 예제입니다.
+
+Unity 설정 순서
+---------------
+1. Enemy 총알 프리팹을 복제해 테스트용 프리팹을 만듭니다.
+2. 복제한 프리팹에서 기존 EnemyBullet 컴포넌트를 제거합니다.
+3. 복제한 프리팹에 PooledEnemyBullet을 추가합니다.
+4. Rigidbody와 Collider가 있는지 확인합니다.
+5. 씬에 빈 GameObject를 만들고 이름을 EnemyBulletPool로 지정합니다.
+6. EnemyBulletPool.cs를 붙이고 Bullet Prefab에 복제한 총알 프리팹을 연결합니다.
+7. Initial Size를 동시에 화면에 존재할 수 있는 최대 총알 수보다 조금 크게 설정합니다.
+   처음에는 20~50 정도로 테스트하면 됩니다.
+8. EnemyAttackPoolingExample.cs를 참고하여 기존 EnemyAttack의 Instantiate 코드를
+   _bulletPool.Get(...)과 bullet.Launch(...) 호출로 변경합니다.
+
+중요: PlayerHealth도 수정해야 함
+-------------------------------
+현재 PlayerHealth.OnCollisionEnter()에는 다음 코드가 있습니다.
+
+    Destroy(collision.gameObject);
+
+풀링 탄환을 Destroy하면 재사용할 수 없으므로 아래와 같은 방식으로 변경해야 합니다.
+
+    PooledEnemyBullet bullet = collision.gameObject.GetComponent<PooledEnemyBullet>();
+    if (bullet != null)
+        bullet.Despawn();
+    else
+        Destroy(collision.gameObject);
+
+파일 위쪽에는 다음 using도 필요합니다.
+
+    using MIssionOfMercenary.PoolingExample;
+
+주의 사항
+---------
+- 기존 EnemyBullet과 PooledEnemyBullet을 같은 프리팹에 동시에 붙이지 마세요.
+- 풀링 탄환에는 Destroy를 호출하지 마세요. 반드시 Despawn 또는 Pool.Release로 반환하세요.
+- 탄환의 TrailRenderer나 ParticleSystem이 있다면 반환/재사용 시 Clear 처리가 추가로 필요합니다.
+- Initial Size가 너무 작고 Can Expand가 켜져 있으면 전투 중 추가 Instantiate가 발생합니다.
+- Debug.Log가 발사마다 실행되면 에디터에서 끊김이 생길 수 있으므로 성능 측정 시 제거하세요.
+
+확인 방법
+---------
+Hierarchy에서 발사할 때 새로운 총알 GameObject가 계속 증가하지 않고,
+EnemyBulletPool 아래에 미리 만들어진 총알들이 활성/비활성만 반복하면 정상입니다.
+Unity Profiler에서 GC Alloc, Instantiate, Destroy가 줄었는지도 전후 비교하세요.
+
+이 폴더의 코드는 적용 방법을 설명하기 위한 예제입니다.
+검증 후 실제 Assets/Scripts/Enemy 구조에 맞게 옮겨서 사용하세요.

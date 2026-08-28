@@ -9,7 +9,7 @@ namespace MIssionOfMercenary
     {
         public override void OnInspectorGUI()
         {
-            //base.OnInspectorGUI(); 두번 그려지는 이유
+            //base.OnInspectorGUI(); 
             DrawDefaultInspector();
 
             EditorGUILayout.Space();
@@ -106,7 +106,7 @@ namespace MIssionOfMercenary
                 Vector3 min = rendererBounds.min;
                 Vector3 max = rendererBounds.max;
 
-                //???????????????????????반복문이 4중첩이요????이거 이렇게 쓰는거 맞나....????? 작아서 괜찮나....??그리고 상수코딩??????차라리 위에서 변수를 Const로 만들어서 쓰는게?
+                //반복문이 4중첩이요, 작아서 괜찮나.... 상수코딩 변수를 Const로 만들어서 쓰도록 바꾸기
                 for (int x = 0;x < 2;x++)
                 {
                     for (int y = 0; y < 2; y++)

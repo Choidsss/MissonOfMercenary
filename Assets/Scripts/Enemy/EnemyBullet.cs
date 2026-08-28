@@ -5,12 +5,18 @@ namespace MIssionOfMercenary
 {
     public class EnemyBullet : MonoBehaviour
     {
+        [SerializeField] EnemyBulletPooling _enemyBulletPooling;
         [SerializeField] float _delay = 5.0f;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             StartCoroutine(DestroyBulletRoutine());
+        }
+
+        public void SetPool(EnemyBulletPooling pool)
+        {
+            _enemyBulletPooling = pool;
         }
 
         IEnumerator DestroyBulletRoutine()

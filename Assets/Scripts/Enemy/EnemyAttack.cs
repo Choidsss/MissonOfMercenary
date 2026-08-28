@@ -12,6 +12,8 @@ namespace MIssionOfMercenary
     {
         EnemyFindArea _findArea;
 
+        [SerializeField] EnemyBulletPooling _enemyBulletPooling;
+
         [SerializeField] float _attackRange;
         [SerializeField] float _bulletSpeed;
         [SerializeField] GameObject _ammo;
@@ -38,13 +40,13 @@ namespace MIssionOfMercenary
             Vector3 target = _findArea.DetectedTarget + Vector3.up;
             Vector3 direction = (target - _muzzle.transform.position).normalized;
 
-            GameObject ammo = Instantiate(_ammo, _muzzle.transform.position, _muzzle.transform.rotation);
+            GameObject ammo = _enemyBulletPooling.GetBullet(_muzzle.transform.position, _muzzle.transform.rotation);
             Rigidbody ammoRb = ammo.GetComponent<Rigidbody>();
 
             if(ammoRb == null)
             {
                 Debug.Log("RigidBody does not exist! Please Check the Component");
-                Destroy(ammo);
+                _enemyBulletPooling.ReturnBullet(ammo);
                 return;
             }
 
