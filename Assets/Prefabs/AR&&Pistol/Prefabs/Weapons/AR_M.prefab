@@ -24,13 +24,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 383288763790554786}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0.04219132, y: -0.083243616, z: 0.00491275, w: 0.9956236}
   m_LocalPosition: {x: -0.002, y: 0.0691, z: 0.6362}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7419260731707568730}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 4.866, y: -9.552, z: 0.159}
 --- !u!1 &1016351359541861049
 GameObject:
   m_ObjectHideFlags: 0
@@ -1104,11 +1104,12 @@ MonoBehaviour:
   _ikController: {fileID: 0}
   _aimController: {fileID: 0}
   _bullet: {fileID: 0}
+  _bulletTrailPooling: {fileID: 0}
+  _bulletMarkPooling: {fileID: 0}
   _trailRendererSpeed: 0
   _inputReader: {fileID: 0}
   _muzzle: {fileID: 4702738985958861489}
   _muzzleFlash: {fileID: 199458, guid: 51b76f616384d4946bed4ecc9a6c2c3e, type: 3}
-  _bulletMarkObj: {fileID: 0}
   _flashDestroyedTime: 0.2
   _bulletMarkDestroyedTime: 2
   _autoSpeed: 1

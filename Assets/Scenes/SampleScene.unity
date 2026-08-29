@@ -481,7 +481,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 21.1
+  m_fontSize: 21.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -29799,6 +29799,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1027264630943828315, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
+      propertyPath: _poolingCount
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1237284861444829311, guid: e3c484cb3358b494b846fc3189dfd34c, type: 3}
       propertyPath: '_wayPoints.Array.data[0]'
       value: 
@@ -32667,6 +32671,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 352156df228dff242a2b7235d9dfac07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1634569313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634569297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf1158a7f771848bfed7418a286efb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputReader: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
+  _offsetX: 0
+  _offsetZ: 0
+  _radius: 10
+  _maxDistance: 30
+  _layer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1001 &1635982438
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36635,7 +36659,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 41.7
+  m_fontSize: 42.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -43594,6 +43618,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2673896364749540520, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _totalCount
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 3623376667837324982, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _crossHair
       value: 
@@ -43653,7 +43681,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5289674846794416690, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1634569313}
   m_SourcePrefab: {fileID: 100100000, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
 --- !u!1001 &3347684043364961206
 PrefabInstance:

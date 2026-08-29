@@ -13,9 +13,11 @@ namespace MIssionOfMercenary
         [SerializeField] AimController _aimController;
         [SerializeField] GameObject _bullet;
         [SerializeField] PlayerBulletTrailPooling _bulletTrailPooling;
+        [SerializeField] BulletMarkPooling _bulletMarkPooling;
         [SerializeField] float _trailRendererSpeed;
 
         ShellEjector _shell;
+        TryGetAimHit _aimHit;
 
         public enum SingleOrAuto
         {
@@ -37,6 +39,7 @@ namespace MIssionOfMercenary
         [SerializeField] GameObject _bulletMarkObj;
         [SerializeField] float _flashDestroyedTime = 2.0f;
         [SerializeField] float _bulletMarkDestroyedTime = 2.0f;
+        //[SerializeField] GameObject _bulletMarkObj;
         
 
         [Header("Weapon Options")]
@@ -64,6 +67,7 @@ namespace MIssionOfMercenary
         private void Start()
         {
             _shell = GetComponent<ShellEjector>();
+            _aimHit = GetComponentInParent<TryGetAimHit>();
         }
 
         void OnEnable()
@@ -79,7 +83,6 @@ namespace MIssionOfMercenary
             _inputReader.OnShotCancled -= HandleShotCancled;
         }
 
-        //2단 RayCast로 구조 변경
         public void Attack(float isShot)
         {
             IsShot = false;
@@ -90,7 +93,7 @@ namespace MIssionOfMercenary
 
             if (_muzzle == null) { return; }
 
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+            Ray ray = _aimHit.RayHit;
 
             if (Physics.Raycast(ray, out RaycastHit hit, AttackRange))
             {
@@ -101,15 +104,9 @@ namespace MIssionOfMercenary
                 targetPoint = ray.origin + ray.direction * AttackRange;
             }
 
-            if (_bulletTrailPooling != null)
-            {
-                _bulletTrailPooling.PlayTrail(_muzzle.position, _muzzle.forward, AttackRange, _trailRendererSpeed);
-            }
-            //else
-            //{
-            //    //StartCoroutine(SpawnBulletTrail(targetPoint));
-            //    _bulletTrailPooling.PlayTrail(_muzzle.transform.position, _muzzle.transform.forward, totalDistance, _trailRendererSpeed);
-            //}
+            _bulletTrailPooling.PlayTrail(_muzzle.position, _muzzle.forward, AttackRange, _trailRendererSpeed);
+            // Instantiate comparison:
+            // StartCoroutine(SpawnBulletTrail(targetPoint, _muzzle.forward));
 
             //  머즐플래시는 항상 생성
             GameObject flash = Instantiate(_muzzleFlash, _muzzle.position, _muzzle.rotation);
@@ -121,8 +118,10 @@ namespace MIssionOfMercenary
 
             if (enemyHit == null)
             {
-                Instantiate(_bulletMarkObj, muzzleHit.point, Quaternion.LookRotation(muzzleHit.normal));
-                StartCoroutine(BulletMarkEffectDestoryRoutine(_bulletMarkObj));
+                _bulletMarkPooling.GetBulletMark(muzzleHit.point + muzzleHit.normal * 0.01f, Quaternion.LookRotation(muzzleHit.normal));
+                // Instantiate comparison:
+                // GameObject bulletMark = Instantiate(_bulletMarkObj, muzzleHit.point + muzzleHit.normal * 0.01f, Quaternion.LookRotation(muzzleHit.normal));
+                // StartCoroutine(BulletMarkEffectDestoryRoutine(bulletMark));
             }
 
             IsShot = true;
@@ -240,28 +239,21 @@ namespace MIssionOfMercenary
             Ammo = _maxAmmo;    
         }
 
-        //IEnumerator SpawnBulletTrail(Vector3 targetPoint)
-        //{
-        //    float movedDistance = 0;
-        //    //GameObject go = Instantiate(_bullet, _muzzle.position, _muzzle.rotation);
+        IEnumerator SpawnBulletTrail(Vector3 targetPoint, Vector3 direction)
+        {
+            float movedDistance = 0f;
+            GameObject trail = Instantiate(_bullet, _muzzle.position, Quaternion.LookRotation(direction));
+            float totalDistance = Vector3.Distance(_muzzle.position, targetPoint);
 
-        //    Vector3 dir = (targetPoint - _muzzle.position).normalized;
-        //    float totalDistance = Vector3.Distance(_muzzle.transform.position, targetPoint);
-        //    _bulletTrailPooling.PlayTrail(_muzzle.transform.position, _muzzle.transform.forward, totalDistance, _trailRendererSpeed);
+            while (movedDistance < totalDistance)
+            {
+                float step = _trailRendererSpeed * Time.deltaTime;
+                trail.transform.position += direction * step;
+                movedDistance += step;
+                yield return null;
+            }
 
-        //    //매 프레임마다 이동해야함
-        //    while (movedDistance < totalDistance)
-        //    {
-        //        if (_bulletTrailPooling == null) break;
-
-        //        float step = _trailRendererSpeed * Time.deltaTime;
-
-        //        go.transform.position += dir * step;
-        //        movedDistance += step;
-
-        //        yield return null;
-        //    }
-        //    Destroy(go);
-        //}
+            Destroy(trail);
+        }
     }
 }

@@ -336,6 +336,7 @@ GameObject:
   - component: {fileID: 6757284830440564949}
   - component: {fileID: 2857590568242928252}
   - component: {fileID: 2760380768862763184}
+  - component: {fileID: 6354078379798726760}
   - component: {fileID: 8316585890996079863}
   - component: {fileID: 5665385604745818946}
   - component: {fileID: 111921809067059592}
@@ -346,6 +347,8 @@ GameObject:
   - component: {fileID: 8822844103384651955}
   - component: {fileID: 1299056999373807507}
   - component: {fileID: 7548385756913417618}
+  - component: {fileID: 2673896364749540520}
+  - component: {fileID: 2596919536824554741}
   m_Layer: 20
   m_Name: Player
   m_TagString: Untagged
@@ -420,6 +423,19 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.85, z: 0}
+--- !u!114 &6354078379798726760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5289674846794416690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d1acf695e2962e4582573633c363a2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputReader: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
 --- !u!114 &8316585890996079863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,7 +633,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _trailPrefab: {fileID: 1604896179436244731, guid: a6fbbf3c38fda814593cbde6967ceb1a, type: 3}
-  _poolingCount: 30
+  _poolingCount: 20
+--- !u!114 &2673896364749540520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5289674846794416690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c76fdef2c01f4044cae16bfdc2b81755, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bulletMark: {fileID: 179232, guid: b2ac1383a96f94a50b7ed458be173bbd, type: 3}
+  _totalCount: 20
+--- !u!114 &2596919536824554741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5289674846794416690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cf1158a7f771848bfed7418a286efb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputReader: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
+  _offsetX: 0
+  _offsetZ: 0
+  _radius: 10
+  _maxDistance: 30
+  _layer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &5917594908819430115
 GameObject:
   m_ObjectHideFlags: 0
@@ -1039,6 +1089,10 @@ PrefabInstance:
       propertyPath: _rightGripPoint
       value: 
       objectReference: {fileID: 3353032701897753745}
+    - target: {fileID: -229417214632560481, guid: ea1ad08618ee1794b816f11a5aebd849, type: 3}
+      propertyPath: _bulletMarkPooling
+      value: 
+      objectReference: {fileID: 2673896364749540520}
     - target: {fileID: -229417214632560481, guid: ea1ad08618ee1794b816f11a5aebd849, type: 3}
       propertyPath: _rightHandIKTarget
       value: 
@@ -1951,6 +2005,10 @@ PrefabInstance:
       propertyPath: _aimController
       value: 
       objectReference: {fileID: 3623376667837324982}
+    - target: {fileID: 3723843891446055213, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: _bulletMarkPooling
+      value: 
+      objectReference: {fileID: 2673896364749540520}
     - target: {fileID: 3723843891446055213, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: _bulletTrailPooling
       value: 

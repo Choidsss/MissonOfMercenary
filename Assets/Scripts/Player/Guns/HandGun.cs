@@ -7,6 +7,9 @@ namespace MIssionOfMercenary
 {
     public class HandGun : MonoBehaviour, IWeapons
     {
+        [SerializeField] BulletMarkPooling _bulletMarkPooling;
+        TryGetAimHit _aimHit;
+
         [Header("Recoil")]
         [SerializeField] WeaponRecoil _weaponRecoil;
 
@@ -20,9 +23,9 @@ namespace MIssionOfMercenary
         [SerializeField] GameObject _bullet;
         [SerializeField] GameObject _bulletTrail;
         [SerializeField] PlayerBulletTrailPooling _bulletTrailPooling;
-        [SerializeField] GameObject _bulletMark;
         [SerializeField] GameObject _muzzleFlash;
         [SerializeField] GameObject _shellEjector;
+        [SerializeField] GameObject _bulletMark;
 
         [Header("Attack Fields")]
         [SerializeField] float _muzzleFlashDestroyDelay = 1.5f;
@@ -62,6 +65,7 @@ namespace MIssionOfMercenary
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            _aimHit = GetComponentInParent<TryGetAimHit>();
             _hgCurrentAmmo = _hgMaxAmmo;
         }
 
@@ -71,7 +75,7 @@ namespace MIssionOfMercenary
             IsShot = false;
             Vector3 targetPoint;
 
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+            Ray ray = _aimHit.RayHit;
 
             if (Physics.Raycast(ray, out RaycastHit hit, AttackRange))
             {
@@ -87,14 +91,9 @@ namespace MIssionOfMercenary
             Vector3 direction = (targetPoint - _muzzle.transform.position).normalized;
 
             StartCoroutine(MuzzleFlashDestroyRoutine(flash));
-            if (_bulletTrailPooling != null)
-            {
-                _bulletTrailPooling.PlayTrail(_muzzle.transform.position, _muzzle.transform.forward, AttackRange, _trailSpeeds);
-            }
-            else
-            {
-                StartCoroutine(SpawnBulletTrail(targetPoint, direction));
-            }
+            _bulletTrailPooling.PlayTrail(_muzzle.transform.position, _muzzle.transform.forward, AttackRange, _trailSpeeds);
+            // Instantiate comparison:
+            // StartCoroutine(SpawnBulletTrail(targetPoint, _muzzle.transform.forward));
 
             _hgCurrentAmmo--;
             IsShot = true; //트레일이 생성될 때 IsShot = true
@@ -106,9 +105,10 @@ namespace MIssionOfMercenary
 
             if (enemyHit == null)
             {
-                //총알 맞은곳 총알자국 생성
-                GameObject bulletMark = Instantiate(_bulletMark, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-                StartCoroutine(BulletMarkDestroyRoutine(bulletMark));
+                _bulletMarkPooling.GetBulletMark(hitInfo.point + hitInfo.normal * 0.01f, Quaternion.LookRotation(hitInfo.normal));
+                // Instantiate comparison:
+                // GameObject bulletMark = Instantiate(_bulletMark, hitInfo.point + hitInfo.normal * 0.01f, Quaternion.LookRotation(hitInfo.normal));
+                // StartCoroutine(BulletMarkDestroyRoutine(bulletMark));
             }
 
             if (enemyHit != null) { enemyHit.RecieveHit(hitInfo, Damage); }
@@ -133,9 +133,8 @@ namespace MIssionOfMercenary
 
         IEnumerator BulletMarkDestroyRoutine(GameObject bulletMark)
         {
-            if (bulletMark == null) { Debug.Log("파괴할 bulletMark가 없습니다"); } //yield return null;
+            if (bulletMark == null) { yield return null; }
             yield return new WaitForSeconds(_bulletMarkDestroyDelay);
-
             Destroy(bulletMark);
         }
 
