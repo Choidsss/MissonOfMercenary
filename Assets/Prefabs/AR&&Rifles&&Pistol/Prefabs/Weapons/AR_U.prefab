@@ -908,6 +908,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6961536937032393521}
   - component: {fileID: 6655030955435087469}
+  - component: {fileID: 5665742262519246431}
   - component: {fileID: 4805540506211358218}
   - component: {fileID: 5895763099437874652}
   - component: {fileID: 5685893099318318630}
@@ -976,6 +977,21 @@ MonoBehaviour:
   _bulletMarkDestroyedTime: 2
   _autoSpeed: 1
   _maxAmmo: 30
+--- !u!114 &5665742262519246431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7770829599027755403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aed067750c504941ac68795355fae5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slot: 0
+  _enEquipedWeaponPrefab: {fileID: 7770829599027755403}
+  _displayName: AR_U
 --- !u!114 &4805540506211358218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1008,7 +1024,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _leftGripPoint: {fileID: 0}
   _rightGripPoint: {fileID: 0}
-  _useLeftHandIK: 0
+  _useLeftHandIK: 1
 --- !u!114 &5685893099318318630
 MonoBehaviour:
   m_ObjectHideFlags: 0

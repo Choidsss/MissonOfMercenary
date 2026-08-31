@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace MIssionOfMercenary
 {
-    //¹«±âÀÇ Á¾·ù¸¦ ¿­°Å·Î ³ª´²³õÀ½
+    //ë¬´ê¸°ì˜ ì¢…ë¥˜ë¥¼ ì—´ê±°ë¡œ ë‚˜ëˆ ë†“ìŒ
     public enum WeaponSlot
     {
         Primary = 0,
@@ -15,8 +15,8 @@ namespace MIssionOfMercenary
     }
 
     /*
-     * ¼ıÀÚ¹öÆ°À» ´©¸£¸é ¸Â´Â Àåºñ¸¦ ÀåÂøÇÏµµ·Ï ÇÏ´Â Å¬·¡½º
-     * ¾ÆÁ÷Àº ¿ÀÁ÷ ¸Â´Â¹«±â¸¦ ÀåÂøÇÏµµ·Ï¸¸ ÇÏ¸ç, ¹«±â¸¦ ¹Ù²Ù´Â ±â´ÉÀº ¾ÆÁ÷ ¸¸µéÁö ¾ÊÀ½
+     * ìˆ«ìë²„íŠ¼ì„ ëˆ„ë¥´ë©´ ë§ëŠ” ì¥ë¹„ë¥¼ ì¥ì°©í•˜ë„ë¡ í•˜ëŠ” í´ë˜ìŠ¤
+     * ì•„ì§ì€ ì˜¤ì§ ë§ëŠ”ë¬´ê¸°ë¥¼ ì¥ì°©í•˜ë„ë¡ë§Œ í•˜ë©°, ë¬´ê¸°ë¥¼ ë°”ê¾¸ëŠ” ê¸°ëŠ¥ì€ ì•„ì§ ë§Œë“¤ì§€ ì•ŠìŒ
      */
     public class WeaponManager : MonoBehaviour
     {
@@ -27,18 +27,18 @@ namespace MIssionOfMercenary
         [SerializeField] WeaponUI _weaponUI;
 
         [Header("Weapon Slot")]
-        [SerializeField] GameObject _primaryWeapon; //ÁÖ¹«±â
-        [SerializeField] GameObject _secondaryWeapon; //º¸Á¶¹«±â
-        [SerializeField] GameObject _meleeWeapon; //±ÙÁ¢¹«±â
+        [SerializeField] GameObject _primaryWeapon; //ì£¼ë¬´ê¸°
+        [SerializeField] GameObject _secondaryWeapon; //ë³´ì¡°ë¬´ê¸°
+        [SerializeField] GameObject _meleeWeapon; //ê·¼ì ‘ë¬´ê¸°
 
         [Header("Parent Constraint")]
         [SerializeField] ParentConstraint _leftHandTargetConstraint;
         [SerializeField] ParentConstraint _rightHandTargetConstraint;
 
-        GameObject[] _weapons; //³»°¡ µé°íÀÖ´Â ¹«±â
-        WeaponSlot _currentSlot; //ÇöÀç ½½·Ô
+        GameObject[] _weapons; //ë‚´ê°€ ë“¤ê³ ìˆëŠ” ë¬´ê¸°
+        WeaponSlot _currentSlot; //í˜„ì¬ ìŠ¬ë¡¯
 
-        public WeaponSlot CurrentSlot => _currentSlot; // ÇÁ·ÎÆÛÆ¼·Î ÇöÀç½½·Ô ¹İÈ¯
+        public WeaponSlot CurrentSlot => _currentSlot; // í”„ë¡œí¼í‹°ë¡œ í˜„ì¬ìŠ¬ë¡¯ ë°˜í™˜
         public GameObject CurrentWeapon => _weapons[(int)_currentSlot];
 
         public WeaponIKData CurrentWeaponIKData
@@ -47,7 +47,10 @@ namespace MIssionOfMercenary
             { 
                 if (CurrentWeapon == null) return null; 
 
+                /* ê¸°ì¡´ì—ëŠ” ë£¨íŠ¸ì— ë¶™ì€ WeaponIKDataë§Œ ì°¾ì•˜ìŠµë‹ˆë‹¤. By_Codex
                 return CurrentWeapon.GetComponent<WeaponIKData>();
+                */
+                return CurrentWeapon.GetComponentInChildren<WeaponIKData>(true); // ìì‹ì— ìˆì–´ë„ IK ë°ì´í„°ë¥¼ ì°¾ìŠµë‹ˆë‹¤. By_Codex
             }
         }
 
@@ -68,7 +71,7 @@ namespace MIssionOfMercenary
 
         private void Awake()
         {
-            _weapons = new GameObject[] { _primaryWeapon, _secondaryWeapon, _meleeWeapon }; // ³»°¡ µé°íÀÖ´Â ¹«±âÄ­ »ı¼º(Ä­¸¸ »ı¼º)
+            _weapons = new GameObject[] { _primaryWeapon, _secondaryWeapon, _meleeWeapon }; // ë‚´ê°€ ë“¤ê³ ìˆëŠ” ë¬´ê¸°ì¹¸ ìƒì„±(ì¹¸ë§Œ ìƒì„±)
         }
 
         void Start()
@@ -80,13 +83,13 @@ namespace MIssionOfMercenary
         {
             int selectedSlot = (int)slot;
 
-            if (_weapons[selectedSlot] == null) { Debug.Log("½½·Ô¿¡ ¹«±â°¡ ÀåÂøµÇ¾îÀÖÁö ¾Ê½À´Ï´Ù."); return; }
+            if (_weapons[selectedSlot] == null) { Debug.Log("ìŠ¬ë¡¯ì— ë¬´ê¸°ê°€ ì¥ì°©ë˜ì–´ìˆì§€ ì•ŠìŠµë‹ˆë‹¤."); return; }
 
             for(int i = 0;i < _weapons.Length; i++)
             {
                 if(_weapons[i] == null) { continue; }
 
-                //ÄÚµå È®ÀÎ, ¾Æ·¡ ÁÖ¼®ÀÌ¶û °°Àº ÄÚµå¸¦ ÀÌ·¸°Ô ¾´°Å °°Àºµ¥
+                //ì½”ë“œ í™•ì¸, ì•„ë˜ ì£¼ì„ì´ë‘ ê°™ì€ ì½”ë“œë¥¼ ì´ë ‡ê²Œ ì“´ê±° ê°™ì€ë°
                 _weapons[i].SetActive(i == selectedSlot);
 
 
@@ -106,14 +109,27 @@ namespace MIssionOfMercenary
 
             if(weaponIKData != null)
             {
+                weaponIKData.RefreshGripPoints(); // Instantiate ì§í›„ ìƒˆ ë¬´ê¸° ë‚´ë¶€ì˜ GripPointë¡œ ì°¸ì¡°ë¥¼ ë‹¤ì‹œ ë§ì¶¥ë‹ˆë‹¤. By_Codex
                 SetConstraintData(_rightHandTargetConstraint, weaponIKData.RightGripPoint, true);
                 SetConstraintData(_leftHandTargetConstraint, weaponIKData.LeftGripPoint, weaponIKData.UseLeftHandIK);
             }
+            else
+            {
+                SetConstraintData(_rightHandTargetConstraint, null, false);
+                SetConstraintData(_leftHandTargetConstraint, null, false);
+                Debug.LogWarning($"{CurrentWeapon.name}: WeaponIKDataë¥¼ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.", CurrentWeapon); // ì˜ëª» ì„¤ì •ëœ í”„ë¦¬íŒ¹ì„ ì•Œë ¤ì¤ë‹ˆë‹¤. By_Codex
+            }
 
-            Debug.Log($"¿À¸¥¼Õ ±×¸³: {CurrentWeaponIKData.RightGripPoint.name}");
+            /* IK ë°ì´í„°ë‚˜ GripPointê°€ ë¹„ì–´ ìˆìœ¼ë©´ NullReferenceExceptionì´ ë°œìƒí•˜ë˜ ë¡œê·¸ì…ë‹ˆë‹¤. By_Codex
+            Debug.Log($"ì˜¤ë¥¸ì† ê·¸ë¦½: {CurrentWeaponIKData.RightGripPoint.name}");
+            */
+            if (weaponIKData != null && weaponIKData.RightGripPoint != null)
+            {
+                Debug.Log($"Current Right Grip: {weaponIKData.RightGripPoint.name}"); // null ê²€ì‚¬ í›„ ì¶œë ¥í•©ë‹ˆë‹¤. By_Codex
+            }
 
-            //Debug.Log($"ÀåÂø ¹«±â: {CurrentWeapon.name}");
-            //Debug.Log($"¿À¸¥¼Õ ±×¸³: {CurrentWeaponIKData.RightGripPoint.name}");
+            //Debug.Log($"ì¥ì°© ë¬´ê¸°: {CurrentWeapon.name}");
+            //Debug.Log($"ì˜¤ë¥¸ì† ê·¸ë¦½: {CurrentWeaponIKData.RightGripPoint.name}");
         }
 
         public void EquipPrimary()
@@ -134,7 +150,7 @@ namespace MIssionOfMercenary
         {
             if (constraint == null) { Debug.Log("Does Not Exist ParentConstraint!"); return; }
 
-            // ÇÑ ¼Õ ¹«±âÀÌ°Å³ª ÇÊ¿äÇÑ GripPoint°¡ ¾øÀ¸¸é ÀÌ ¼ÕÀÇ IK ÃßÀûÀ» ²ö´Ù.
+            // í•œ ì† ë¬´ê¸°ì´ê±°ë‚˜ í•„ìš”í•œ GripPointê°€ ì—†ìœ¼ë©´ ì´ ì†ì˜ IK ì¶”ì ì„ ëˆë‹¤.
             if (!shouldUseConstraint || newSource == null)
             {
                 constraint.weight = 0f;
@@ -154,7 +170,7 @@ namespace MIssionOfMercenary
             constraint.weight = 1f;
         }
 
-        public void ReplacedWeapon(WeaponSlot slot, GameObject newWeaponPrefab)
+        public void ReplacedWeapon(WeaponSlot slot, GameObject newWeaponPrefab, Vector3 dropPosition, Quaternion dropRotation)
         {
             if(newWeaponPrefab == null) { return; }
 
@@ -166,9 +182,40 @@ namespace MIssionOfMercenary
             GameObject newWeapon = Instantiate(newWeaponPrefab, weaponParent);
             newWeapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 
+            DroppedWeapons newDroppedWeapon = newWeapon.GetComponentInChildren<DroppedWeapons>(true);
+            newDroppedWeapon?.SetEquippedState(); // ë°”ë‹¥ìš© ë¬¼ë¦¬ì™€ Pickup Triggerë¥¼ ë„ê³  ì´ê¸° ìŠ¤í¬ë¦½íŠ¸ë¥¼ í™œì„±í™”í•©ë‹ˆë‹¤. By_Codex
+
             _weapons[index] = newWeapon;
 
+            /* ê¸°ì¡´ ë¬´ê¸°ëŠ” ë“œë¡­ ì˜¤ë¸Œì íŠ¸ë¥¼ ë§Œë“¤ì§€ ì•Šê³  ë°”ë¡œ ì‚­ì œí–ˆìŠµë‹ˆë‹¤. By_Codex
             if(oldWeapon != null) { Destroy(oldWeapon); }
+            */
+            if(oldWeapon != null)
+            {
+                EquippedWeaponDropData dropData = oldWeapon.GetComponentInChildren<EquippedWeaponDropData>(true);
+
+                if(dropData != null && dropData.DroppedWeaponPrefab != null)
+                {
+                    Instantiate(dropData.DroppedWeaponPrefab, dropPosition, dropRotation); // ê¸°ì¡´ ë¬´ê¸°ì˜ ë°”ë‹¥ìš© í”„ë¦¬íŒ¹ì„ ìƒì„±í•©ë‹ˆë‹¤. By_Codex
+                }
+                else
+                {
+                    DroppedWeapons oldDroppedData = oldWeapon.GetComponentInChildren<DroppedWeapons>(true);
+
+                    if(oldDroppedData != null)
+                    {
+                        GameObject droppedClone = Instantiate(oldWeapon, dropPosition, dropRotation);
+                        DroppedWeapons droppedCloneData = droppedClone.GetComponentInChildren<DroppedWeapons>(true);
+                        droppedCloneData.SetDroppedState(); // ë³„ë„ ë°”ë‹¥ í”„ë¦¬íŒ¹ì´ ì—†ìœ¼ë©´ ê¸°ì¡´ ë¬´ê¸°ì˜ ë³µì œë³¸ì„ ë“œë¡­ ìƒíƒœë¡œ ì „í™˜í•©ë‹ˆë‹¤. By_Codex
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"{oldWeapon.name}: DroppedWeapons ë˜ëŠ” Dropped Weapon Prefabì´ ì—†ìŠµë‹ˆë‹¤.", oldWeapon); // ë“œë¡­ ì •ë³´ë¥¼ ì „í˜€ ì°¾ì§€ ëª»í•œ ê²½ìš°ë§Œ ì•Œë ¤ì¤ë‹ˆë‹¤. By_Codex
+                    }
+                }
+
+                Destroy(oldWeapon);
+            }
 
             EquipWeapon(slot);
         }

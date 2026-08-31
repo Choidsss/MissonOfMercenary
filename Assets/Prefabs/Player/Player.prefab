@@ -660,11 +660,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65cf1158a7f771848bfed7418a286efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponManager: {fileID: 8316585890996079863}
   _inputReader: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
   _offsetX: 0
   _offsetZ: 0
   _radius: 10
-  _maxDistance: 30
+  _maxDistance: 10
   _layer:
     serializedVersion: 2
     m_Bits: 512
@@ -1269,7 +1270,10 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 444302923395578116, guid: ea1ad08618ee1794b816f11a5aebd849, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 88317814946030486, guid: ea1ad08618ee1794b816f11a5aebd849, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 2545374589944376583}
   m_SourcePrefab: {fileID: 100100000, guid: ea1ad08618ee1794b816f11a5aebd849, type: 3}
 --- !u!114 &1232632838066653154 stripped
 MonoBehaviour:
@@ -1292,6 +1296,21 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 88317814946030486, guid: ea1ad08618ee1794b816f11a5aebd849, type: 3}
   m_PrefabInstance: {fileID: 1960206802485473995}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2545374589944376583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877377785656316253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aed067750c504941ac68795355fae5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slot: 1
+  _enEquipedWeaponPrefab: {fileID: 1877377785656316253}
+  _displayName: Pistol_J
 --- !u!4 &3353032701897753745 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3872058606678521434, guid: ea1ad08618ee1794b816f11a5aebd849, type: 3}
@@ -2208,12 +2227,30 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1000010973930614, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7428981333173079895}
+    - targetCorrespondingSourceObject: {fileID: 4683721846578919024, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 5954493941488260775}
   m_SourcePrefab: {fileID: 100100000, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
 --- !u!1 &456440153435638232 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4683721846578919024, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
   m_PrefabInstance: {fileID: 5092011875828449192}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5954493941488260775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456440153435638232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aed067750c504941ac68795355fae5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slot: 0
+  _enEquipedWeaponPrefab: {fileID: 456440153435638232}
+  _displayName: AR_M
 --- !u!4 &945273554716447586 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5455051674980904138, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}

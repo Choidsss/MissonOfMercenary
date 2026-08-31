@@ -17,6 +17,7 @@ namespace MIssionOfMercenary
         [SerializeField] float _radius;
         [SerializeField] float _maxDistance;
         [SerializeField] LayerMask _layer;
+        [SerializeField] Transform _pickupOrigin; // SphereCastì˜ ì‹œì‘ì ê³¼ ë°©í–¥ì…ë‹ˆë‹¤. MainCamera ë˜ëŠ” PickupOriginì„ ì—°ê²°í•©ë‹ˆë‹¤. By_Codex
 
         //bool _dropWeapon = false;
         bool _canPickup = false;
@@ -45,45 +46,82 @@ namespace MIssionOfMercenary
         //{
         //    if (FindDroppedWeaponOverlapSphere() && FindDroppedWeaponRaycast())
         //    {
-        //        //µé°íÀÖ´Â ÃÑ±âÀÇ Á¤º¸¸¦ ÇÔ¼ö¿¡ Áı¾î³ÖÀ½
-        //        //¶³¾îÁ® ÀÖ´Â ÃÑ±â¸¦ GameObject·Î ÀúÀåÇØµĞ ´ÙÀ½, ¿øº»Àº Destroy()
-        //        //ÀÌ¹Ì µé°í ÀÖ´ø ÃÑ±â´Â ±×´ë·Î ¹Ù´Ú¿¡ Drop
-        //        //ÁÖ¿î ÃÑ±â´Â ÀÌ¹Ì µé°íÀÖ´ø ÃÑ±âÀÇ TransformÀ» ¹°·Á¹Ş¾Æ »ç¿ëÇÔ
-        //        //But, GripPoint ÀÇ IKÀ§Ä¡´Â ¸ÕÀú ÀÛ¾÷À» ÇØ¾ßÇÔ
+        //        //ë“¤ê³ ìˆëŠ” ì´ê¸°ì˜ ì •ë³´ë¥¼ í•¨ìˆ˜ì— ì§‘ì–´ë„£ìŒ
+        //        //ë–¨ì–´ì ¸ ìˆëŠ” ì´ê¸°ë¥¼ GameObjectë¡œ ì €ì¥í•´ë‘” ë‹¤ìŒ, ì›ë³¸ì€ Destroy()
+        //        //ì´ë¯¸ ë“¤ê³  ìˆë˜ ì´ê¸°ëŠ” ê·¸ëŒ€ë¡œ ë°”ë‹¥ì— Drop
+        //        //ì£¼ìš´ ì´ê¸°ëŠ” ì´ë¯¸ ë“¤ê³ ìˆë˜ ì´ê¸°ì˜ Transformì„ ë¬¼ë ¤ë°›ì•„ ì‚¬ìš©í•¨
+        //        //But, GripPoint ì˜ IKìœ„ì¹˜ëŠ” ë¨¼ì € ì‘ì—…ì„ í•´ì•¼í•¨
         //    }
         //}
 
         void UpdateTarget()
         {
             _targetWeapon = null;
+            _canPickup = false;
 
+            /* ê¸°ì¡´ì—ëŠ” Player ë£¨íŠ¸ì˜ forwardë¥¼ ì‚¬ìš©í•´ì„œ ì¹´ë©”ë¼ ë°©í–¥ê³¼ Cast ë°©í–¥ì´ ë‹¬ë¼ì§ˆ ìˆ˜ ìˆì—ˆìŠµë‹ˆë‹¤. By_Codex
             Vector3 origin = transform.position + transform.right * _offsetX + transform.forward * _offsetZ;
 
             bool hitWeapon = Physics.SphereCast(origin, _radius, transform.forward, out RaycastHit hit, _maxDistance, _layer, QueryTriggerInteraction.Collide);
+            */
 
-            if(!hitWeapon) { return; }
+            Transform castOrigin = _pickupOrigin != null ? _pickupOrigin : transform; // ì°¸ì¡°ê°€ ì—†ìœ¼ë©´ ê¸°ì¡´ Transformì„ ì‚¬ìš©í•©ë‹ˆë‹¤. By_Codex
+            Vector3 origin = castOrigin.position + castOrigin.right * _offsetX + castOrigin.forward * _offsetZ;
 
+            bool hitWeapon = Physics.SphereCast(
+                origin,
+                _radius,
+                castOrigin.forward,
+                out RaycastHit hit,
+                _maxDistance,
+                _layer,
+                QueryTriggerInteraction.Collide); // ì§€ì •í•œ Originì´ ë°”ë¼ë³´ëŠ” ë°©í–¥ìœ¼ë¡œ ê²€ì‚¬í•©ë‹ˆë‹¤. By_Codex
+
+            if(!hitWeapon) { Debug.Log("***************hitWeapon False***************"); return; }
+
+            Debug.Log("!!!!!!!!!!!!!!!!!!!!!hitWeapon True!!!!!!!!!!!!!!!!!!!!!");
             _targetWeapon = hit.collider.gameObject.GetComponentInParent<DroppedWeapons>();
+            _canPickup = _targetWeapon != null;
         }
 
         void TryPickUp()
         {
-            Debug.Log("eÀÔ·Â µé¾î¿È");
+            //Debug.Log("eì…ë ¥ ë“¤ì–´ì˜´");
 
             if (_targetWeapon == null)
             {
-                Debug.Log("°¨ÁöµÈ ¹«±â ¾øÀ½");
+                //Debug.Log("ê°ì§€ëœ ë¬´ê¸° ì—†ìŒ");
                 return;
             }
 
-            Debug.Log("ÇÈ¾÷ ½ÃµµÅ°ÀÔ");
+            Debug.Log("í”½ì—… ì‹œë„í‚¤ì…");
 
             DroppedWeapons pickedWeapon = _targetWeapon;
             _targetWeapon = null;
 
+            /* ê¸°ì¡´ ì½”ë“œëŠ” ê¸°ì¡´ ë¬´ê¸°ë¥¼ ë°”ë‹¥ì— ìƒì„±í•  ìœ„ì¹˜ë¥¼ ì „ë‹¬í•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. By_Codex
             _weaponManager.ReplacedWeapon(pickedWeapon.Slot, pickedWeapon.EnEquipedWeaponPrefab);
+            */
+
+            _weaponManager.ReplacedWeapon(
+                pickedWeapon.Slot,
+                pickedWeapon.EnEquipedWeaponPrefab,
+                pickedWeapon.transform.position,
+                pickedWeapon.transform.rotation); // ì£¼ìš´ ë¬´ê¸°ê°€ ìˆë˜ ìë¦¬ì— ê¸°ì¡´ ë¬´ê¸°ë¥¼ ë‚´ë ¤ë†“ìŠµë‹ˆë‹¤. By_Codex
 
             Destroy(pickedWeapon.gameObject);
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            Transform castOrigin = _pickupOrigin != null ? _pickupOrigin : transform;
+            Vector3 origin = castOrigin.position + castOrigin.right * _offsetX + castOrigin.forward * _offsetZ;
+            Vector3 end = origin + castOrigin.forward * _maxDistance;
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(origin, _radius);
+            Gizmos.DrawLine(origin, end);
+            Gizmos.DrawWireSphere(end, _radius); // Scene ë·°ì— SphereCastì˜ ì‹œì‘ì ê³¼ ëì ì„ í‘œì‹œí•©ë‹ˆë‹¤. By_Codex
         }
 
         //bool FindDroppedWeaponOverlapSphere()
@@ -96,7 +134,7 @@ namespace MIssionOfMercenary
         //        {
         //            _dropWeapon = false;
         //            _canPickup = false;
-        //            Debug.Log("ÁÖ¿ï ¼ö ÀÖ´Â ÃÑ±â°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+        //            Debug.Log("ì£¼ìš¸ ìˆ˜ ìˆëŠ” ì´ê¸°ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         //        }
 
         //        _dropWeapon = true;
@@ -107,7 +145,7 @@ namespace MIssionOfMercenary
 
         //bool FindDroppedWeaponRaycast()
         //{
-        //    if (!_dropWeapon) { Debug.Log("ÁÖ¿ï ¼ö ÀÖ´Â ÃÑ±â°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù."); }
+        //    if (!_dropWeapon) { Debug.Log("ì£¼ìš¸ ìˆ˜ ìˆëŠ” ì´ê¸°ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤."); }
 
         //    bool isWeaponHit = Physics.Raycast(transform.position, transform.forward, _maxDistance, _layer, QueryTriggerInteraction.Collide);
 
