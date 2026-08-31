@@ -24,6 +24,7 @@ namespace MissionOfMercenary
         InputAction _equipPrimaryAction;
         InputAction _equipSecondaryAction;
         InputAction _equipMeleeAction;
+        InputAction _pickUpAction;
 
         public event Action<Vector2> OnMoveEvent;
         public event Action OnRunToggleEvent;
@@ -37,6 +38,7 @@ namespace MissionOfMercenary
         public event Action OnEquipPrimaryAction;
         public event Action OnEquipSecondaryAction;
         public event Action OnEquipMeleeAction;
+        public event Action OnPickedUpAction;
 
         private void OnEnable()
         {
@@ -52,6 +54,7 @@ namespace MissionOfMercenary
             _equipPrimaryAction = _inputActionAsset.FindAction("EquipPrimary");
             _equipSecondaryAction = _inputActionAsset.FindAction("EquipSecondary");
             _equipMeleeAction = _inputActionAsset.FindAction("EquipMelee");
+            _pickUpAction = _inputActionAsset.FindAction("PickUp");
 
             _moveAction.Enable();
             _runAction.Enable();
@@ -64,6 +67,7 @@ namespace MissionOfMercenary
             _equipPrimaryAction.Enable();
             _equipSecondaryAction.Enable();
             _equipMeleeAction.Enable();
+            _pickUpAction.Enable();
 
             // 이벤트 콜백 등록
             _moveAction.performed += MoveEventCallback;
@@ -88,6 +92,7 @@ namespace MissionOfMercenary
             _equipPrimaryAction.performed += EquipPrimaryActionCallBack;
             _equipSecondaryAction.performed += EquipSecondaryActionCallBack;
             _equipMeleeAction.performed += EquipMeleeActionCallBack;
+            _pickUpAction.performed += PickUpActionCallBack;
         }
 
         private void OnDisable()
@@ -108,6 +113,8 @@ namespace MissionOfMercenary
             _equipPrimaryAction.Disable();
             _equipSecondaryAction.Disable();
             _equipMeleeAction.Disable();
+
+            _pickUpAction.Disable();
 
             //이벤트 콜백 해제
             _moveAction.performed -= MoveEventCallback;
@@ -131,6 +138,8 @@ namespace MissionOfMercenary
             _equipPrimaryAction.performed -= EquipPrimaryActionCallBack;
             _equipSecondaryAction.performed -= EquipSecondaryActionCallBack;
             _equipMeleeAction.performed -= EquipMeleeActionCallBack;
+
+            _pickUpAction.performed -= PickUpActionCallBack;
         }
 
         //*************이벤트 처리 함수들*******************
@@ -203,6 +212,11 @@ namespace MissionOfMercenary
         void EquipMeleeActionCallBack(InputAction.CallbackContext context)
         {
             OnEquipMeleeAction?.Invoke();
+        }
+
+        void PickUpActionCallBack(InputAction.CallbackContext context)
+        {
+            OnPickedUpAction?.Invoke();
         }
     }
 }

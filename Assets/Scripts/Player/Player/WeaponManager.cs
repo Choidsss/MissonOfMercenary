@@ -153,5 +153,24 @@ namespace MIssionOfMercenary
             constraint.SetSources(sources);
             constraint.weight = 1f;
         }
+
+        public void ReplacedWeapon(WeaponSlot slot, GameObject newWeaponPrefab)
+        {
+            if(newWeaponPrefab == null) { return; }
+
+            int index = (int)slot;
+            GameObject oldWeapon = _weapons[index];
+
+            Transform weaponParent = oldWeapon != null ? oldWeapon.transform.parent : transform;
+
+            GameObject newWeapon = Instantiate(newWeaponPrefab, weaponParent);
+            newWeapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+            _weapons[index] = newWeapon;
+
+            if(oldWeapon != null) { Destroy(oldWeapon); }
+
+            EquipWeapon(slot);
+        }
     }
 }

@@ -6,7 +6,10 @@ namespace MIssionOfMercenary
 {
     public class WeaponPickup : MonoBehaviour
     {
+        [SerializeField] WeaponManager _weaponManager;
         [SerializeField] InputReader _inputReader;
+
+        DroppedWeapons _targetWeapon;
 
         [Header("Variable Options")]
         [SerializeField] float _offsetX;
@@ -15,74 +18,110 @@ namespace MIssionOfMercenary
         [SerializeField] float _maxDistance;
         [SerializeField] LayerMask _layer;
 
-        bool _dropWeapon = false;
+        //bool _dropWeapon = false;
         bool _canPickup = false;
 
         public bool CanPickup { get {return _canPickup; } }
 
+        public DroppedWeapons TargetWeapon => _targetWeapon;
+
         private void OnEnable()
         {
-            
+            _inputReader.OnPickedUpAction += TryPickUp;
         }
 
         private void OnDisable()
         {
-            
+            _inputReader.OnPickedUpAction -= TryPickUp;
         }
 
         void Update()
         {
+            UpdateTarget();
             //PickupAndWeaponChange();
         }
 
-        void PickupAndWeaponChange(GameObject weapon)
+        //void PickupAndWeaponChange(GameObject weapon)
+        //{
+        //    if (FindDroppedWeaponOverlapSphere() && FindDroppedWeaponRaycast())
+        //    {
+        //        //들고있는 총기의 정보를 함수에 집어넣음
+        //        //떨어져 있는 총기를 GameObject로 저장해둔 다음, 원본은 Destroy()
+        //        //이미 들고 있던 총기는 그대로 바닥에 Drop
+        //        //주운 총기는 이미 들고있던 총기의 Transform을 물려받아 사용함
+        //        //But, GripPoint 의 IK위치는 먼저 작업을 해야함
+        //    }
+        //}
+
+        void UpdateTarget()
         {
-            if (FindDroppedWeaponOverlapSphere() && FindDroppedWeaponRaycast())
-            {
-                //들고있는 총기의 정보를 함수에 집어넣음
-                //떨어져 있는 총기를 GameObject로 저장해둔 다음, 원본은 Destroy()
-                //이미 들고 있던 총기는 그대로 바닥에 Drop
-                //주운 총기는 이미 들고있던 총기의 Transform을 물려받아 사용함
-                //But, GripPoint 의 IK위치는 먼저 작업을 해야함
-            }
+            _targetWeapon = null;
+
+            Vector3 origin = transform.position + transform.right * _offsetX + transform.forward * _offsetZ;
+
+            bool hitWeapon = Physics.SphereCast(origin, _radius, transform.forward, out RaycastHit hit, _maxDistance, _layer, QueryTriggerInteraction.Collide);
+
+            if(!hitWeapon) { return; }
+
+            _targetWeapon = hit.collider.gameObject.GetComponentInParent<DroppedWeapons>();
         }
 
-        bool FindDroppedWeaponOverlapSphere()
+        void TryPickUp()
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, _radius, _layer, QueryTriggerInteraction.Collide);
+            Debug.Log("e입력 들어옴");
 
-            foreach (Collider col in colliders)
+            if (_targetWeapon == null)
             {
-                if (colliders.Length == 0)
-                {
-                    _dropWeapon = false;
-                    _canPickup = false;
-                    Debug.Log("주울 수 있는 총기가 존재하지 않습니다.");
-                }
-
-                _dropWeapon = true;
+                Debug.Log("감지된 무기 없음");
+                return;
             }
 
-            return _dropWeapon;
+            Debug.Log("픽업 시도키입");
+
+            DroppedWeapons pickedWeapon = _targetWeapon;
+            _targetWeapon = null;
+
+            _weaponManager.ReplacedWeapon(pickedWeapon.Slot, pickedWeapon.EnEquipedWeaponPrefab);
+
+            Destroy(pickedWeapon.gameObject);
         }
 
-        bool FindDroppedWeaponRaycast()
-        {
-            if (!_dropWeapon) { Debug.Log("주울 수 있는 총기가 존재하지 않습니다."); }
+        //bool FindDroppedWeaponOverlapSphere()
+        //{
+        //    Collider[] colliders = 
 
-            bool isWeaponHit = Physics.Raycast(transform.position, transform.forward, _maxDistance, _layer, QueryTriggerInteraction.Collide);
+        //    foreach (Collider col in colliders)
+        //    {
+        //        if (colliders.Length == 0)
+        //        {
+        //            _dropWeapon = false;
+        //            _canPickup = false;
+        //            Debug.Log("주울 수 있는 총기가 존재하지 않습니다.");
+        //        }
 
-            if (isWeaponHit)
-            {
-                _canPickup = true;
-            }
-            else
-            {
-                _canPickup = false;
-            }
+        //        _dropWeapon = true;
+        //    }
 
-            return _canPickup;
-        }
+        //    return _dropWeapon;
+        //}
+
+        //bool FindDroppedWeaponRaycast()
+        //{
+        //    if (!_dropWeapon) { Debug.Log("주울 수 있는 총기가 존재하지 않습니다."); }
+
+        //    bool isWeaponHit = Physics.Raycast(transform.position, transform.forward, _maxDistance, _layer, QueryTriggerInteraction.Collide);
+
+        //    if (isWeaponHit)
+        //    {
+        //        _canPickup = true;
+        //    }
+        //    else
+        //    {
+        //        _canPickup = false;
+        //    }
+
+        //    return _canPickup;
+        //}
 
     }
 }

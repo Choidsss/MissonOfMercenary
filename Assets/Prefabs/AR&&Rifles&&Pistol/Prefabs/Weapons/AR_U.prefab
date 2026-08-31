@@ -947,6 +947,7 @@ Transform:
   - {fileID: 3703610628042265874}
   - {fileID: 9013828035414448355}
   - {fileID: 8652672281563001668}
+  - {fileID: 8485660061382683626}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6655030955435087469
@@ -964,8 +965,10 @@ MonoBehaviour:
   _ikController: {fileID: 0}
   _aimController: {fileID: 0}
   _bullet: {fileID: 0}
+  _bulletTrailPooling: {fileID: 0}
+  _bulletMarkPooling: {fileID: 0}
   _trailRendererSpeed: 0
-  _inputReader: {fileID: 0}
+  _inputReader: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
   _muzzle: {fileID: 0}
   _muzzleFlash: {fileID: 0}
   _bulletMarkObj: {fileID: 0}
@@ -1038,6 +1041,59 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _triggerObjectName: PickupTrigger
   _padding: 0.1
+--- !u!1 &8093102899347466128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8485660061382683626}
+  - component: {fileID: 1773685295532517188}
+  m_Layer: 0
+  m_Name: PickupTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8485660061382683626
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8093102899347466128}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6961536937032393521}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1773685295532517188
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8093102899347466128}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.2914256, y: 0.5477456, z: 1.1628423}
+  m_Center: {x: 0.007489521, y: -0.028741524, z: 0.04532495}
 --- !u!1 &8154561275838983216
 GameObject:
   m_ObjectHideFlags: 0
