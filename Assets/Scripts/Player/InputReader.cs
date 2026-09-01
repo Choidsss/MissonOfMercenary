@@ -46,8 +46,8 @@ namespace MissionOfMercenary
             _moveAction = _inputActionAsset.FindAction("Move");
             _shotAction = _inputActionAsset.FindAction("Shot");
             _lookAction = _inputActionAsset.FindAction("Look");
-            _switchFireAction = _inputActionAsset.FindAction("SwitchFire");
             _runAction = _inputActionAsset.FindAction("Run");
+            _switchFireAction = _inputActionAsset.FindAction("SwitchFire");
             _reloadAction = _inputActionAsset.FindAction("Reload");
             _zoomInAction = _inputActionAsset.FindAction("ZoomIn");
             _assasinAction = _inputActionAsset.FindAction("Assasin");
@@ -58,8 +58,8 @@ namespace MissionOfMercenary
 
             _moveAction.Enable();
             _runAction.Enable();
-            _shotAction.Enable();
             _lookAction.Enable();
+            _shotAction.Enable();
             _switchFireAction.Enable();
             _reloadAction.Enable();
             _zoomInAction.Enable();
@@ -101,6 +101,7 @@ namespace MissionOfMercenary
             _shotAction.Disable();
             _lookAction.Disable();
             _runAction.Disable();
+
             _switchFireAction.Disable();
 
 
