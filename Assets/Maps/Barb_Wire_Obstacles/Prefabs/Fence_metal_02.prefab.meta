@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 7d83f1a7d971488419368dda1d927274
+timeCreated: 1576954974
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 159800
+  packageName: Barbed Wire Obstacles
+  packageVersion: 1.0
+  assetPath: Assets/Barb_Wire_Obstacles/Prefabs/Fence_metal_02.prefab
+  uploadId: 344428

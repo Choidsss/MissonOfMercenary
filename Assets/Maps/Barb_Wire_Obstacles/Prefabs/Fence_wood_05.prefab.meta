@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: cd13b613e5b13f34498dccab3795e490
+timeCreated: 1576952953
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 159800
+  packageName: Barbed Wire Obstacles
+  packageVersion: 1.0
+  assetPath: Assets/Barb_Wire_Obstacles/Prefabs/Fence_wood_05.prefab
+  uploadId: 344428
