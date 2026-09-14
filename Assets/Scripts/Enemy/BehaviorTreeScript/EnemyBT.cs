@@ -16,6 +16,8 @@ namespace MIssionOfMercenary
 
         //[Header("Look Player options")]
         //[SerializeField] float _aaa;
+        [Header("WayPointManager")]
+        [SerializeField] WayPointManager _wayPointManager;
 
         [Header("Enemy Turn Speed Amount")]
         [SerializeField] float _turnSpeed = 1.0f;
@@ -26,12 +28,13 @@ namespace MIssionOfMercenary
         [SerializeField] NavMeshAgent _nav;
 
         [Header("Patrol Node Options")]
+        [SerializeField] string _routeID;
         [SerializeField] float _patrolSpeed;
-        [SerializeField] Transform[] _wayPoints;
 
         [Header("MoveToSoundPosition Options")]
         [SerializeField] float _moveSoundPositionSpeed;
 
+        Transform[] _wayPoint;
 
         void Awake()
         {
@@ -59,6 +62,7 @@ namespace MIssionOfMercenary
         {
             _enemyChase = GetComponent<EnemyChase>();
 
+            GetRouteFromDictionary();
             _root = SetupTree();
         }
 
@@ -91,9 +95,21 @@ namespace MIssionOfMercenary
 
             selectorTree.AddChild(combatSeq);
             selectorTree.AddChild(moveToSoundPositionSeq);
-            selectorTree.AddChild(new EnemyPatrolNode(_nav, _wayPoints, _patrolSpeed));
+            selectorTree.AddChild(new EnemyPatrolNode(_nav, _patrolSpeed, _wayPoint));
 
             return selectorTree;
+        }
+
+        void GetRouteFromDictionary()
+        {
+            if (_wayPointManager == null)
+            {
+                Debug.LogError($"{name}: WayPointManager가 없습니다.");
+                return;
+            }
+
+            bool Right = _wayPointManager.TryGetRoutePoint(_routeID, out _wayPoint);
+            Debug.Log(_wayPoint);
         }
 
         public void LookAtPlayer()

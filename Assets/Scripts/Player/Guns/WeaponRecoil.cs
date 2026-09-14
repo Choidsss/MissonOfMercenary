@@ -4,18 +4,19 @@ using UnityEngine;
 
 namespace MIssionOfMercenary
 {
+    [DefaultExecutionOrder(10000)] // Animatorì™€ IK ì²˜ë¦¬ ë’¤ì— ë°˜ë™ Transformì„ ì ìš©í•©ë‹ˆë‹¤. By Codex
     public class WeaponRecoil : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] Transform _weaponPivot; // ¹«±â °¡Á®¿À±â
+        [SerializeField] Transform _weaponPivot; // ë¬´ê¸° ê°€ì ¸ì˜¤ê¸°
 
         [Header("Options")]
-        [SerializeField] float _recoilKickBack; // ¾Õ/µÚ ¹İµ¿
-        [SerializeField] float _recoilUpDown; // À§/¾Æ·¡ ¹İµ¿
-        [SerializeField] float _recoilVibration; // ÃÑ Èçµé¸²
+        [SerializeField] float _recoilKickBack; // ì•/ë’¤ ë°˜ë™
+        [SerializeField] float _recoilUpDown; // ìœ„/ì•„ë˜ ë°˜ë™
+        [SerializeField] float _recoilVibration; // ì´ í”ë“¤ë¦¼
 
-        [SerializeField] float _snapSpeed; // ¹İµ¿ ¼Óµµ
-        [SerializeField] float _recoverySpeed; // ¹İµ¿ È¸º¹ ¼Óµµ
+        [SerializeField] float _snapSpeed; // ë°˜ë™ ì†ë„
+        [SerializeField] float _recoverySpeed; // ë°˜ë™ íšŒë³µ ì†ë„
 
         Vector3 _currentRecoilPos;
         Vector3 _currentRecoilRotation;
@@ -25,31 +26,57 @@ namespace MIssionOfMercenary
 
         Vector3 _originPos;
         Quaternion _originRot;
+        bool _isRecoilActive;
 
         private void Start()
         {
-            _originPos = _weaponPivot.localPosition;  // ¿ø·¡ À§Ä¡ ÀúÀå
-            _originRot = _weaponPivot.localRotation;  // ¿ø·¡ È¸Àü ÀúÀå
+            InitializeRecoil(); // ìµœì´ˆ í™œì„±í™” ë•Œ ë°˜ë™ ê¸°ì¤€ ìœ„ì¹˜ë¥¼ ì €ì¥í•©ë‹ˆë‹¤. By Codex
+        }
+
+        public void InitializeRecoil()
+        {
+            if (_weaponPivot == null) { Debug.LogError($"{name}: Weapon Pivotì´ ì—†ìŠµë‹ˆë‹¤."); return; }
+
+            _originPos = _weaponPivot.localPosition;
+            _originRot = _weaponPivot.localRotation;
+            _currentRecoilPos = Vector3.zero;
+            _currentRecoilRotation = Vector3.zero;
+            _targetRecoilPos = Vector3.zero;
+            _targetRecoilRotation = Vector3.zero;
+            _isRecoilActive = false;
         }
 
         // Update is called once per frame
-        void Update()
+        void LateUpdate()
         {
+            if (_weaponPivot == null) { return; }
             WeaponsRecoil();
         }
 
         void WeaponsRecoil()
         {
-            //ÃÑÀÇ ¹İµ¿ È¸º¹
+            // ë‹¤ë¥¸ ë¬´ê¸°ì˜ ëŒ€ê¸° ì¤‘ì¸ ë°˜ë™ ì»´í¬ë„ŒíŠ¸ê°€ ê³µìœ  Pivotì„ ë®ì–´ì“°ì§€ ì•Šê²Œ í•©ë‹ˆë‹¤. By Codex
+            if (!_isRecoilActive) { return; }
+
+            //ì´ì˜ ë°˜ë™ íšŒë³µ
             _targetRecoilPos = Vector3.Lerp(_targetRecoilPos, Vector3.zero, _recoverySpeed * Time.deltaTime);
             _targetRecoilRotation = Vector3.Lerp(_targetRecoilRotation, Vector3.zero, _recoverySpeed * Time.deltaTime);
 
-            //ÃÑÀÇ ¹İµ¿
+            //ì´ì˜ ë°˜ë™
             _currentRecoilPos = Vector3.Lerp(_currentRecoilPos, _targetRecoilPos, _snapSpeed * Time.deltaTime);
             _currentRecoilRotation = Vector3.Lerp(_currentRecoilRotation, _targetRecoilRotation, _snapSpeed * Time.deltaTime);
 
             _weaponPivot.localPosition = _originPos + _currentRecoilPos;
             _weaponPivot.localRotation = _originRot * Quaternion.Euler(_currentRecoilRotation);
+
+            if (_targetRecoilPos.sqrMagnitude < 0.000001f &&
+                _targetRecoilRotation.sqrMagnitude < 0.000001f &&
+                _currentRecoilPos.sqrMagnitude < 0.000001f &&
+                _currentRecoilRotation.sqrMagnitude < 0.000001f)
+            {
+                _weaponPivot.SetLocalPositionAndRotation(_originPos, _originRot);
+                _isRecoilActive = false;
+            }
         }
 
         public void WeaponRecoilApply()
@@ -59,6 +86,7 @@ namespace MIssionOfMercenary
 
         void ApplyRecoil()
         {
+            _isRecoilActive = true;
             _targetRecoilPos = new Vector3(0f, 0f, -_recoilKickBack);
             _targetRecoilRotation = new Vector3(-_recoilUpDown, Random.Range(-_recoilVibration, _recoilVibration), 0f);
         }

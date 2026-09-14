@@ -371,7 +371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletEnemy: {fileID: 8792954647265824588, guid: afad03405a8b4914c97c78e992bed72e, type: 3}
-  _poolingCount: 20
+  _poolingCount: 15
 --- !u!1 &8113997172826231361
 GameObject:
   m_ObjectHideFlags: 0

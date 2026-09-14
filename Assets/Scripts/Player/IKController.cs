@@ -19,13 +19,13 @@ namespace MIssionOfMercenary
         [SerializeField] Transform _rightGripPoint;
         [SerializeField] Transform _rightHandIKTarget;
 
-        [Header("Recoil")]
-        [SerializeField] float _kickBack;
-        [SerializeField] float _upDown;
-        [SerializeField] float _vibration;
-        [SerializeField] float _snapSpeed;
-        [SerializeField] float _recoverySpeed;
-        [SerializeField] float _maxRecoil;
+        //[Header("Recoil")]
+        //[SerializeField] float _kickBack;
+        //[SerializeField] float _upDown;
+        //[SerializeField] float _vibration;
+        //[SerializeField] float _snapSpeed;
+        //[SerializeField] float _recoverySpeed;
+        //[SerializeField] float _maxRecoil;
 
         [Header("Sway")]
         [SerializeField] float _swayAmount;
@@ -68,7 +68,7 @@ namespace MIssionOfMercenary
         void Update()
         {
             UpdateSway();
-            UpdateRecoil();
+            //UpdateRecoil();
 
             //SyncLeftHandTargetToGrip();
             //SyncRightHandTargetToGrip();
@@ -147,41 +147,40 @@ namespace MIssionOfMercenary
         }
 
 
-        // AssultRifle calls this only after a bullet is actually fired.
-        // Do not also subscribe to OnshotEvent here: that would apply recoil twice per shot. // By Codex
-        public void ApplyRecoil()
-        {
-            _targetRecoilPos += new Vector3(0, 0, -_kickBack);
-            _targetRecoilRot += new Vector3(-_upDown, Random.Range(-_vibration, _vibration), 0);
+        //public void ApplyRecoil()
+        //{
+        //    _targetRecoilPos += new Vector3(0, 0, -_kickBack);
+        //    _targetRecoilRot += new Vector3(-_upDown, Random.Range(-_vibration, _vibration), 0);
 
-            _targetRecoilPos.x = Mathf.Clamp(_targetRecoilPos.x, -_maxRecoil, 0f);
-            _targetRecoilPos.z = Mathf.Clamp(_targetRecoilPos.z, -_maxRecoil, 0f);
-        }
+        //    _targetRecoilPos.x = Mathf.Clamp(_targetRecoilPos.x, -_maxRecoil, 0f);
+        //    _targetRecoilPos.z = Mathf.Clamp(_targetRecoilPos.z, -_maxRecoil, 0f);
+        //}
 
         /*
          * ToDo : Muzzle must be Follow the _ar.localPosition
          */
-        void UpdateRecoil()
-        {
-            if (_assultRifle == null || _assultRifle.Ammo == 0)
-            {
-                return;
-            }
+        //void UpdateRecoil()
+        //{
+        //    if (_assultRifle == null || _assultRifle.Ammo == 0)
+        //    {
+        //        return;
+        //    }
 
-            //매 프레임마다 0으로 복귀하도록 함
-            _targetRecoilPos = Vector3.Lerp(_targetRecoilPos, Vector3.zero, _recoverySpeed * Time.deltaTime);
-            _targetRecoilRot = Vector3.Lerp(_targetRecoilRot, Vector3.zero, _recoverySpeed * Time.deltaTime);
+        //    //매 프레임마다 0으로 복귀하도록 함
+        //    _targetRecoilPos = Vector3.Lerp(_targetRecoilPos, Vector3.zero, _recoverySpeed * Time.deltaTime);
+        //    _targetRecoilRot = Vector3.Lerp(_targetRecoilRot, Vector3.zero, _recoverySpeed * Time.deltaTime);
 
-            //현재값은 목표치를 향하도록 함
-            _currentRecoilPos = Vector3.Lerp(_currentRecoilPos, _targetRecoilPos, _snapSpeed * Time.deltaTime);
-            _currentRecoilRot = Vector3.Lerp(_currentRecoilRot, _targetRecoilRot, _snapSpeed * Time.deltaTime);
+        //    //현재값은 목표치를 향하도록 함
+        //    _currentRecoilPos = Vector3.Lerp(_currentRecoilPos, _targetRecoilPos, _snapSpeed * Time.deltaTime);
+        //    _currentRecoilRot = Vector3.Lerp(_currentRecoilRot, _targetRecoilRot, _snapSpeed * Time.deltaTime);
 
-            //현재 AR의 위치에 현재 반동값을 적용
-            _weaponPivot.localPosition = _arOriginPos + _currentRecoilPos;
-            //_ar.localPosition = Mathf.Clamp(_ar.localPosition, )
-            _weaponPivot.localRotation = _arOriginRot * Quaternion.Euler(_currentRecoilRot);
+        //    //현재 AR의 위치에 현재 반동값을 적용
+        //    _weaponPivot.localPosition = _arOriginPos + _currentRecoilPos;
+        //    //_ar.localPosition = Mathf.Clamp(_ar.localPosition, )
+        //    _weaponPivot.localRotation = _arOriginRot * Quaternion.Euler(_currentRecoilRot);
 
-        }
+        //}
+
         void SyncLeftHandTargetToGrip()
         {
             if (_leftHandIKTarget == null || _leftGripPoint == null) return;

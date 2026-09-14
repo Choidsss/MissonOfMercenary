@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,16 +7,16 @@ namespace MIssionOfMercenary
     public class EnemyPatrolNode : BTNode
     {
         readonly Transform[] _wayPoint;
-        readonly float _speed;
         readonly NavMeshAgent _nav;
+        readonly float _speed;
 
         int _wayPointIndex = 0;
         bool _isForward = true;
 
-        public EnemyPatrolNode(NavMeshAgent nav,Transform[] wayPoint,float patrolSpeed)
+        public EnemyPatrolNode(NavMeshAgent nav, float patrolSpeed, Transform[] routeDictionary)
         {
             _nav = nav;
-            _wayPoint = wayPoint;
+            _wayPoint = routeDictionary;
             _speed = patrolSpeed;
         }
 

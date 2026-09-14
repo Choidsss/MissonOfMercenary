@@ -128,6 +128,10 @@ namespace MIssionOfMercenary
                 Debug.Log($"Current Right Grip: {weaponIKData.RightGripPoint.name}"); // null 검사 후 출력합니다. By_Codex
             }
 
+            // 지연 초기화가 첫 발의 반동 값을 지우지 않도록 장착 시 즉시 기준점을 갱신합니다. By Codex
+            WeaponRecoil recoil = CurrentWeapon.GetComponentInChildren<WeaponRecoil>(true);
+            recoil?.InitializeRecoil();
+
             //Debug.Log($"장착 무기: {CurrentWeapon.name}");
             //Debug.Log($"오른손 그립: {CurrentWeaponIKData.RightGripPoint.name}");
         }

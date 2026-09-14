@@ -9,8 +9,8 @@ namespace MIssionOfMercenary
 {
     public class AssultRifle : MonoBehaviour, IWeapons
     {
-        [SerializeField] IKController _ikController;
-        [SerializeField] AimController _aimController;
+        [SerializeField] WeaponRecoil _weaponRecoil;
+        //[SerializeField] AimController _aimController;
         [SerializeField] GameObject _bullet;
         [SerializeField] PlayerBulletTrailPooling _bulletTrailPooling;
         [SerializeField] BulletMarkPooling _bulletMarkPooling;
@@ -64,10 +64,15 @@ namespace MIssionOfMercenary
 
         float _reloadDelay = 2.0f;
 
-        private void Start()
+        private void Awake()
         {
+            // OnEnable의 발사 입력보다 먼저 필수 참조를 준비합니다. By Codex
             _shell = GetComponent<ShellEjector>();
             _aimHit = GetComponentInParent<TryGetAimHit>();
+            if (_weaponRecoil == null)
+            {
+                _weaponRecoil = GetComponent<WeaponRecoil>(); // 초기 Inspector 참조가 비어 있어도 같은 무기의 반동을 찾습니다. By Codex
+            }
         }
 
         void OnEnable()
@@ -166,16 +171,16 @@ namespace MIssionOfMercenary
 
                 Attack(shot);
                 Ammo--;
+                _weaponRecoil?.WeaponRecoilApply();
+                //if (_aimController.IsAiming)
+                //{
+                //    _aimController.ApplyRecoilDuringAiming();
+                //}
+                //else
+                //{
 
-                if (_aimController.IsAiming)
-                {
-                    _aimController.ApplyRecoilDuringAiming();
-                }
-                else
-                {
-                    _ikController.ApplyRecoil();
-                }
-                _shell.Ejector();
+                //}
+                _shell?.Ejector(); // 탄피 컴포넌트 누락이 발사와 반동을 중단시키지 않게 합니다. By Codex
             }
         }
 
@@ -218,16 +223,16 @@ namespace MIssionOfMercenary
                 Attack(1f);
                 Ammo--;
 
-                if (_aimController.IsAiming)
-                {
-                    _aimController.ApplyRecoilDuringAiming();
-                }
-                else
-                {
-                    _ikController.ApplyRecoil();
-                }
+                //if (_aimController.IsAiming)
+                //{
+                //    _aimController.ApplyRecoilDuringAiming();
+                //}
+                //else
+                //{
 
-                _shell.Ejector();
+                //}
+                _weaponRecoil?.WeaponRecoilApply();
+                _shell?.Ejector(); // 탄피 컴포넌트 누락이 연사 코루틴을 중단시키지 않게 합니다. By Codex
                 yield return new WaitForSeconds(1f/_autoSpeed);
             }
         }
