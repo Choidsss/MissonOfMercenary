@@ -66,7 +66,7 @@ namespace MIssionOfMercenary
             return;
         }
 
-        bool IsBlockedByObtacles(Vector3 playerPosition)
+        public bool IsBlockedByObtacles(Vector3 playerPosition)
         {
             Vector3 start = _eyeHeight + transform.position;
             Vector3 end = _targetHeight + playerPosition;

@@ -52,7 +52,7 @@ namespace MIssionOfMercenary
 
             ammoRb.useGravity = false;
             ammoRb.linearVelocity = direction * _bulletSpeed;
-            Debug.Log("Enemy Fire!");
+            Debug.Log("PatrolEnemy Fire!");
         }
     }
 }
