@@ -74,7 +74,11 @@ namespace MissionOfMercenary
             right.Normalize();
 
             Vector3 movement = (forward * _move.y + right * _move.x);
-            _rigidBody.MovePosition(_rigidBody.position + movement * Time.fixedDeltaTime * currentSpeed);
+            // Preserve vertical velocity so gravity continues to control falling.
+            Vector3 velocity = _rigidBody.linearVelocity;
+            velocity.x = movement.x * currentSpeed;
+            velocity.z = movement.z * currentSpeed;
+            _rigidBody.linearVelocity = velocity;
 
 
             //Vector3 movement = new Vector3(_move.x, 0, _move.y);
