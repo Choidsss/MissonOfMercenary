@@ -46,10 +46,12 @@ namespace MIssionOfMercenary
 
         public void ReturnBullet(GameObject bullet)
         {
+            Debug.Log("ReturnBullet before");
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
             if(rb != null) 
-            { 
+            {
+                Debug.Log("rb != null");
                 rb.linearVelocity = Vector3.zero;// 사용이 끝난 총알을 처리하는것. 가속도를 0으로 처리
                 rb.angularVelocity = Vector3.zero;
             }
@@ -57,6 +59,7 @@ namespace MIssionOfMercenary
             bullet.SetActive(false);
             bullet.transform.SetParent(transform);//이 스크립트가 풀링오브젝트를 관리하는 스크립트이므로 쓴 총알은 다시 이 스크립트의 오브젝트로 정리
             _prefabPool.Enqueue(bullet);
+            Debug.Log("ReturnBullet After");
         }
     }
 }

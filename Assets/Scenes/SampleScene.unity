@@ -2228,6 +2228,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Terrorist(GasMask&&Hood)
       objectReference: {fileID: 0}
+    - target: {fileID: 757117458370313821, guid: 066b40ae39f32db4d8073530375ec8bc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 969999074706721029, guid: 066b40ae39f32db4d8073530375ec8bc, type: 3}
       propertyPath: _player
       value: 
@@ -2236,18 +2240,6 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 1634569299}
-    - target: {fileID: 3052446372960522904, guid: 066b40ae39f32db4d8073530375ec8bc, type: 3}
-      propertyPath: _boxSize.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3052446372960522904, guid: 066b40ae39f32db4d8073530375ec8bc, type: 3}
-      propertyPath: _boxSize.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3052446372960522904, guid: 066b40ae39f32db4d8073530375ec8bc, type: 3}
-      propertyPath: _boxSize.z
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 5347596296746313562, guid: 066b40ae39f32db4d8073530375ec8bc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 314.12305
@@ -26826,6 +26818,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 345212428522194551, guid: 4dc73f170517bc548917664659400119, type: 3}
   m_PrefabInstance: {fileID: 563483937}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &566926373 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 322112605008981626, guid: 363fd3257a8c1c7419e533f5ad6f5a66, type: 3}
+  m_PrefabInstance: {fileID: 1893261156}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &568219339
 PrefabInstance:
@@ -54981,6 +54978,36 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6923396920241610856, guid: 98fcad534a3f33341b209e50e498b901, type: 3}
   m_PrefabInstance: {fileID: 1197317949}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1204736154 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2274284391175797399, guid: 363fd3257a8c1c7419e533f5ad6f5a66, type: 3}
+  m_PrefabInstance: {fileID: 1893261156}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1204736156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204736154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0431b3be5cf177c49804f597eb40bf5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponRecoil: {fileID: 0}
+  _bullet: {fileID: 0}
+  _bulletTrailPooling: {fileID: 0}
+  _bulletMarkPooling: {fileID: 0}
+  _trailRendererSpeed: 0
+  _inputReader: {fileID: 0}
+  _muzzle: {fileID: 2074892229}
+  _muzzleFlash: {fileID: 566926373}
+  _bulletMarkObj: {fileID: 0}
+  _flashDestroyedTime: 2
+  _bulletMarkDestroyedTime: 2
+  _autoSpeed: 1
+  _maxAmmo: 30
 --- !u!1001 &1208719575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -88097,10 +88124,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Terrorist(GasMask)
       objectReference: {fileID: 0}
+    - target: {fileID: 8483681676546927841, guid: 363fd3257a8c1c7419e533f5ad6f5a66, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2274284391175797399, guid: 363fd3257a8c1c7419e533f5ad6f5a66, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1204736156}
   m_SourcePrefab: {fileID: 100100000, guid: 363fd3257a8c1c7419e533f5ad6f5a66, type: 3}
 --- !u!1001 &1897252350
 PrefabInstance:
@@ -96307,6 +96341,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2028705676080052240, guid: 668a107e6bbc60e489f7d5082bead0f7, type: 3}
   m_PrefabInstance: {fileID: 2074389202}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2074892229 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4194156522269896580, guid: 363fd3257a8c1c7419e533f5ad6f5a66, type: 3}
+  m_PrefabInstance: {fileID: 1893261156}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2077563207
 PrefabInstance:

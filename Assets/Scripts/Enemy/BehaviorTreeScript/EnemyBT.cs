@@ -136,7 +136,7 @@ namespace MIssionOfMercenary
 
             Sequence combatSeq = new Sequence();
             combatSeq.AddChild(new EnemySightNode(_sensor, _findArea));
-            combatSeq.AddChild(new SentryEnemyAttackNode(_enemyBT, _sentryAttack, _sensor)); // 시야가 확보되면 풀링 연사 노드를 실행합니다. By Codex
+            combatSeq.AddChild(new SentryEnemyAttackNode(_enemyBT, _sentryAttack, _sensor, _enemyAnimation)); // 시야가 확보되면 풀링 연사 노드를 실행합니다. By Codex
             selectorTree.AddChild(combatSeq); // 완성한 Sentry 공격 시퀀스를 루트 Selector에 연결합니다. By Codex
 
 
@@ -192,13 +192,13 @@ namespace MIssionOfMercenary
 
         public void LookAtTarget(Vector3 targetPosition)
         {
-            Vector3 direction = targetPosition - transform.position; // 센서가 넘긴 현재 플레이어 위치로 방향을 계산합니다. By Codex
-            direction.y = 0f; // 고정형 적이 위아래로 기울어지지 않게 수평 회전만 사용합니다. By Codex
+            Vector3 direction = targetPosition - transform.position;
+            direction.y = 0f; 
 
-            if (direction.sqrMagnitude <= 0.001f) { return; } // 방향이 0에 가까울 때 잘못된 회전 생성을 방지합니다. By Codex
+            if (direction.sqrMagnitude <= 0.001f) { return; } 
 
-            Quaternion targetRotation = Quaternion.LookRotation(direction); // 플레이어를 향하는 목표 회전을 만듭니다. By Codex
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _turnSpeed * Time.deltaTime); // 설정한 속도로 플레이어 방향을 계속 바라봅니다. By Codex
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _turnSpeed * Time.deltaTime);
         }
     }
 }

@@ -65,7 +65,7 @@ namespace MIssionOfMercenary
             if(collision.gameObject.layer == 22)
             {
                 PlayerChangeHealth(_enemyAttack.Damage);
-                Destroy(collision.gameObject);
+                // EnemyBullet returns pooled bullets; do not destroy them here.
             }
         }
     }
