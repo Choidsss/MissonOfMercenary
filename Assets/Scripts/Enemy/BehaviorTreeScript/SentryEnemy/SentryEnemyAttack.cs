@@ -5,6 +5,9 @@ namespace MIssionOfMercenary
 {
     public class SentryEnemyAttack : MonoBehaviour
     {
+        [Header("Get Script")]
+        [SerializeField] EnemyWeaponRecoil _weaponRecoil;
+
         [Header("Attack Variable")]
         [SerializeField] int _damage;
         [SerializeField] float _attackRange;
@@ -67,6 +70,9 @@ namespace MIssionOfMercenary
             bulletRigidbody.linearVelocity = direction * _ammoSpeed;
 
             _ammo--;
+
+            _weaponRecoil.RecoilFromEnemyWeapon();
+
             _nextAttackTime = Time.time + Mathf.Max(_delayAttack, 0.01f); 
             PlayMuzzleFlash();
         }
