@@ -16,6 +16,8 @@ namespace MIssionOfMercenary
 
     public class WeaponManager : MonoBehaviour
     {
+        IFirearm _weapon;
+
         [Header("InputReader Asset")]
         [SerializeField] InputReader _inputReader;
 
@@ -34,7 +36,8 @@ namespace MIssionOfMercenary
         GameObject[] _weapons; //내가 들고있는 무기
         WeaponSlot _currentSlot; //현재 슬롯
 
-        public WeaponSlot CurrentSlot => _currentSlot; // 프로퍼티로 현재슬롯 반환
+        public IFirearm Weapon { get { return _weapon; } }
+        public WeaponSlot CurrentSlot { get { return _currentSlot; } }
         public GameObject CurrentWeapon => _weapons[(int)_currentSlot];
 
         public WeaponIKData CurrentWeaponIKData
@@ -86,9 +89,9 @@ namespace MIssionOfMercenary
 
             }
 
-            
             _currentSlot = slot;
 
+            _weapon = CurrentWeapon.GetComponent<IFirearm>();
             IWeapons currentWeaponInterface = CurrentWeapon.GetComponentInParent<IWeapons>();
             _weaponUI.GetCurrentWeaponType(currentWeaponInterface);
 

@@ -8,7 +8,7 @@ using UnityEditor.SettingsManagement;
 namespace MIssionOfMercenary
 {
     
-    public class AssultRifle : MonoBehaviour, IWeapons
+    public class AssultRifle : MonoBehaviour, IFirearm
     {
         public enum SingleOrAuto
         {
@@ -24,17 +24,14 @@ namespace MIssionOfMercenary
         Coroutine _reloadRoutine;
         Coroutine _muzzleFlashRoutine;
         GameObject _muzzleFlash;
-        GameObject _bulletMarkObj;
-
-        //string _gunName;
-        //float _fireInterval;
-        //float _range;
-        //int _damage;
 
         int _currentAmmo;
         float _reloadDelay = 2.0f;
+        bool _isReloading = false;
         
-        public bool CanReload { get; private set; } = false;
+        public bool CanReload => !_isReloading && _currentAmmo<_firearmDefinition.MagazineCapacity;
+    
+    
 
         public bool IsShot { get; private set; } = false;
 
@@ -84,24 +81,28 @@ namespace MIssionOfMercenary
 
         void OnEnable()
         {
-            _inputReader.OnshotEvent += HandleShot;
-            _inputReader.OnShotCancled += HandleShotCancled;
-            _inputReader.OnReloadEvent += HandledReload;
+            //_inputReader.OnshotEvent += HandleShot;
+            //_inputReader.OnShotCancled += HandleShotCancled;
+            //_inputReader.OnReloadEvent += TryReload;
         }
 
         void OnDisable()
         {
             HideMuzzleFlash();
-            _inputReader.OnshotEvent -= HandleShot;
-            _inputReader.OnShotCancled -= HandleShotCancled;
+
+            if (_reloadRoutine != null)
+            {
+                _reloadRoutine = null;
+                TriggeredReleased();
+            }
+            
+            //_inputReader.OnshotEvent -= HandleShot;
+            //_inputReader.OnShotCancled -= HandleShotCancled;
         }
 
-        public void Attack(float isShot)
+        public void Attack(float value)
         {
             IsShot = false;
-            if(CurrentAmmo != _firearmDefinition.MagazineCapacity) { CanReload = true; }
-            else { CanReload = false; }
-
             Vector3 targetPoint;
 
             if (_muzzle == null) { return; }
@@ -135,42 +136,6 @@ namespace MIssionOfMercenary
             if (enemyHit != null)
             {
                 enemyHit.RecieveHit(muzzleHit, Damage);
-            }
-        }
-
-        void HandleShot(float shot)
-        {
-            if(CurrentAmmo <= 0) { CurrentAmmo = 0; StopCoroutine(AutoFireRoutine()); }
-
-
-            if (AttackType == SingleOrAuto.auto && CurrentAmmo != 0)
-            {
-                _autoFireCoroutine = StartCoroutine(AutoFireRoutine());
-            }
-            else
-            {
-                if (CurrentAmmo <= 0) { return; }
-
-                Attack(shot);
-                _currentAmmo--;
-                _weaponRecoil?.WeaponRecoilApply();
-                _shell?.Ejector(); 
-            }
-        }
-
-        void HandledReload(float value)
-        {
-            if (!CanReload) { return; }
-            if (_reloadRoutine != null) StopCoroutine(_reloadRoutine); 
-            _reloadRoutine = StartCoroutine(ReloadDelayRoutine());
-            Debug.Log("Reloading");
-        }
-
-        void HandleShotCancled()
-        {
-            if (_autoFireCoroutine != null)
-            {
-                StopCoroutine(_autoFireCoroutine);
             }
         }
 
@@ -215,54 +180,75 @@ namespace MIssionOfMercenary
 
             if (_muzzleFlash != null) { _muzzleFlash.SetActive(false); }
         }
-
-        void OnDestroy()
-        {
-            if (_muzzleFlash != null) { Destroy(_muzzleFlash); }
-        }
-
-        IEnumerator BulletMarkEffectDestoryRoutine(GameObject mark)
-        {
-            if (mark == null) { yield return null; }
-
-            yield return new WaitForSeconds(_bulletMarkDestroyedTime);
-            Destroy(mark);
-        }
-
         IEnumerator AutoFireRoutine()
         {
-            while (_currentAmmo > 0)
+            while (_currentAmmo > 0 && !_isReloading)
             {
                 Attack(1f);
                 _currentAmmo--;
-
                 _weaponRecoil?.WeaponRecoilApply();
-                yield return new WaitForSeconds(1f/_firearmDefinition.FireInterval);
+                _shell?.Ejector();
+
+                yield return new WaitForSeconds(
+                    1f / _firearmDefinition.FireInterval);
             }
+
+            _autoFireCoroutine = null;
+        }
+
+
+        public void TriggeredPressed()
+        {
+            if (_isReloading) return;
+
+            if (_currentAmmo <= 0)
+            {
+                _currentAmmo = 0;
+                TriggeredReleased();
+                return;
+            }
+
+            if (AttackType == SingleOrAuto.auto)
+            {
+                if (_autoFireCoroutine != null) return;
+
+                _autoFireCoroutine = StartCoroutine(AutoFireRoutine());
+            }
+            else
+            {
+                Attack(1f);
+                _currentAmmo--;
+                _weaponRecoil?.WeaponRecoilApply();
+                _shell?.Ejector();
+            }
+        }
+
+        public void TriggeredReleased()
+        {
+            if (_autoFireCoroutine != null)
+            {
+                StopCoroutine(_autoFireCoroutine);
+                _autoFireCoroutine = null;
+            }
+        }
+
+        public void TryReload()
+        {
+            if (!CanReload) { return; }
+
+            _isReloading = true;
+            Debug.Log("Reloading");
+            TriggeredReleased();//재장전중엔 무기공격 캔슬
+
+            _reloadRoutine = StartCoroutine(ReloadDelayRoutine());
         }
 
         IEnumerator ReloadDelayRoutine()
         {
-            CanReload = false;
             yield return new WaitForSeconds(_reloadDelay);
             _currentAmmo = _firearmDefinition.MagazineCapacity;    
-        }
-
-        IEnumerator SpawnBulletTrail(Vector3 targetPoint, Vector3 direction)
-        {
-            float movedDistance = 0f;
-            GameObject trail = Instantiate(_weaponEffectDefinition.Trail, _muzzle.position, Quaternion.LookRotation(direction));
-            float totalDistance = Vector3.Distance(_muzzle.position, targetPoint);
-
-            while (movedDistance < totalDistance)
-            {
-                float step = _trailRendererSpeed * Time.deltaTime;
-                trail.transform.position += direction * step;
-                movedDistance += step;
-                yield return null;
-            }
-
-            Destroy(trail);
+            _isReloading = false;
+            _reloadRoutine = null;
         }
     }
 }

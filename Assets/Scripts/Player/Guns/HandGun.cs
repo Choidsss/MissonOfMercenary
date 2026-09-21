@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace MIssionOfMercenary
 {
-    public class HandGun : MonoBehaviour, IWeapons
+    public class HandGun : MonoBehaviour, IFirearm
     {
         [Header("Definitions")]
         [SerializeField] FirearmDefinition _fireDef;
@@ -47,19 +47,28 @@ namespace MIssionOfMercenary
         public int CurrentAmmo { get { return _hgCurrentAmmo; } set{ _hgCurrentAmmo = value; } }
         public bool IsShot { get; private set;} = false;
 
+        Coroutine _reloadRoutine;
+
         int _hgCurrentAmmo = 1;
         bool _isReloading = false;
 
         private void OnEnable()
         {
-            _inputReader.OnshotEvent += Attack;
-            _inputReader.OnReloadEvent += HandledReload;
+            //_inputReader.OnshotEvent += Attack;
+            //_inputReader.OnReloadEvent += HandledReload;
         }
 
         private void OnDisable()
         {
-            _inputReader.OnshotEvent -= Attack;
-            _inputReader.OnReloadEvent -= HandledReload;
+            if(_reloadRoutine != null)
+            {
+                StopCoroutine(_reloadRoutine);
+                _reloadRoutine = null;
+            }
+
+            _isReloading = false;
+            //_inputReader.OnshotEvent -= Attack;
+            //_inputReader.OnReloadEvent -= HandledReload;
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -71,7 +80,6 @@ namespace MIssionOfMercenary
 
         public void Attack(float isShot)
         {
-            if (_hgCurrentAmmo <= 0) { Debug.Log("재장전이 필요합니다!"); IsShot = false; return; }
             IsShot = false;
             Vector3 targetPoint;
 
@@ -92,13 +100,6 @@ namespace MIssionOfMercenary
 
             StartCoroutine(MuzzleFlashDestroyRoutine(flash));
             _bulletTrailPooling.PlayTrail(_muzzle.transform.position, _muzzle.transform.forward, AttackRange, _trailSpeeds);
-            // Instantiate comparison:
-            // StartCoroutine(SpawnBulletTrail(targetPoint, _muzzle.transform.forward));
-
-            _hgCurrentAmmo--;
-            IsShot = true; //트레일이 생성될 때 IsShot = true
-
-            _weaponRecoil?.WeaponRecoilApply();
 
             if (!Physics.Raycast(ray, out RaycastHit hitInfo, AttackRange)) { return; }
             EnemyHit enemyHit = hitInfo.collider.GetComponentInParent<EnemyHit>();
@@ -106,30 +107,20 @@ namespace MIssionOfMercenary
             if (enemyHit == null)
             {
                 _bulletMarkPooling.GetBulletMark(hitInfo.point + hitInfo.normal * 0.01f, Quaternion.LookRotation(hitInfo.normal));
-                // Instantiate comparison:
-                // GameObject bulletMark = Instantiate(_bulletMark, hitInfo.point + hitInfo.normal * 0.01f, Quaternion.LookRotation(hitInfo.normal));
-                // StartCoroutine(BulletMarkDestroyRoutine(bulletMark));
             }
 
             if (enemyHit != null) { enemyHit.RecieveHit(hitInfo, Damage); }
             else { Debug.Log("맞은 적이 없어 컴포넌트를 가져올수 없습니다!"); }
         }
 
-        void HandledReload(float shot)
-        {
-            if (_hgCurrentAmmo == _hgMaxAmmo && !_isReloading) { return; }
+        //void HandledReload(float shot)
+        //{
+        //    if (_hgCurrentAmmo == _hgMaxAmmo && !_isReloading) { return; }
 
-            StartCoroutine(ReloadDelayRoutine());
-            _isReloading = false;
-        }
+        //    StartCoroutine(ReloadDelayRoutine());
+        //    _isReloading = false;
+        //}
 
-        IEnumerator ReloadDelayRoutine()
-        {
-            yield return new WaitForSeconds(_reloadDelay);
-
-            _isReloading = true;
-            _hgCurrentAmmo = _hgMaxAmmo;
-        }
 
         IEnumerator BulletMarkDestroyRoutine(GameObject bulletMark)
         {
@@ -165,6 +156,44 @@ namespace MIssionOfMercenary
             }
 
             Destroy(go);
+        }
+
+        public void TriggeredPressed()
+        {
+            if (_isReloading) { return; }
+
+            if (CurrentAmmo <= 0)
+            {
+                CurrentAmmo = 0;
+                TriggeredReleased();
+                return;
+            }
+
+            Attack(1f);
+            _hgCurrentAmmo--;
+            IsShot = true; 
+            _weaponRecoil?.WeaponRecoilApply();
+        }
+
+        public void TriggeredReleased()
+        {
+            return;
+        }
+
+        public void TryReload()
+        {
+            if (_hgCurrentAmmo >= _hgMaxAmmo || _isReloading) { return; }
+            _isReloading = true;
+
+            _reloadRoutine = StartCoroutine(ReloadDelayRoutine());
+        }
+        IEnumerator ReloadDelayRoutine()
+        {
+            yield return new WaitForSeconds(_reloadDelay);
+            _hgCurrentAmmo = _hgMaxAmmo;
+
+            _isReloading = false;
+            _reloadRoutine = null;
         }
     }
 }

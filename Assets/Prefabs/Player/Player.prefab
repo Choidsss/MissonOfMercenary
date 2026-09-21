@@ -25,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3176058680548394323}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.60188633, y: 0.07190265, z: 0.76839185, w: 0.20527245}
-  m_LocalPosition: {x: -0.08235195, y: 1.3383522, z: 0.21616116}
+  m_LocalRotation: {x: 0.6018863, y: 0.0719027, z: 0.76839197, w: 0.20527242}
+  m_LocalPosition: {x: -0.082356654, y: 1.3383522, z: 0.21615152}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -212,8 +212,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5132405104288704164}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.6403675, y: -0.23248596, z: -0.38744056, w: 0.6211036}
-  m_LocalPosition: {x: -0.013360262, y: 1.2742996, z: 0.21064101}
+  m_LocalRotation: {x: 0.64036745, y: -0.23248614, z: -0.3874407, w: 0.62110347}
+  m_LocalPosition: {x: -0.013381962, y: 1.2742996, z: 0.21065855}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -270,6 +270,7 @@ GameObject:
   - component: {fileID: 7548385756913417618}
   - component: {fileID: 2673896364749540520}
   - component: {fileID: 2596919536824554741}
+  - component: {fileID: 9174589489781736078}
   m_Layer: 20
   m_Name: Player
   m_TagString: Untagged
@@ -341,9 +342,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 1.8
+  m_Height: 2.2759187
   m_Direction: 1
-  m_Center: {x: 0, y: 0.85, z: 0}
+  m_Center: {x: 0, y: 0.6120378, z: 0}
 --- !u!114 &6354078379798726760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -585,6 +586,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   _pickupOrigin: {fileID: 2543910628095086680}
+--- !u!114 &9174589489781736078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5289674846794416690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daba2516fcd9a5348b63d8bba0394caa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputReader: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
+  _weaponManager: {fileID: 8316585890996079863}
 --- !u!1 &8017885533297777719
 GameObject:
   m_ObjectHideFlags: 0
@@ -951,6 +966,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7812074923575429974}
     - target: {fileID: 3723843891446055213, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: _weaponRecoil
+      value: 
+      objectReference: {fileID: 1972136348339373570}
+    - target: {fileID: 3723843891446055213, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: _aimController
       value: 
       objectReference: {fileID: 3623376667837324982}
@@ -959,9 +978,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2673896364749540520}
     - target: {fileID: 3723843891446055213, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: _firearmDefinition
+      value: 
+      objectReference: {fileID: 11400000, guid: 78de8b5f2a93ee84d80169d6f2b4317d, type: 2}
+    - target: {fileID: 3723843891446055213, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: _bulletTrailPooling
       value: 
       objectReference: {fileID: 7548385756913417618}
+    - target: {fileID: 3723843891446055213, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: _weaponEffectDefinition
+      value: 
+      objectReference: {fileID: 11400000, guid: e01b32e73479e9340bede4b86cd774da, type: 2}
     - target: {fileID: 4578510401475178499, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -1016,7 +1043,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponPivot: {fileID: 4276832941789085783}
-  _recoilKickBack: 1
+  _recoilKickBack: 0.2
   _recoilUpDown: 10
   _recoilVibration: 10
   _snapSpeed: 10
