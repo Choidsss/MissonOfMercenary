@@ -14,10 +14,6 @@ namespace MIssionOfMercenary
         Melee = 2
     }
 
-    /*
-     * 숫자버튼을 누르면 맞는 장비를 장착하도록 하는 클래스
-     * 아직은 오직 맞는무기를 장착하도록만 하며, 무기를 바꾸는 기능은 아직 만들지 않음
-     */
     public class WeaponManager : MonoBehaviour
     {
         [Header("InputReader Asset")]
@@ -47,10 +43,7 @@ namespace MIssionOfMercenary
             { 
                 if (CurrentWeapon == null) return null; 
 
-                /* 기존에는 루트에 붙은 WeaponIKData만 찾았습니다. By_Codex
-                return CurrentWeapon.GetComponent<WeaponIKData>();
-                */
-                return CurrentWeapon.GetComponentInChildren<WeaponIKData>(true); // 자식에 있어도 IK 데이터를 찾습니다. By_Codex
+                return CurrentWeapon.GetComponentInChildren<WeaponIKData>(true); 
             }
         }
 
@@ -71,7 +64,7 @@ namespace MIssionOfMercenary
 
         private void Awake()
         {
-            _weapons = new GameObject[] { _primaryWeapon, _secondaryWeapon, _meleeWeapon }; // 내가 들고있는 무기칸 생성(칸만 생성)
+            _weapons = new GameObject[] { _primaryWeapon, _secondaryWeapon, _meleeWeapon }; 
         }
 
         void Start()
@@ -89,14 +82,8 @@ namespace MIssionOfMercenary
             {
                 if(_weapons[i] == null) { continue; }
 
-                //코드 확인, 아래 주석이랑 같은 코드를 이렇게 쓴거 같은데
                 _weapons[i].SetActive(i == selectedSlot);
 
-
-                //if (i == selectedSlot)
-                //{
-                //    _weapons[i].SetActive(true);
-                //}
             }
 
             
@@ -109,7 +96,7 @@ namespace MIssionOfMercenary
 
             if(weaponIKData != null)
             {
-                weaponIKData.RefreshGripPoints(); // Instantiate 직후 새 무기 내부의 GripPoint로 참조를 다시 맞춥니다. By_Codex
+                weaponIKData.RefreshGripPoints(); 
                 SetConstraintData(_rightHandTargetConstraint, weaponIKData.RightGripPoint, true);
                 SetConstraintData(_leftHandTargetConstraint, weaponIKData.LeftGripPoint, weaponIKData.UseLeftHandIK);
             }
@@ -117,23 +104,15 @@ namespace MIssionOfMercenary
             {
                 SetConstraintData(_rightHandTargetConstraint, null, false);
                 SetConstraintData(_leftHandTargetConstraint, null, false);
-                Debug.LogWarning($"{CurrentWeapon.name}: WeaponIKData를 찾지 못했습니다.", CurrentWeapon); // 잘못 설정된 프리팹을 알려줍니다. By_Codex
+                Debug.LogWarning($"{CurrentWeapon.name}: WeaponIKData를 찾지 못했습니다.", CurrentWeapon); 
             }
 
-            /* IK 데이터나 GripPoint가 비어 있으면 NullReferenceException이 발생하던 로그입니다. By_Codex
-            Debug.Log($"오른손 그립: {CurrentWeaponIKData.RightGripPoint.name}");
-            */
             if (weaponIKData != null && weaponIKData.RightGripPoint != null)
             {
-                Debug.Log($"Current Right Grip: {weaponIKData.RightGripPoint.name}"); // null 검사 후 출력합니다. By_Codex
+                Debug.Log($"Current Right Grip: {weaponIKData.RightGripPoint.name}"); 
             }
 
-            // 지연 초기화가 첫 발의 반동 값을 지우지 않도록 장착 시 즉시 기준점을 갱신합니다. By Codex
             WeaponRecoil recoil = CurrentWeapon.GetComponentInChildren<WeaponRecoil>(true);
-            recoil?.InitializeRecoil();
-
-            //Debug.Log($"장착 무기: {CurrentWeapon.name}");
-            //Debug.Log($"오른손 그립: {CurrentWeaponIKData.RightGripPoint.name}");
         }
 
         public void EquipPrimary()
@@ -154,7 +133,6 @@ namespace MIssionOfMercenary
         {
             if (constraint == null) { Debug.Log("Does Not Exist ParentConstraint!"); return; }
 
-            // 한 손 무기이거나 필요한 GripPoint가 없으면 이 손의 IK 추적을 끈다.
             if (!shouldUseConstraint || newSource == null)
             {
                 constraint.weight = 0f;
@@ -191,9 +169,6 @@ namespace MIssionOfMercenary
 
             _weapons[index] = newWeapon;
 
-            /* 기존 무기는 드롭 오브젝트를 만들지 않고 바로 삭제했습니다. By_Codex
-            if(oldWeapon != null) { Destroy(oldWeapon); }
-            */
             if(oldWeapon != null)
             {
                 EquippedWeaponDropData dropData = oldWeapon.GetComponentInChildren<EquippedWeaponDropData>(true);
@@ -210,11 +185,11 @@ namespace MIssionOfMercenary
                     {
                         GameObject droppedClone = Instantiate(oldWeapon, dropPosition, dropRotation);
                         DroppedWeapons droppedCloneData = droppedClone.GetComponentInChildren<DroppedWeapons>(true);
-                        droppedCloneData.SetDroppedState(); // 별도 바닥 프리팹이 없으면 기존 무기의 복제본을 드롭 상태로 전환합니다. By_Codex
+                        droppedCloneData.SetDroppedState();
                     }
                     else
                     {
-                        Debug.LogWarning($"{oldWeapon.name}: DroppedWeapons 또는 Dropped Weapon Prefab이 없습니다.", oldWeapon); // 드롭 정보를 전혀 찾지 못한 경우만 알려줍니다. By_Codex
+                        Debug.LogWarning($"{oldWeapon.name}: DroppedWeapons 또는 Dropped Weapon Prefab이 없습니다.", oldWeapon); 
                     }
                 }
 

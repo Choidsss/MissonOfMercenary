@@ -98902,7 +98902,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1972136348339373570, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _recoilKickBack
-      value: 0.5
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1972136348339373570, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _recoilVibration
@@ -99024,6 +99024,14 @@ PrefabInstance:
       propertyPath: _weaponRecoil
       value: 
       objectReference: {fileID: 1869925812}
+    - target: {fileID: 8432908494238498437, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _firearmDefinition
+      value: 
+      objectReference: {fileID: 11400000, guid: 78de8b5f2a93ee84d80169d6f2b4317d, type: 2}
+    - target: {fileID: 8432908494238498437, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _weaponEffectDefinition
+      value: 
+      objectReference: {fileID: 11400000, guid: e01b32e73479e9340bede4b86cd774da, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

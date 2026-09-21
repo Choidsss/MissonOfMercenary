@@ -7,72 +7,79 @@ using UnityEditor.SettingsManagement;
 
 namespace MIssionOfMercenary
 {
+    
     public class AssultRifle : MonoBehaviour, IWeapons
     {
-        [SerializeField] WeaponRecoil _weaponRecoil;
-        //[SerializeField] AimController _aimController;
-        [SerializeField] GameObject _bullet;
-        [SerializeField] PlayerBulletTrailPooling _bulletTrailPooling;
-        [SerializeField] BulletMarkPooling _bulletMarkPooling;
-        [SerializeField] float _trailRendererSpeed;
-
-        ShellEjector _shell;
-        TryGetAimHit _aimHit;
-
         public enum SingleOrAuto
         {
             single,
             auto
         }
 
-        public AimType aimType { get; } = AimType.None;
-
-        public WeaponType weaponType { get; } = WeaponType.AR;
-
         public SingleOrAuto AttackType { get; set; } = SingleOrAuto.auto;
 
+        ShellEjector _shell;
+        TryGetAimHit _aimHit;
+        Coroutine _autoFireCoroutine;
+        Coroutine _reloadRoutine;
+        Coroutine _muzzleFlashRoutine;
+        GameObject _muzzleFlash;
+        GameObject _bulletMarkObj;
+
+        //string _gunName;
+        //float _fireInterval;
+        //float _range;
+        //int _damage;
+
+        int _currentAmmo;
+        float _reloadDelay = 2.0f;
+        
+        public bool CanReload { get; private set; } = false;
+
+        public bool IsShot { get; private set; } = false;
+
+        public AimType AimType { get { return _firearmDefinition.GunAimType; }}
+
+        public WeaponType WeaponType { get { return _firearmDefinition.GunWeaponType; } }
+
+        public int Damage { get { return _firearmDefinition.Damage; } }
+
+        public float AttackRange { get { return _firearmDefinition.Range; } }
+
+        public int CurrentAmmo { get { return _currentAmmo; } set { _currentAmmo = value; } } 
+
+        [Header("Firearm Definition")]
+        [SerializeField] FirearmDefinition _firearmDefinition;
+
+        [Header("WeaponEffect Definition")]
+        [SerializeField] WeaponEffectDefinition _weaponEffectDefinition;
+
+        [SerializeField] WeaponRecoil _weaponRecoil;
+        [SerializeField] PlayerBulletTrailPooling _bulletTrailPooling;
+        [SerializeField] BulletMarkPooling _bulletMarkPooling;
+        [SerializeField] float _trailRendererSpeed;
+
+        [Header("Input")]
         [SerializeField] InputReader _inputReader;
 
         [Header("Muzzle")]
         [SerializeField] Transform _muzzle;
-        [SerializeField] GameObject _muzzleFlash;
-        [SerializeField] GameObject _bulletMarkObj;
         [SerializeField] float _flashDestroyedTime = 2.0f;
         [SerializeField] float _bulletMarkDestroyedTime = 2.0f;
-        //[SerializeField] GameObject _bulletMarkObj;
-        
-
-        [Header("Weapon Options")]
-        [SerializeField] public int Damage { get; } = 5;
-
-        [SerializeField] public float AttackRange { get; } = 100;
-        
-        [SerializeField] float _autoSpeed = 1.0f;
-
-        [SerializeField] int _maxAmmo = 30;
-
-        public int Ammo { get; private set; } = 30;
-
-        public bool canReload { get; private set; } = false;
-
-        public bool IsShot { get; private set; } = false;
-
-        //[SerializeField] LayerMask _layer;
-
-        Coroutine _autoFireCoroutine;
-        Coroutine _reloadRoutine;
-
-        float _reloadDelay = 2.0f;
 
         private void Awake()
         {
-            // OnEnable의 발사 입력보다 먼저 필수 참조를 준비합니다. By Codex
             _shell = GetComponent<ShellEjector>();
             _aimHit = GetComponentInParent<TryGetAimHit>();
             if (_weaponRecoil == null)
             {
-                _weaponRecoil = GetComponent<WeaponRecoil>(); // 초기 Inspector 참조가 비어 있어도 같은 무기의 반동을 찾습니다. By Codex
+                _weaponRecoil = GetComponent<WeaponRecoil>(); 
             }
+            InitializeMuzzleFlash();
+        }
+        private void Start()
+        {
+            _currentAmmo = _firearmDefinition.MagazineCapacity;
         }
 
         void OnEnable()
@@ -84,6 +91,7 @@ namespace MIssionOfMercenary
 
         void OnDisable()
         {
+            HideMuzzleFlash();
             _inputReader.OnshotEvent -= HandleShot;
             _inputReader.OnShotCancled -= HandleShotCancled;
         }
@@ -91,8 +99,8 @@ namespace MIssionOfMercenary
         public void Attack(float isShot)
         {
             IsShot = false;
-            if(Ammo != _maxAmmo) { canReload = true; }
-            else { canReload = false; }
+            if(CurrentAmmo != _firearmDefinition.MagazineCapacity) { CanReload = true; }
+            else { CanReload = false; }
 
             Vector3 targetPoint;
 
@@ -110,12 +118,8 @@ namespace MIssionOfMercenary
             }
 
             _bulletTrailPooling.PlayTrail(_muzzle.position, _muzzle.forward, AttackRange, _trailRendererSpeed);
-            // Instantiate comparison:
-            // StartCoroutine(SpawnBulletTrail(targetPoint, _muzzle.forward));
 
-            //  머즐플래시는 항상 생성
-            GameObject flash = Instantiate(_muzzleFlash, _muzzle.position, _muzzle.rotation);
-            StartCoroutine(FlashEffectDestoryRoutine(flash));
+            PlayMuzzleFlash();
 
             Vector3 muzzleDir = (targetPoint - _muzzle.position).normalized;
             if(!Physics.Raycast(_muzzle.position, muzzleDir, out RaycastHit muzzleHit, AttackRange)) { return; }
@@ -124,9 +128,6 @@ namespace MIssionOfMercenary
             if (enemyHit == null)
             {
                 _bulletMarkPooling.GetBulletMark(muzzleHit.point + muzzleHit.normal * 0.01f, Quaternion.LookRotation(muzzleHit.normal));
-                // Instantiate comparison:
-                // GameObject bulletMark = Instantiate(_bulletMarkObj, muzzleHit.point + muzzleHit.normal * 0.01f, Quaternion.LookRotation(muzzleHit.normal));
-                // StartCoroutine(BulletMarkEffectDestoryRoutine(bulletMark));
             }
 
             IsShot = true;
@@ -135,59 +136,32 @@ namespace MIssionOfMercenary
             {
                 enemyHit.RecieveHit(muzzleHit, Damage);
             }
-
-            //if (_muzzle == null) { return; }
-
-
-            //RaycastHit hit;
-            //bool isHit = Physics.Raycast(_muzzle.position, _muzzle.forward, out hit, AttackRange);
-
-
-            //if(!isHit) { return; }
-
-
-            //EnemyHit enemyHit = hit.collider.GetComponent<EnemyHit>();
-
-            //if (isHit && enemyHit != null)
-            //{
-            //    GameObject flash = Instantiate(_muzzleFlash, _muzzle.position, _muzzle.rotation);
-            //    enemyHit.TakeDameged(Damage);
-            //    StartCoroutine(FlashEffectDestoryRoutine(flash));
-            //}
         }
 
         void HandleShot(float shot)
         {
-            if(Ammo <= 0) { Ammo = 0; StopCoroutine(AutoFireRoutine()); }
+            if(CurrentAmmo <= 0) { CurrentAmmo = 0; StopCoroutine(AutoFireRoutine()); }
 
 
-            if (AttackType == SingleOrAuto.auto && Ammo != 0)
+            if (AttackType == SingleOrAuto.auto && CurrentAmmo != 0)
             {
                 _autoFireCoroutine = StartCoroutine(AutoFireRoutine());
             }
             else
             {
-                if (Ammo <= 0) { return; }
+                if (CurrentAmmo <= 0) { return; }
 
                 Attack(shot);
-                Ammo--;
+                _currentAmmo--;
                 _weaponRecoil?.WeaponRecoilApply();
-                //if (_aimController.IsAiming)
-                //{
-                //    _aimController.ApplyRecoilDuringAiming();
-                //}
-                //else
-                //{
-
-                //}
-                _shell?.Ejector(); // 탄피 컴포넌트 누락이 발사와 반동을 중단시키지 않게 합니다. By Codex
+                _shell?.Ejector(); 
             }
         }
 
         void HandledReload(float value)
         {
-            if (!canReload) { return; }
-            if (_reloadRoutine != null) StopCoroutine(_reloadRoutine); // 재장전 코루틴 멈춤
+            if (!CanReload) { return; }
+            if (_reloadRoutine != null) StopCoroutine(_reloadRoutine); 
             _reloadRoutine = StartCoroutine(ReloadDelayRoutine());
             Debug.Log("Reloading");
         }
@@ -200,12 +174,51 @@ namespace MIssionOfMercenary
             }
         }
 
-        IEnumerator FlashEffectDestoryRoutine(GameObject flash)
+        void InitializeMuzzleFlash()
         {
-            if(flash == null) { yield return null; }
+            if (_muzzle == null || _weaponEffectDefinition == null ||
+                _weaponEffectDefinition.MuzzleFlash == null)
+            {
+                return;
+            }
 
+            // 총구의 자식으로 한 번 생성하여 무기의 이동과 회전을 따라가게 한다.
+            _muzzleFlash = Instantiate(_weaponEffectDefinition.MuzzleFlash, _muzzle);
+            _muzzleFlash.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            _muzzleFlash.SetActive(false);
+        }
+
+        void PlayMuzzleFlash()
+        {
+            if (_muzzleFlash == null) { return; }
+
+            // 연사 시 이전 타이머가 새 플래시를 먼저 끄지 않도록 갱신한다.
+            HideMuzzleFlash();
+            _muzzleFlash.SetActive(true);
+            _muzzleFlashRoutine = StartCoroutine(HideMuzzleFlashAfterDelay());
+        }
+
+        IEnumerator HideMuzzleFlashAfterDelay()
+        {
             yield return new WaitForSeconds(_flashDestroyedTime);
-            Destroy(flash);
+            if (_muzzleFlash != null) { _muzzleFlash.SetActive(false); }
+            _muzzleFlashRoutine = null;
+        }
+
+        void HideMuzzleFlash()
+        {
+            if (_muzzleFlashRoutine != null)
+            {
+                StopCoroutine(_muzzleFlashRoutine);
+                _muzzleFlashRoutine = null;
+            }
+
+            if (_muzzleFlash != null) { _muzzleFlash.SetActive(false); }
+        }
+
+        void OnDestroy()
+        {
+            if (_muzzleFlash != null) { Destroy(_muzzleFlash); }
         }
 
         IEnumerator BulletMarkEffectDestoryRoutine(GameObject mark)
@@ -218,36 +231,27 @@ namespace MIssionOfMercenary
 
         IEnumerator AutoFireRoutine()
         {
-            while (Ammo > 0)
+            while (_currentAmmo > 0)
             {
                 Attack(1f);
-                Ammo--;
+                _currentAmmo--;
 
-                //if (_aimController.IsAiming)
-                //{
-                //    _aimController.ApplyRecoilDuringAiming();
-                //}
-                //else
-                //{
-
-                //}
                 _weaponRecoil?.WeaponRecoilApply();
-                _shell?.Ejector(); // 탄피 컴포넌트 누락이 연사 코루틴을 중단시키지 않게 합니다. By Codex
-                yield return new WaitForSeconds(1f/_autoSpeed);
+                yield return new WaitForSeconds(1f/_firearmDefinition.FireInterval);
             }
         }
 
         IEnumerator ReloadDelayRoutine()
         {
-            canReload = false;
+            CanReload = false;
             yield return new WaitForSeconds(_reloadDelay);
-            Ammo = _maxAmmo;    
+            _currentAmmo = _firearmDefinition.MagazineCapacity;    
         }
 
         IEnumerator SpawnBulletTrail(Vector3 targetPoint, Vector3 direction)
         {
             float movedDistance = 0f;
-            GameObject trail = Instantiate(_bullet, _muzzle.position, Quaternion.LookRotation(direction));
+            GameObject trail = Instantiate(_weaponEffectDefinition.Trail, _muzzle.position, Quaternion.LookRotation(direction));
             float totalDistance = Vector3.Distance(_muzzle.position, targetPoint);
 
             while (movedDistance < totalDistance)

@@ -4,15 +4,15 @@ namespace MIssionOfMercenary
 {
     public interface IWeapons
     {
-        public AimType aimType { get; }
+        public AimType AimType { get; }
 
-        public WeaponType weaponType { get; }
+        public WeaponType WeaponType { get; }
 
         public int Damage { get; }
 
         public float AttackRange { get; }
 
-        public int Ammo { get; }
+        public int CurrentAmmo { get; set; }
 
 
         void Attack(float isShot);

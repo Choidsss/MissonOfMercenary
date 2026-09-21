@@ -100,7 +100,7 @@ namespace MIssionOfMercenary
 
         void AimHandle()
         {
-            if (_ar.aimType == AimType.IronSight) return;
+            if (_ar.AimType == AimType.IronSight) return;
             IsAiming = !IsAiming;
             _offset.SetOffsetActive(!IsAiming);
 

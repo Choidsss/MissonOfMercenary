@@ -25,6 +25,12 @@ namespace MIssionOfMercenary
 
         public int Ammo { get; private set; } = 0;
 
+        public AimType AimType => throw new System.NotImplementedException();
+
+        public WeaponType WeaponType => throw new System.NotImplementedException();
+
+        public int CurrentAmmo { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
         private void OnEnable()
         {
             _inputReader.OnshotEvent += Attack;

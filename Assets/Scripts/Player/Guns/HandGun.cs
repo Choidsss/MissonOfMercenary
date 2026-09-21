@@ -7,15 +7,15 @@ namespace MIssionOfMercenary
 {
     public class HandGun : MonoBehaviour, IWeapons
     {
+        [Header("Definitions")]
+        [SerializeField] FirearmDefinition _fireDef;
+        [SerializeField] WeaponEffectDefinition _weaponDef;
+
         [SerializeField] BulletMarkPooling _bulletMarkPooling;
         TryGetAimHit _aimHit;
 
         [Header("Recoil")]
         [SerializeField] WeaponRecoil _weaponRecoil;
-
-        //[Header("IK")]
-        //[SerializeField] Transform _rightGripPoint;
-        //[SerializeField] Transform _rightHandIKTarget;
 
         [Header("Needed Assets")]
         [SerializeField] InputReader _inputReader;
@@ -36,15 +36,15 @@ namespace MIssionOfMercenary
         [SerializeField] int _hgMaxAmmo = 12;
         [SerializeField] float _trailSpeeds = 1.0f;
 
-        public AimType aimType { get; } = AimType.None;
+        public AimType AimType { get; } = AimType.None;
 
-        public WeaponType weaponType => WeaponType.HG;
+        public WeaponType WeaponType => WeaponType.HG;
 
-        public int Damage { get { return _hgDamage; } private set { _hgDamage = value; } }
+        public int Damage { get { return _hgDamage; }}
 
-        public float AttackRange { get { return _attackRange; } private set { _attackRange = value; } }
+        public float AttackRange { get { return _attackRange; }}
 
-        public int Ammo { get { return _hgCurrentAmmo; } private set { _hgCurrentAmmo = value; } }
+        public int CurrentAmmo { get { return _hgCurrentAmmo; } set{ _hgCurrentAmmo = value; } }
         public bool IsShot { get; private set;} = false;
 
         int _hgCurrentAmmo = 1;

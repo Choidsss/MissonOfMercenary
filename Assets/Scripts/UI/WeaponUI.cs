@@ -24,7 +24,7 @@ namespace MIssionOfMercenary
         {
             _currentWeapon = weapon;
 
-            if (_currentWeapon.weaponType == WeaponType.Knife) { _isKnife = true; }
+            if (_currentWeapon.WeaponType == WeaponType.Knife) { _isKnife = true; }
         }
 
         void ShowAmmoAndType()
@@ -36,8 +36,8 @@ namespace MIssionOfMercenary
                 _isKnife = false;
                 return;
             }
-            _currentAmmo = _currentWeapon.Ammo;
-            _currentWeaponType = _currentWeapon.weaponType;
+            _currentAmmo = _currentWeapon.CurrentAmmo;
+            _currentWeaponType = _currentWeapon.WeaponType;
 
             _ammo.text = _currentAmmo.ToString();
             _weaponType.text = _currentWeaponType.ToString();
