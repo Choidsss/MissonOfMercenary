@@ -34,7 +34,7 @@ namespace MIssionOfMercenary
 
         void InitializeMuzzleFlash()
         {
-            if(_firearmDef == null || _weaponEffectDef == null || _weaponEffectDef.MuzzleFlash == null) { Debug.LogWarning("머즐 플래시 설정을 확인해주세요.", this); return; }
+            if(_weaponEffectDef == null || _weaponEffectDef.MuzzleFlash == null || _weaponEffectDef.MuzzleFlash == null) { Debug.LogWarning("머즐 플래시 설정을 확인해주세요.", this); return; }
 
             _instance = Instantiate(_weaponEffectDef.MuzzleFlash, _muzzle);
             _instance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);

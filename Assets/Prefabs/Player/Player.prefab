@@ -357,7 +357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d1acf695e2962e4582573633c363a2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputReader: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
+  _mainCamera: {fileID: 5024758830442866966}
 --- !u!114 &8316585890996079863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -930,6 +930,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3781692084111600301}
     - target: {fileID: 2377729921998730420, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: _muzzle
+      value: 
+      objectReference: {fileID: 6265373178867144559}
+    - target: {fileID: 2377729921998730420, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: _fireDef
+      value: 
+      objectReference: {fileID: 11400000, guid: eee0d8826a1d1d847bdd39f4a3c01002, type: 2}
+    - target: {fileID: 2377729921998730420, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: _weaponDef
+      value: 
+      objectReference: {fileID: 11400000, guid: cd63256b474da3846a2301611ac5c0c0, type: 2}
+    - target: {fileID: 2377729921998730420, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: _bulletMarkPooling
       value: 
       objectReference: {fileID: 2673896364749540520}
@@ -937,6 +949,14 @@ PrefabInstance:
       propertyPath: _bulletTrailPooling
       value: 
       objectReference: {fileID: 7548385756913417618}
+    - target: {fileID: 2377729921998730420, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: _muzzleFlashDestroyTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2377729921998730420, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: _weaponMuzzleFlashEffect
+      value: 
+      objectReference: {fileID: 3121694032510097764}
     - target: {fileID: 2546909722552271913, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -989,6 +1009,10 @@ PrefabInstance:
       propertyPath: _weaponEffectDefinition
       value: 
       objectReference: {fileID: 11400000, guid: e01b32e73479e9340bede4b86cd774da, type: 2}
+    - target: {fileID: 3723843891446055213, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      propertyPath: _weaponMuzzleFlashEffect
+      value: 
+      objectReference: {fileID: 2752056558187916351}
     - target: {fileID: 4578510401475178499, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -1024,6 +1048,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4683721846578919024, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1972136348339373570}
+    - targetCorrespondingSourceObject: {fileID: 4683721846578919024, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2752056558187916351}
+    - targetCorrespondingSourceObject: {fileID: 6707638940327227325, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3121694032510097764}
   m_SourcePrefab: {fileID: 100100000, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
 --- !u!1 &456440153435638232 stripped
 GameObject:
@@ -1044,10 +1074,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponPivot: {fileID: 4276832941789085783}
   _recoilKickBack: 0.2
-  _recoilUpDown: 10
-  _recoilVibration: 10
+  _recoilUpDown: 5
+  _recoilVibration: 5
   _snapSpeed: 10
   _recoverySpeed: 10
+--- !u!114 &2752056558187916351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456440153435638232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149e50822b9c3f047812dddcdac5de36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _firearmDef: {fileID: 11400000, guid: 78de8b5f2a93ee84d80169d6f2b4317d, type: 2}
+  _weaponEffectDef: {fileID: 11400000, guid: e01b32e73479e9340bede4b86cd774da, type: 2}
+  _muzzle: {fileID: 3074752556198235017}
+  _duration: 0.01
 --- !u!1 &1957715090523696851 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6737743835872694651, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
@@ -1058,9 +1104,30 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6707638940327227325, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
   m_PrefabInstance: {fileID: 5092011875828449192}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3121694032510097764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998516045955665941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149e50822b9c3f047812dddcdac5de36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _firearmDef: {fileID: 11400000, guid: eee0d8826a1d1d847bdd39f4a3c01002, type: 2}
+  _weaponEffectDef: {fileID: 11400000, guid: cd63256b474da3846a2301611ac5c0c0, type: 2}
+  _muzzle: {fileID: 6265373178867144559}
+  _duration: 0.09
 --- !u!4 &2118081828408007073 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6615372107854063113, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+  m_PrefabInstance: {fileID: 5092011875828449192}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3074752556198235017 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7782716010988614689, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
   m_PrefabInstance: {fileID: 5092011875828449192}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &3402948481667057113 stripped
@@ -1081,6 +1148,11 @@ Transform:
 --- !u!4 &5090264050469778472 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000013501991808, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+  m_PrefabInstance: {fileID: 5092011875828449192}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6265373178867144559 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1178085372206377159, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
   m_PrefabInstance: {fileID: 5092011875828449192}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6357356371857761835 stripped
