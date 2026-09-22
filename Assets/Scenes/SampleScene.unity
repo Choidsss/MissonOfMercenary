@@ -656,7 +656,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 21.55
+  m_fontSize: 23
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2286,7 +2286,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8432908494238498437, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
   m_PrefabInstance: {fileID: 946757081343618496}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 254195533}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0431b3be5cf177c49804f597eb40bf5f, type: 3}
@@ -10913,6 +10913,27 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6786119418734314306, guid: 01d572b37070d6b479992a9af2266f32, type: 3}
   m_PrefabInstance: {fileID: 253539577}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &254195533 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 456440153435638232, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+  m_PrefabInstance: {fileID: 946757081343618496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &254195539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254195533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149e50822b9c3f047812dddcdac5de36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _firearmDef: {fileID: 11400000, guid: 78de8b5f2a93ee84d80169d6f2b4317d, type: 2}
+  _weaponEffectDef: {fileID: 11400000, guid: e01b32e73479e9340bede4b86cd774da, type: 2}
+  _muzzle: {fileID: 380835967}
+  _duration: 0.01
 --- !u!1001 &256908573
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17512,6 +17533,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4559638626149274, guid: 397f736a005f8464e9a23f3f66361871, type: 3}
   m_PrefabInstance: {fileID: 380214460}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &380835967 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3074752556198235017, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+  m_PrefabInstance: {fileID: 946757081343618496}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &382446765
 PrefabInstance:
@@ -32574,7 +32600,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 36.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -34213,6 +34239,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3565968678414077018, guid: 166cfa9cf06704240a8ff0d16c2a44ca, type: 3}
   m_PrefabInstance: {fileID: 725181406}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &725771592 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6265373178867144559, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+  m_PrefabInstance: {fileID: 946757081343618496}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &729674732
 PrefabInstance:
@@ -46458,7 +46489,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 39.1
+  m_fontSize: 42
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -51176,6 +51207,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6923396920241610856, guid: 98fcad534a3f33341b209e50e498b901, type: 3}
   m_PrefabInstance: {fileID: 1109485665}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &1110374491 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 5024758830442866966, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+  m_PrefabInstance: {fileID: 946757081343618496}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1110459393
 PrefabInstance:
@@ -60930,7 +60966,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.3
+  m_fontSize: 33.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -73196,6 +73232,27 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3565968678414077018, guid: 166cfa9cf06704240a8ff0d16c2a44ca, type: 3}
   m_PrefabInstance: {fileID: 1582382163}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1583592913 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1998516045955665941, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+  m_PrefabInstance: {fileID: 946757081343618496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1583592919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1583592913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149e50822b9c3f047812dddcdac5de36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _firearmDef: {fileID: 11400000, guid: eee0d8826a1d1d847bdd39f4a3c01002, type: 2}
+  _weaponEffectDef: {fileID: 11400000, guid: cd63256b474da3846a2301611ac5c0c0, type: 2}
+  _muzzle: {fileID: 725771592}
+  _duration: 0.09
 --- !u!1001 &1584949346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79504,7 +79561,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40.4
+  m_fontSize: 59.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -84364,7 +84421,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42.55
+  m_fontSize: 45.5
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -98877,6 +98934,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1972136348339373570, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _recoilUpDown
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1972136348339373570, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _recoilVibration
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3623376667837324982, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _crossHair
       value: 
@@ -98889,6 +98954,10 @@ PrefabInstance:
       propertyPath: _enemyAttack
       value: 
       objectReference: {fileID: 100443740}
+    - target: {fileID: 6354078379798726760, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _mainCamera
+      value: 
+      objectReference: {fileID: 1110374491}
     - target: {fileID: 6757284830440564949, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 317.23
@@ -98929,14 +98998,52 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7373818753867189020, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _muzzle
+      value: 
+      objectReference: {fileID: 725771592}
+    - target: {fileID: 7373818753867189020, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _fireDef
+      value: 
+      objectReference: {fileID: 11400000, guid: eee0d8826a1d1d847bdd39f4a3c01002, type: 2}
+    - target: {fileID: 7373818753867189020, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _weaponDef
+      value: 
+      objectReference: {fileID: 11400000, guid: cd63256b474da3846a2301611ac5c0c0, type: 2}
+    - target: {fileID: 7373818753867189020, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _muzzleFlashDestroyTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7373818753867189020, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _weaponMuzzleFlashEffect
+      value: 
+      objectReference: {fileID: 1583592919}
     - target: {fileID: 8316585890996079863, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
       propertyPath: _weaponUI
       value: 
       objectReference: {fileID: 128385267}
+    - target: {fileID: 8432908494238498437, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _nextFireTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432908494238498437, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _flashDestroyTime
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432908494238498437, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      propertyPath: _weaponMuzzleFlashEffect
+      value: 
+      objectReference: {fileID: 254195539}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 456440153435638232, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 254195539}
+    - targetCorrespondingSourceObject: {fileID: 1998516045955665941, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1583592919}
   m_SourcePrefab: {fileID: 100100000, guid: 6272897784f2eab4490ad8d3eef945f9, type: 3}
 --- !u!1001 &6721634270390668392
 PrefabInstance:

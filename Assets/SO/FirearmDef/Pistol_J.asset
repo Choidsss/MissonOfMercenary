@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0261e0f84ec65c24e9e2fdca4e9fd3e8, type: 3}
-  m_Name: AR_M
+  m_Name: Pistol_J
   m_EditorClassIdentifier: 
-  _weaponType: 0
+  _weaponType: 3
   _aimType: 0
-  _gunName: M4A1
-  _damage: 30
-  _magazineCapacity: 30
-  _range: 150
-  _fireInterval: 0.1
+  _gunName: Pistol_J
+  _damage: 15
+  _magazineCapacity: 12
+  _range: 50
+  _fireInterval: 1

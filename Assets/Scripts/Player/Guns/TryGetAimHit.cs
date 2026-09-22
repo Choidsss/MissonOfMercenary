@@ -5,24 +5,13 @@ namespace MIssionOfMercenary
 {
     public class TryGetAimHit : MonoBehaviour
     {
-        [SerializeField] InputReader _inputReader;
-
-        Ray _ray;
-        public Ray RayHit => _ray;
-
-        private void OnEnable()
+        [Header("MainCamera")]
+        [SerializeField] Camera _mainCamera;
+        
+        Vector3 _centerPoint = new Vector3(0.5f, 0.5f, 0.0f);
+        public Ray GetAimRay()
         {
-            _inputReader.OnshotEvent += GetAimHit;
-        }
-
-        private void OnDisable()
-        {
-            _inputReader.OnshotEvent -= GetAimHit;
-        }
-
-        void GetAimHit(float shot)
-        {
-            _ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+            return _mainCamera.ViewportPointToRay(_centerPoint);
         }
     }
 }

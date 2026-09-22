@@ -12,9 +12,9 @@ namespace MIssionOfMercenary
 
         public float AttackRange { get; }
 
-        public int CurrentAmmo { get; set; }
+        public int CurrentAmmo { get; }
 
 
-        void Attack(float isShot);
+        //void Attack(float isShot);
     }
 }

@@ -17,46 +17,40 @@ namespace MIssionOfMercenary
         [Header("Recoil")]
         [SerializeField] WeaponRecoil _weaponRecoil;
 
+        [Header("MuzzleFlashEffect")]
+        [SerializeField] MuzzleFlashEffect _weaponMuzzleFlashEffect;
+
         [Header("Needed Assets")]
         [SerializeField] InputReader _inputReader;
-        [SerializeField] GameObject _muzzle;
+        [SerializeField] Transform _muzzle;
         [SerializeField] GameObject _bullet;
         [SerializeField] GameObject _bulletTrail;
         [SerializeField] PlayerBulletTrailPooling _bulletTrailPooling;
-        [SerializeField] GameObject _muzzleFlash;
         [SerializeField] GameObject _shellEjector;
         [SerializeField] GameObject _bulletMark;
 
         [Header("Attack Fields")]
-        [SerializeField] float _muzzleFlashDestroyDelay = 1.5f;
+        [SerializeField] float _muzzleFlashDestroyTime = 1.5f;
         [SerializeField] float _bulletMarkDestroyDelay = 1.5f;
         [SerializeField] float _reloadDelay = 2.0f;
-        [SerializeField] float _attackRange = 1.0f;
-        [SerializeField] int _hgDamage = 1;
-        [SerializeField] int _hgMaxAmmo = 12;
         [SerializeField] float _trailSpeeds = 1.0f;
 
-        public AimType AimType { get; } = AimType.None;
+        public AimType AimType { get { return _fireDef.GunAimType; } }
 
-        public WeaponType WeaponType => WeaponType.HG;
+        public WeaponType WeaponType { get { return _fireDef.GunWeaponType; } }
 
-        public int Damage { get { return _hgDamage; }}
+        public int Damage { get { return _fireDef.Damage; }}
 
-        public float AttackRange { get { return _attackRange; }}
+        public float AttackRange { get { return _fireDef.Range; }}
 
-        public int CurrentAmmo { get { return _hgCurrentAmmo; } set{ _hgCurrentAmmo = value; } }
+        public int CurrentAmmo { get { return _hgCurrentAmmo; }  }
         public bool IsShot { get; private set;} = false;
 
         Coroutine _reloadRoutine;
 
         int _hgCurrentAmmo = 1;
         bool _isReloading = false;
-
-        private void OnEnable()
-        {
-            //_inputReader.OnshotEvent += Attack;
-            //_inputReader.OnReloadEvent += HandledReload;
-        }
+        float _nextFireTime;
 
         private void OnDisable()
         {
@@ -67,23 +61,20 @@ namespace MIssionOfMercenary
             }
 
             _isReloading = false;
-            //_inputReader.OnshotEvent -= Attack;
-            //_inputReader.OnReloadEvent -= HandledReload;
         }
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             _aimHit = GetComponentInParent<TryGetAimHit>();
-            _hgCurrentAmmo = _hgMaxAmmo;
+            _hgCurrentAmmo = _fireDef.MagazineCapacity;
         }
 
-        public void Attack(float isShot)
+        private void ExecuteShot()
         {
             IsShot = false;
             Vector3 targetPoint;
 
-            Ray ray = _aimHit.RayHit;
+            Ray ray = _aimHit.GetAimRay();
 
             if (Physics.Raycast(ray, out RaycastHit hit, AttackRange))
             {
@@ -94,11 +85,9 @@ namespace MIssionOfMercenary
                 targetPoint = ray.origin + ray.direction * AttackRange;
             }
 
-            //총 발사시 화염 생성
-            GameObject flash = Instantiate(_muzzleFlash, _muzzle.transform.position, _muzzle.transform.rotation);
             Vector3 direction = (targetPoint - _muzzle.transform.position).normalized;
 
-            StartCoroutine(MuzzleFlashDestroyRoutine(flash));
+            _weaponMuzzleFlashEffect?.PlayMuzzleFlash();
             _bulletTrailPooling.PlayTrail(_muzzle.transform.position, _muzzle.transform.forward, AttackRange, _trailSpeeds);
 
             if (!Physics.Raycast(ray, out RaycastHit hitInfo, AttackRange)) { return; }
@@ -113,66 +102,35 @@ namespace MIssionOfMercenary
             else { Debug.Log("맞은 적이 없어 컴포넌트를 가져올수 없습니다!"); }
         }
 
-        //void HandledReload(float shot)
-        //{
-        //    if (_hgCurrentAmmo == _hgMaxAmmo && !_isReloading) { return; }
-
-        //    StartCoroutine(ReloadDelayRoutine());
-        //    _isReloading = false;
-        //}
-
-
-        IEnumerator BulletMarkDestroyRoutine(GameObject bulletMark)
+        bool TryFire()
         {
-            if (bulletMark == null) { yield return null; }
-            yield return new WaitForSeconds(_bulletMarkDestroyDelay);
-            Destroy(bulletMark);
-        }
+            if (_muzzle == null || _fireDef == null) { return false; }
+            if (_isReloading || _hgCurrentAmmo <= 0) { return false; }
+            if (!isActiveAndEnabled) { return false; }
+            if (Time.time < _nextFireTime) { return false; }
 
-        IEnumerator MuzzleFlashDestroyRoutine(GameObject flash)
-        {
-            if (flash == null) { Debug.Log("파괴할 MuzzleFlash가 없습니다"); } //yield return null;
-            yield return new WaitForSeconds(_muzzleFlashDestroyDelay);
+            _nextFireTime = Time.time + _fireDef.FireInterval;
 
-            Destroy(flash);
-        }
+            ExecuteShot();
+            _hgCurrentAmmo--;
+            IsShot = true;
+            _weaponRecoil?.WeaponRecoilApply();
 
-        IEnumerator SpawnBulletTrail(Vector3 targetPoint, Vector3 muzzleDirection)
-        {
-            float moveDistance = 0;
-            GameObject go = Instantiate(_bulletTrail, _muzzle.transform.position, _muzzle.transform.rotation);
-
-            float totalDistance = Vector3.Distance(go.transform.position, targetPoint);
-
-            while (moveDistance < totalDistance)
-            {
-                if(go == null) { Debug.Log("Trail이 생성되지 않았습니다."); break; }
-
-                float step = _trailSpeeds * Time.deltaTime;
-                go.transform.position += step * muzzleDirection;
-
-                moveDistance += step;
-                yield return null;
-            }
-
-            Destroy(go);
+            return true;
         }
 
         public void TriggeredPressed()
         {
             if (_isReloading) { return; }
 
-            if (CurrentAmmo <= 0)
+            if (_hgCurrentAmmo <= 0)
             {
-                CurrentAmmo = 0;
+                _hgCurrentAmmo = 0;
                 TriggeredReleased();
                 return;
             }
 
-            Attack(1f);
-            _hgCurrentAmmo--;
-            IsShot = true; 
-            _weaponRecoil?.WeaponRecoilApply();
+            TryFire();
         }
 
         public void TriggeredReleased()
@@ -182,7 +140,7 @@ namespace MIssionOfMercenary
 
         public void TryReload()
         {
-            if (_hgCurrentAmmo >= _hgMaxAmmo || _isReloading) { return; }
+            if (_hgCurrentAmmo >= _fireDef.MagazineCapacity || _isReloading) { return; }
             _isReloading = true;
 
             _reloadRoutine = StartCoroutine(ReloadDelayRoutine());
@@ -190,7 +148,7 @@ namespace MIssionOfMercenary
         IEnumerator ReloadDelayRoutine()
         {
             yield return new WaitForSeconds(_reloadDelay);
-            _hgCurrentAmmo = _hgMaxAmmo;
+            _hgCurrentAmmo = _fireDef.MagazineCapacity;
 
             _isReloading = false;
             _reloadRoutine = null;
