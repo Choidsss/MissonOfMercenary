@@ -11,10 +11,5 @@ namespace MIssionOfMercenary
         public int Damage { get; }
 
         public float AttackRange { get; }
-
-        public int CurrentAmmo { get; }
-
-
-        //void Attack(float isShot);
     }
 }

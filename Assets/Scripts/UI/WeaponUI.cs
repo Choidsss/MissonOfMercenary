@@ -9,12 +9,7 @@ namespace MIssionOfMercenary
         [SerializeField] TextMeshProUGUI _weaponType;
 
         IWeapons _currentWeapon;
-        WeaponType _currentWeaponType;
-        int _currentAmmo;
 
-        bool _isKnife = false;
-
-        // Update is called once per frame
         void Update()
         {
             ShowAmmoAndType();
@@ -23,24 +18,26 @@ namespace MIssionOfMercenary
         public void GetCurrentWeaponType(IWeapons weapon)
         {
             _currentWeapon = weapon;
-
-            if (_currentWeapon.WeaponType == WeaponType.Knife) { _isKnife = true; }
+            ShowAmmoAndType();
         }
 
         void ShowAmmoAndType()
         {
-            if (_isKnife)
+            if (_currentWeapon == null)
             {
-                _ammo.text = "-- / --";
-                _weaponType.text = "Melee";
-                _isKnife = false;
+                _ammo.text = "--";
+                _weaponType.text = "None";
                 return;
             }
-            _currentAmmo = _currentWeapon.CurrentAmmo;
-            _currentWeaponType = _currentWeapon.WeaponType;
-
-            _ammo.text = _currentAmmo.ToString();
-            _weaponType.text = _currentWeaponType.ToString();
+            _weaponType.text = _currentWeapon.WeaponType.ToString();
+            if(_currentWeapon is IFirearm firearm)
+            {
+                _ammo.text = firearm.CurrentAmmo.ToString();
+            }
+            else
+            {
+                _ammo.text = "-- / --";
+            }
         }
     }
 }

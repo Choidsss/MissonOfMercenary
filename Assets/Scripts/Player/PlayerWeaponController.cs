@@ -25,6 +25,15 @@ namespace MIssionOfMercenary
         void HandleFire(float value)
         {
             if (_weaponManager == null || !_weaponManager.isActiveAndEnabled) return;
+
+            Knife knife = _weaponManager.WeaponKnife;
+
+            if (knife != null)
+            {
+                knife.ExecuteAttack();
+                return;
+            }
+
             _weaponManager.Weapon?.TriggeredPressed();
         }
 

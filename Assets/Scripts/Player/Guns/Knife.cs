@@ -5,46 +5,49 @@ namespace MIssionOfMercenary
 {
     public class Knife : MonoBehaviour, IWeapons
     {
-        [Header("Input Reader")]
-        [SerializeField] InputReader _inputReader;
+        [Header("Definition")]
+        [SerializeField] FirearmDefinition _firearmDef;
+        [SerializeField] WeaponEffectDefinition _weaponEffectDef;
 
-        [Header("IK")]
-        [SerializeField] Transform _rightGripPoint;
-        [SerializeField] Transform _leftGripPoint;
+        [Header("Slash Timing")]
+        [SerializeField, Min(0.01f)] float _windUpDuration = 0.12f;
+        [SerializeField, Min(0.01f)] float _slashDuration = 0.1f;
+        [SerializeField, Min(0.01f)] float _returnDuration = 0.22f;
 
-        [Header("Trail Renderer")]
-        [SerializeField] GameObject _trail;
+        [Header("Slash Timing")]
+        [SerializeField] Vector3 _windUpPosition = new Vector3(0.08f, 0.04f, -0.08f);
+        [SerializeField] Vector3 _windUpRotation = new Vector3(-15f, -25f, 25f);
 
-        public AimType aimType => AimType.None;
+        [Header("Slash Pose")]
+        [SerializeField] Vector3 _slashPosition = new Vector3(-0.15f, -0.05f, 0.15f);
+        [SerializeField] Vector3 _slashRotation = new Vector3(25f, 40f, -50f);
 
-        public WeaponType weaponType => WeaponType.Knife;
+        Vector3 _restPosition;
+        Quaternion _restRotation;
+        float _attackTime;
+        bool _isAttacking;
+        bool _hasRestPose;
 
-        public int Damage { get; private set; } = 100;
+        public int Damage { get { return _firearmDef.Damage; } }
 
-        public float AttackRange { get; private set; } = 50;
+        public float AttackRange { get { return _firearmDef.Range; } }
 
-        public int Ammo { get; private set; } = 0;
+        public AimType AimType { get { return _firearmDef.GunAimType; } }
 
-        public AimType AimType => throw new System.NotImplementedException();
+        public WeaponType WeaponType { get { return _firearmDef.GunWeaponType; } }
 
-        public WeaponType WeaponType => throw new System.NotImplementedException();
-
-        public int CurrentAmmo { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
-        private void OnEnable()
+        public void ExecuteAttack()
         {
-            _inputReader.OnshotEvent += Attack;
+            if (!isActiveAndEnabled || _isAttacking) { return; }
+
+            _restPosition = transform.localPosition;
+            _restRotation = transform.localRotation;
+            _hasRestPose = true;
+
+            _attackTime = 0f;
+            _isAttacking = true;
         }
 
-        private void OnDisable()
-        {
-            _inputReader.OnshotEvent -= Attack;
-        }
 
-
-        public void Attack(float isShot)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

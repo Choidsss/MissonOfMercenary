@@ -17,6 +17,9 @@ namespace MIssionOfMercenary
     public class WeaponManager : MonoBehaviour
     {
         IFirearm _weapon;
+        Knife _knife;
+
+        [SerializeField] WeaponIKController _weaponIKController;
 
         [Header("InputReader Asset")]
         [SerializeField] InputReader _inputReader;
@@ -29,13 +32,10 @@ namespace MIssionOfMercenary
         [SerializeField] GameObject _secondaryWeapon; //보조무기
         [SerializeField] GameObject _meleeWeapon; //근접무기
 
-        [Header("Parent Constraint")]
-        [SerializeField] ParentConstraint _leftHandTargetConstraint;
-        [SerializeField] ParentConstraint _rightHandTargetConstraint;
-
         GameObject[] _weapons; //내가 들고있는 무기
         WeaponSlot _currentSlot; //현재 슬롯
 
+        public Knife WeaponKnife { get { return _knife; } }
         public IFirearm Weapon { get { return _weapon; } }
         public WeaponSlot CurrentSlot { get { return _currentSlot; } }
         public GameObject CurrentWeapon => _weapons[(int)_currentSlot];
@@ -92,23 +92,14 @@ namespace MIssionOfMercenary
             _currentSlot = slot;
 
             _weapon = CurrentWeapon.GetComponent<IFirearm>();
+            _knife = CurrentWeapon.GetComponent<Knife>();
+
             IWeapons currentWeaponInterface = CurrentWeapon.GetComponentInParent<IWeapons>();
             _weaponUI.GetCurrentWeaponType(currentWeaponInterface);
 
             WeaponIKData weaponIKData = CurrentWeaponIKData;
 
-            if(weaponIKData != null)
-            {
-                weaponIKData.RefreshGripPoints(); 
-                SetConstraintData(_rightHandTargetConstraint, weaponIKData.RightGripPoint, true);
-                SetConstraintData(_leftHandTargetConstraint, weaponIKData.LeftGripPoint, weaponIKData.UseLeftHandIK);
-            }
-            else
-            {
-                SetConstraintData(_rightHandTargetConstraint, null, false);
-                SetConstraintData(_leftHandTargetConstraint, null, false);
-                Debug.LogWarning($"{CurrentWeapon.name}: WeaponIKData를 찾지 못했습니다.", CurrentWeapon); 
-            }
+            _weaponIKController.BlindWeapon(weaponIKData);
 
             if (weaponIKData != null && weaponIKData.RightGripPoint != null)
             {
@@ -130,29 +121,6 @@ namespace MIssionOfMercenary
         public void EquipMelee()
         {
             EquipWeapon(WeaponSlot.Melee);
-        }
-
-        void SetConstraintData(ParentConstraint constraint, Transform newSource, bool shouldUseConstraint)
-        {
-            if (constraint == null) { Debug.Log("Does Not Exist ParentConstraint!"); return; }
-
-            if (!shouldUseConstraint || newSource == null)
-            {
-                constraint.weight = 0f;
-                return;
-            }
-
-            var sources = new List<ConstraintSource>
-            {
-                new ConstraintSource
-                {
-                    sourceTransform = newSource,
-                    weight = 1f
-                }
-            };
-
-            constraint.SetSources(sources);
-            constraint.weight = 1f;
         }
 
         public void ReplacedWeapon(WeaponSlot slot, GameObject newWeaponPrefab, Vector3 dropPosition, Quaternion dropRotation)

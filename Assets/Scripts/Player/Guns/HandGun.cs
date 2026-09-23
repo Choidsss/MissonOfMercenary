@@ -32,8 +32,6 @@ namespace MIssionOfMercenary
         [SerializeField] GameObject _bulletMark;
 
         [Header("Attack Fields")]
-        [SerializeField] float _muzzleFlashDestroyTime = 1.5f;
-        [SerializeField] float _bulletMarkDestroyDelay = 1.5f;
         [SerializeField] float _reloadDelay = 2.0f;
         [SerializeField] float _trailSpeeds = 1.0f;
 
@@ -83,14 +81,12 @@ namespace MIssionOfMercenary
                 _bulletTrailPooling.PlayTrail(shot.Origin, shot.Direction, shot.Distance, _trailSpeeds);
             }
 
-            if (_muzzle == null) { return; }
-
             if (!shot.IsHit) { return; }
 
             RaycastHit hit = shot.Hit;
-            EnemyHit enemyHit = hit.collider.GetComponentInParent<EnemyHit>();
+            IHitReceiver hitReceive = hit.collider.GetComponentInParent<IHitReceiver>();
 
-            if (enemyHit != null) { enemyHit.RecieveHit(hit, Damage); }
+            if (hitReceive != null) { hitReceive.ReceiveHit(hit, Damage); }
             else { _bulletMarkPooling.GetBulletMark(hit.point + hit.normal * 0.01f, Quaternion.LookRotation(hit.normal)); }
         }
 

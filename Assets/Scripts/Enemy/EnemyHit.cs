@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace MIssionOfMercenary
 {
-    public class EnemyHit : MonoBehaviour
+    public class EnemyHit : MonoBehaviour, IHitReceiver
     {
         [SerializeField] Rigidbody _pelivisRb;
         EnemyBodyPart _part;
@@ -20,9 +20,10 @@ namespace MIssionOfMercenary
         [SerializeField] int _bonusDamageArms = 5;
         [SerializeField] int _bonusDamageLegs = 5;
         [SerializeField] int _bonusDamageHead = 20;
-        [SerializeField] int _bonusDamageBody = 10;
 
+        //int _bonusDamageBody = 0;
         int _totalDamage;
+
 
         private void Start()
         {
@@ -62,13 +63,44 @@ namespace MIssionOfMercenary
             }
         }
 
-        public void RecieveHit(RaycastHit muzzleHit, int damage)
-        {
-            if(muzzleHit.collider.gameObject.layer != 10) { Debug.Log("Does Not Equal Layer Enemy"); }// 일단 조건 이렇게 해놓음
+        //public void RagdollHit(RaycastHit muzzleHit, int damage)
+        //{
+        //    if(muzzleHit.collider.gameObject.layer != 10) { Debug.Log("Does Not Equal Layer Enemy"); }// 일단 조건 이렇게 해놓음
 
-            if(muzzleHit.collider.gameObject.layer == 10)
+        //    if(muzzleHit.collider.gameObject.layer == 10)
+        //    {
+        //        BodyPart hitPart = _part.GiveHitPart(muzzleHit);
+
+        //        Debug.Log($"맞은 부위 : {hitPart}");
+
+        //        switch (hitPart)
+        //        {
+        //            case BodyPart.Arms:
+        //                _totalDamage = damage + _bonusDamageArms;
+        //                break;
+        //            case BodyPart.Legs:
+        //                _totalDamage = damage + _bonusDamageLegs;
+        //                break;
+        //            case BodyPart.Head:
+        //                _totalDamage = damage + _bonusDamageHead;
+        //                break;
+        //            default:
+        //                _totalDamage = damage;
+        //                break;
+        //        }
+        //        Debug.Log($"준 데미지 : {_totalDamage}");
+        //        _health.TakeDamege(_totalDamage);
+        //        _pelivisRb.constraints = RigidbodyConstraints.FreezeRotationY;//Y만 체크(시선은 고정이되, 팔다리는 움직임)
+        //    }
+        //}
+
+        public void ReceiveHit(RaycastHit hit, int damage)
+        {
+            if (hit.collider.gameObject.layer != 10) { Debug.Log("Does Not Equal Layer Enemy"); }// 일단 조건 이렇게 해놓음
+
+            if (hit.collider.gameObject.layer == 10)
             {
-                BodyPart hitPart = _part.GiveHitPart(muzzleHit);
+                BodyPart hitPart = _part.GiveHitPart(hit);
 
                 Debug.Log($"맞은 부위 : {hitPart}");
 
@@ -84,7 +116,7 @@ namespace MIssionOfMercenary
                         _totalDamage = damage + _bonusDamageHead;
                         break;
                     default:
-                        _totalDamage = damage + _bonusDamageBody;
+                        _totalDamage = damage;
                         break;
                 }
                 Debug.Log($"준 데미지 : {_totalDamage}");

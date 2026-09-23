@@ -12,8 +12,6 @@ namespace MIssionOfMercenary
     {
         readonly HitscanResolver _hitscanResolver = new HitscanResolver();
         
-        float shotValue = 1.0f;
-
         public enum SingleOrAuto
         {
             single,
@@ -61,7 +59,6 @@ namespace MIssionOfMercenary
 
         [Header("Muzzle")]
         [SerializeField] Transform _muzzle;
-        [SerializeField] float _bulletMarkDestroyedTime = 2.0f;
 
         float _nextFireTime;
 
@@ -108,16 +105,14 @@ namespace MIssionOfMercenary
                 _bulletTrailPooling.PlayTrail(shot.Origin, shot.Direction, shot.Distance, _trailRendererSpeed);
             }
 
-            if (_muzzle == null) { return; }
-
             if (!shot.IsHit) { return; }
 
             RaycastHit hit = shot.Hit;
-            EnemyHit enemyHit = hit.collider.GetComponentInParent<EnemyHit>();
+            IHitReceiver hitReceiver = hit.collider.GetComponentInParent<IHitReceiver>();
             
-            if (enemyHit != null)
+            if (hitReceiver != null)
             {
-                enemyHit.RecieveHit(hit, Damage);
+                hitReceiver.ReceiveHit(hit, Damage);
             }
             else
             {
@@ -210,21 +205,7 @@ namespace MIssionOfMercenary
 
         private void OnDrawGizmos()
         {
-            //Vector3 targetPoint;
             Gizmos.color = Color.black;
-
-            //Ray ray = _getAimRay.GetAimRay();
-
-            //if (Physics.Raycast(ray, out RaycastHit hit, AttackRange))
-            //{
-            //    targetPoint = hit.point;
-            //}
-            //else
-            //{
-            //    targetPoint = ray.origin + ray.direction * AttackRange;
-            //}
-
-            //Vector3 muzzleDir = (targetPoint - _muzzle.position).normalized;
             Gizmos.DrawLine(_muzzle.transform.position, _muzzle.transform.position + _muzzle.forward * 100f);
         }
     }
