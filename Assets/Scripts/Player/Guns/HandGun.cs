@@ -7,6 +7,8 @@ namespace MIssionOfMercenary
 {
     public class HandGun : MonoBehaviour, IFirearm
     {
+        readonly HitscanResolver _hitscanResolver = new HitscanResolver();
+
         [Header("Definitions")]
         [SerializeField] FirearmDefinition _fireDef;
         [SerializeField] WeaponEffectDefinition _weaponDef;
@@ -72,34 +74,24 @@ namespace MIssionOfMercenary
         private void ExecuteShot()
         {
             IsShot = false;
-            Vector3 targetPoint;
 
-            Ray ray = _aimHit.GetAimRay();
-
-            if (Physics.Raycast(ray, out RaycastHit hit, AttackRange))
-            {
-                targetPoint = hit.point;
-            }
-            else
-            {
-                targetPoint = ray.origin + ray.direction * AttackRange;
-            }
-
-            Vector3 direction = (targetPoint - _muzzle.transform.position).normalized;
-
+            ShotResult shot = _hitscanResolver.Resolver(_aimHit.GetAimRay(), _muzzle.position, AttackRange);
             _weaponMuzzleFlashEffect?.PlayMuzzleFlash();
-            _bulletTrailPooling.PlayTrail(_muzzle.transform.position, _muzzle.transform.forward, AttackRange, _trailSpeeds);
 
-            if (!Physics.Raycast(ray, out RaycastHit hitInfo, AttackRange)) { return; }
-            EnemyHit enemyHit = hitInfo.collider.GetComponentInParent<EnemyHit>();
-
-            if (enemyHit == null)
+            if (shot.Distance >= 0.01f)
             {
-                _bulletMarkPooling.GetBulletMark(hitInfo.point + hitInfo.normal * 0.01f, Quaternion.LookRotation(hitInfo.normal));
+                _bulletTrailPooling.PlayTrail(shot.Origin, shot.Direction, shot.Distance, _trailSpeeds);
             }
 
-            if (enemyHit != null) { enemyHit.RecieveHit(hitInfo, Damage); }
-            else { Debug.Log("맞은 적이 없어 컴포넌트를 가져올수 없습니다!"); }
+            if (_muzzle == null) { return; }
+
+            if (!shot.IsHit) { return; }
+
+            RaycastHit hit = shot.Hit;
+            EnemyHit enemyHit = hit.collider.GetComponentInParent<EnemyHit>();
+
+            if (enemyHit != null) { enemyHit.RecieveHit(hit, Damage); }
+            else { _bulletMarkPooling.GetBulletMark(hit.point + hit.normal * 0.01f, Quaternion.LookRotation(hit.normal)); }
         }
 
         bool TryFire()

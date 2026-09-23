@@ -10,6 +10,8 @@ namespace MIssionOfMercenary
     
     public class AssultRifle : MonoBehaviour, IFirearm
     {
+        readonly HitscanResolver _hitscanResolver = new HitscanResolver();
+        
         float shotValue = 1.0f;
 
         public enum SingleOrAuto
@@ -96,40 +98,33 @@ namespace MIssionOfMercenary
         private void ExecuteShot()
         {
             IsShot = false;
-            Vector3 targetPoint;
 
-            if (_muzzle == null) { return; }
-
-            Ray ray = _getAimRay.GetAimRay();
-
-            if (Physics.Raycast(ray, out RaycastHit hit, AttackRange))
-            {
-                targetPoint = hit.point;
-            }
-            else
-            {
-                targetPoint = ray.origin + ray.direction * AttackRange;
-            }
-
-            _bulletTrailPooling.PlayTrail(_muzzle.position, _muzzle.forward, AttackRange, _trailRendererSpeed);
+            ShotResult shot = _hitscanResolver.Resolver(_getAimRay.GetAimRay(), _muzzle.position, AttackRange);
 
             _weaponMuzzleFlashEffect?.PlayMuzzleFlash();
 
-            Vector3 muzzleDir = (targetPoint - _muzzle.position).normalized;
-            if(!Physics.Raycast(_muzzle.position, muzzleDir, out RaycastHit muzzleHit, AttackRange)) { return; }
-            EnemyHit enemyHit = muzzleHit.collider.GetComponentInParent<EnemyHit>();
-
-            if (enemyHit == null)
+            if(shot.Distance >= 0.01f)
             {
-                _bulletMarkPooling.GetBulletMark(muzzleHit.point + muzzleHit.normal * 0.01f, Quaternion.LookRotation(muzzleHit.normal));
+                _bulletTrailPooling.PlayTrail(shot.Origin, shot.Direction, shot.Distance, _trailRendererSpeed);
+            }
+
+            if (_muzzle == null) { return; }
+
+            if (!shot.IsHit) { return; }
+
+            RaycastHit hit = shot.Hit;
+            EnemyHit enemyHit = hit.collider.GetComponentInParent<EnemyHit>();
+            
+            if (enemyHit != null)
+            {
+                enemyHit.RecieveHit(hit, Damage);
+            }
+            else
+            {
+                _bulletMarkPooling.GetBulletMark(hit.point + hit.normal * 0.01f, Quaternion.LookRotation(hit.normal));
             }
 
             IsShot = true;
-
-            if (enemyHit != null)
-            {
-                enemyHit.RecieveHit(muzzleHit, Damage);
-            }
         }
 
         IEnumerator AutoFireRoutine()
@@ -211,6 +206,26 @@ namespace MIssionOfMercenary
             _currentAmmo = _firearmDefinition.MagazineCapacity;    
             _isReloading = false;
             _reloadRoutine = null;
+        }
+
+        private void OnDrawGizmos()
+        {
+            //Vector3 targetPoint;
+            Gizmos.color = Color.black;
+
+            //Ray ray = _getAimRay.GetAimRay();
+
+            //if (Physics.Raycast(ray, out RaycastHit hit, AttackRange))
+            //{
+            //    targetPoint = hit.point;
+            //}
+            //else
+            //{
+            //    targetPoint = ray.origin + ray.direction * AttackRange;
+            //}
+
+            //Vector3 muzzleDir = (targetPoint - _muzzle.position).normalized;
+            Gizmos.DrawLine(_muzzle.transform.position, _muzzle.transform.position + _muzzle.forward * 100f);
         }
     }
 }
