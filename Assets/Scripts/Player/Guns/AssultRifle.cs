@@ -41,7 +41,9 @@ namespace MIssionOfMercenary
 
         public float AttackRange { get { return _firearmDefinition.Range; } }
 
-        public int CurrentAmmo { get { return _currentAmmo; } } 
+        public int CurrentAmmo { get { return _currentAmmo; } }
+
+        [SerializeField] ReloadHandMotion _reloadHandMotion;
 
         [Header("Firearm Definition")]
         [SerializeField] FirearmDefinition _firearmDefinition;
@@ -81,12 +83,14 @@ namespace MIssionOfMercenary
         void OnDisable()
         {
             TriggeredReleased();
+            
 
             if (_reloadRoutine != null)
             {
                 StopCoroutine(_reloadRoutine);
                 _reloadRoutine = null;
             }
+            _reloadHandMotion?.Cancel();
 
             _isReloading = false;
             IsShot = false;
@@ -197,8 +201,22 @@ namespace MIssionOfMercenary
 
         IEnumerator ReloadDelayRoutine()
         {
-            yield return new WaitForSeconds(_reloadDelay);
-            _currentAmmo = _firearmDefinition.MagazineCapacity;    
+            //yield return new WaitForSeconds(_reloadDelay);
+            //_currentAmmo = _firearmDefinition.MagazineCapacity;    
+            //_isReloading = false;
+            //_reloadRoutine = null;
+
+            if (_reloadHandMotion != null && _reloadHandMotion.IsReady)
+            {
+                yield return _reloadHandMotion.Play(_reloadDelay);
+            }
+            else
+            {
+                // 모션이 없는 무기는 기존 재장전 시간을 사용한다. By Codex
+                yield return new WaitForSeconds(_reloadDelay);
+            }
+
+            _currentAmmo = _firearmDefinition.MagazineCapacity;
             _isReloading = false;
             _reloadRoutine = null;
         }

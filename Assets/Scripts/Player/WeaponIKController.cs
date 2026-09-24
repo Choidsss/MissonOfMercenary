@@ -6,6 +6,8 @@ namespace MIssionOfMercenary
     [DefaultExecutionOrder(11000)]
     public class WeaponIKController : MonoBehaviour
     {
+        Transform _leftHandOverrideTarget;
+
         [Header("Firearm IK Data")]
         [SerializeField] Transform _leftHandTarget;
         [SerializeField] Transform _rightHandTarget;
@@ -27,6 +29,7 @@ namespace MIssionOfMercenary
 
         public void BlindWeapon(WeaponIKData data)
         {
+            _leftHandOverrideTarget = null;
             _currentData = data;
 
             if (_currentData != null)
@@ -58,15 +61,43 @@ namespace MIssionOfMercenary
             CopyPose(_leftHandTarget, leftSource);
         }
 
+        //Transform GetLeftHandSource()
+        //{
+        //    if (_currentData == null)
+        //        return null;
+
+        //    // Two-handed weapons follow their grip; a free hand follows the independent rest pose. By Codex
+        //    return _currentData.UseLeftHandIK
+        //        ? _currentData.LeftGripPoint
+        //        : _leftHandRestTarget;
+        //}
+
+        public void SetLeftHandOverride(Transform target)
+        {
+            _leftHandOverrideTarget = target;
+        }
+
         Transform GetLeftHandSource()
         {
-            if (_currentData == null)
-                return null;
+            if( _currentData == null)
+            { 
+                return null; 
+            }
 
-            // Two-handed weapons follow their grip; a free hand follows the independent rest pose. By Codex
-            return _currentData.UseLeftHandIK
-                ? _currentData.LeftGripPoint
-                : _leftHandRestTarget;
+            if(_leftHandOverrideTarget != null)
+            {
+                return _leftHandOverrideTarget;
+            }
+
+            return _currentData.UseLeftHandIK ? _currentData.LeftGripPoint : _leftHandRestTarget;
+        }
+
+        public void ClearLeftHandOverride(Transform ownerTarget)
+        {
+            if (_leftHandOverrideTarget == ownerTarget)
+            {
+                _leftHandOverrideTarget = null;
+            }
         }
     }
 }
