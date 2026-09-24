@@ -36,6 +36,17 @@ namespace MIssionOfMercenary
 
         public WeaponType WeaponType { get { return _firearmDef.GunWeaponType; } }
 
+        private void OnDisable()
+        {
+            ResetAttack();
+        }
+
+        private void Update()
+        {
+            KnifeMovement();
+        }
+
+        //공격 실행
         public void ExecuteAttack()
         {
             if (!isActiveAndEnabled || _isAttacking) { return; }
@@ -48,6 +59,52 @@ namespace MIssionOfMercenary
             _isAttacking = true;
         }
 
+        //칼의 움직임
+        void KnifeMovement()
+        {
+            if (!_isAttacking) { return; }
 
+            _attackTime += Time.deltaTime;
+
+            float windup = Mathf.Max(0.01f, _windUpDuration);
+            float slash = Mathf.Max(0.01f, _slashDuration);
+            float recovery = Mathf.Max(0.01f, _returnDuration);
+
+            if (_attackTime < windup)
+            {
+                ApplyPose(Vector3.zero, Vector3.zero, _windUpPosition, _windUpRotation, _attackTime / windup);
+            }
+            else if (_attackTime < windup + slash)
+            {
+                ApplyPose(_windUpPosition, _windUpRotation, _slashPosition, _slashRotation, (_attackTime - windup) / slash);
+            }
+            else if (_attackTime < windup + slash + recovery)
+            {
+                ApplyPose(_slashPosition, _slashRotation, Vector3.zero, Vector3.zero, (_attackTime - slash - windup) / recovery);
+            }
+            else
+            {
+                ResetAttack();
+            }
+        }
+
+        void ApplyPose(Vector3 fromPosition, Vector3 fromRotation, Vector3 toPosition, Vector3 toRotation, float progress)
+        {
+            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(progress));
+
+            Vector3 position = _restPosition + Vector3.Lerp(fromPosition, toPosition, t);
+            Quaternion rotation = _restRotation * Quaternion.Slerp(Quaternion.Euler(fromRotation) , Quaternion.Euler(toRotation), t);
+
+            transform.SetLocalPositionAndRotation(position, rotation);
+        }
+
+        void ResetAttack()
+        {
+            if (_hasRestPose) { transform.SetLocalPositionAndRotation(_restPosition, _restRotation); }
+
+            _isAttacking = false;
+            _hasRestPose = false;
+            _attackTime = 0f;
+        }
     }
 }

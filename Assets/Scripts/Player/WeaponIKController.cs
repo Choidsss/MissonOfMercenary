@@ -1,5 +1,5 @@
-using System.Runtime.ConstrainedExecution;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 namespace MIssionOfMercenary
 {
@@ -13,14 +13,24 @@ namespace MIssionOfMercenary
         [Header("Knife IK Data")]
         [SerializeField] WeaponIKData _currentData;
 
+        [Header("LeftArm IK Data")]
+        [SerializeField] TwoBoneIKConstraint _leftIKConstraint;
+
+        [Header("One-handed Weapon Rest Pose")]
+        [Tooltip("Place outside the moving weapon. Used when Use Left Hand IK is off.")]
+        [SerializeField] Transform _leftHandRestTarget;
+
+        private void Update()
+        {
+            SyncTargets();    
+        }
 
         public void BlindWeapon(WeaponIKData data)
         {
-            if (data == null) { Debug.Log("무기의 IK_Data가 없습니다"); return; }
-            
             _currentData = data;
 
-            _currentData.RefreshGripPoints();
+            if (_currentData != null)
+                _currentData.RefreshGripPoints();
 
             SyncTargets();
         }
@@ -34,15 +44,29 @@ namespace MIssionOfMercenary
 
         void SyncTargets()
         {
+            Transform leftSource = GetLeftHandSource();
+
+            // Keep the arm posed for one-handed weapons instead of releasing it to Animator. By Codex
+            if (_leftIKConstraint != null)
+                _leftIKConstraint.weight = leftSource != null ? 1f : 0f;
+
             if (_currentData == null)
                 return;
 
             CopyPose(_rightHandTarget, _currentData.RightGripPoint);
 
-            if (_currentData.UseLeftHandIK)
-            {
-                CopyPose(_leftHandTarget, _currentData.LeftGripPoint);
-            }
+            CopyPose(_leftHandTarget, leftSource);
+        }
+
+        Transform GetLeftHandSource()
+        {
+            if (_currentData == null)
+                return null;
+
+            // Two-handed weapons follow their grip; a free hand follows the independent rest pose. By Codex
+            return _currentData.UseLeftHandIK
+                ? _currentData.LeftGripPoint
+                : _leftHandRestTarget;
         }
     }
 }
