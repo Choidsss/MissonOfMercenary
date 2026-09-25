@@ -25866,6 +25866,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AR_U
       objectReference: {fileID: 0}
+    - target: {fileID: 7770829599027755403, guid: c288c4ea6ee2d4c49bc45812e5b05a2e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8093102899347466128, guid: c288c4ea6ee2d4c49bc45812e5b05a2e, type: 3}
       propertyPath: m_Layer
       value: 9

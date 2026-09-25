@@ -27,10 +27,21 @@ namespace MIssionOfMercenary
         Vector3 _originPos;
         Quaternion _originRot;
         bool _isRecoilActive;
+        bool _hasOriginPose;
+
+        private void OnDisable()
+        {
+            StopRecoil();
+        }
 
         private void Start()
         {
-            InitializeRecoil(); // 최초 활성화 때 반동 기준 위치를 저장합니다. By Codex
+            if (!_hasOriginPose)
+            {
+                InitializeRecoil();
+            }
+
+            //InitializeRecoil();
         }
 
         public void InitializeRecoil()
@@ -39,11 +50,14 @@ namespace MIssionOfMercenary
 
             _originPos = _weaponPivot.localPosition;
             _originRot = _weaponPivot.localRotation;
+            _hasOriginPose = true;
+
             _currentRecoilPos = Vector3.zero;
             _currentRecoilRotation = Vector3.zero;
             _targetRecoilPos = Vector3.zero;
             _targetRecoilRotation = Vector3.zero;
             _isRecoilActive = false;
+            
         }
 
         // Update is called once per frame
@@ -55,7 +69,6 @@ namespace MIssionOfMercenary
 
         void WeaponsRecoil()
         {
-            // 다른 무기의 대기 중인 반동 컴포넌트가 공유 Pivot을 덮어쓰지 않게 합니다. By Codex
             if (!_isRecoilActive) { return; }
 
             //총의 반동 회복
@@ -89,6 +102,23 @@ namespace MIssionOfMercenary
             _isRecoilActive = true;
             _targetRecoilPos = new Vector3(0f, 0f, -_recoilKickBack);
             _targetRecoilRotation = new Vector3(-_recoilUpDown, Random.Range(-_recoilVibration, _recoilVibration), 0f);
+        }
+
+        public void StopRecoil()
+        {
+            _isRecoilActive = false;
+
+            _currentRecoilPos = Vector3.zero;
+            _currentRecoilRotation = Vector3.zero;
+            _targetRecoilPos = Vector3.zero;
+            _targetRecoilRotation = Vector3.zero;
+
+            if(!_hasOriginPose || _weaponPivot == null)
+            {
+                return;
+            }
+
+            _weaponPivot.SetLocalPositionAndRotation( _originPos, _originRot);  
         }
     }
 }

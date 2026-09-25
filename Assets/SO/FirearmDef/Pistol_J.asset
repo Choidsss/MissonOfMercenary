@@ -18,4 +18,4 @@ MonoBehaviour:
   _damage: 15
   _magazineCapacity: 12
   _range: 50
-  _fireInterval: 1
+  _fireInterval: 0.2

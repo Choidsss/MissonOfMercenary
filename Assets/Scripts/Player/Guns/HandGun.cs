@@ -19,6 +19,9 @@ namespace MIssionOfMercenary
         [Header("Recoil")]
         [SerializeField] WeaponRecoil _weaponRecoil;
 
+        [Header("Reload Motion")]
+        [SerializeField] ReloadHandMotion _reloadHandMotion;
+
         [Header("MuzzleFlashEffect")]
         [SerializeField] MuzzleFlashEffect _weaponMuzzleFlashEffect;
 
@@ -60,7 +63,10 @@ namespace MIssionOfMercenary
                 _reloadRoutine = null;
             }
 
+            // 무기 교체로 재장전을 취소하면 탄창과 왼손 제어를 복구한다. By Codex
+            _reloadHandMotion?.Cancel();
             _isReloading = false;
+            IsShot = false;
         }
 
         void Start()
@@ -135,7 +141,18 @@ namespace MIssionOfMercenary
         }
         IEnumerator ReloadDelayRoutine()
         {
-            yield return new WaitForSeconds(_reloadDelay);
+            // 주무기와 같은 모션을 권총의 그립과 탄창 설정으로 재사용한다. By Codex
+            if (_reloadHandMotion != null && _reloadHandMotion.IsReady)
+            {
+                yield return _reloadHandMotion.Play(_reloadDelay);
+            }
+            else
+            {
+                // 모션 참조가 준비되지 않았다면 기존 시간제 재장전을 유지한다. By Codex
+                yield return new WaitForSeconds(_reloadDelay);
+            }
+
+            // 모션이 끝난 뒤에만 탄약을 채운다. By Codex
             _hgCurrentAmmo = _fireDef.MagazineCapacity;
 
             _isReloading = false;

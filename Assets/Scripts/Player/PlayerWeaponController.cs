@@ -24,7 +24,12 @@ namespace MIssionOfMercenary
 
         void HandleFire(float value)
         {
-            if (_weaponManager == null || !_weaponManager.isActiveAndEnabled) return;
+            if (_weaponManager == null || !_weaponManager.isActiveAndEnabled)
+                return;
+
+            // 장착 중에는 총과 칼 모두 공격하지 않는다. By Codex
+            if (_weaponManager.IsEquipping)
+                return;
 
             Knife knife = _weaponManager.WeaponKnife;
 
@@ -47,7 +52,12 @@ namespace MIssionOfMercenary
 
         void HandleReload(float value)
         {
-            if (_weaponManager == null || !_weaponManager.isActiveAndEnabled) return;
+            if (_weaponManager == null || !_weaponManager.isActiveAndEnabled)
+                return;
+
+            // 장착 중에는 재장전을 시작하지 않는다. By Codex
+            if (_weaponManager.IsEquipping)
+                return;
 
             _weaponManager.Weapon?.TryReload();
         }
