@@ -396,8 +396,8 @@ GameObject:
   - component: {fileID: 2596919536824554741}
   - component: {fileID: 9174589489781736078}
   - component: {fileID: 8322107613778549202}
-  - component: {fileID: 8205075635937570608}
   - component: {fileID: 4025274994038738399}
+  - component: {fileID: 3443904060707994260}
   m_Layer: 20
   m_Name: Player
   m_TagString: Untagged
@@ -496,6 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab4b28ba9cc767f4287bd2ecf1511946, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponMount: {fileID: 0}
   _equipMotion: {fileID: 4025274994038738399}
   _weaponIKController: {fileID: 8322107613778549202}
   _inputReader: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
@@ -738,28 +739,6 @@ MonoBehaviour:
   _currentData: {fileID: 8082630871729107237}
   _leftIKConstraint: {fileID: 6132000800998770648}
   _leftHandRestTarget: {fileID: 8125401769332054823}
---- !u!114 &8205075635937570608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5289674846794416690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 133c06991ea2b7f4fb7a6700e9eab8e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _reachMagazineTimeWeight: 1
-  _pullOutTimeWeight: 1
-  _insertTimeWeight: 1
-  _returnHandTimeWeight: 1
-  _weaponIKController: {fileID: 8322107613778549202}
-  _normalGripPoint: {fileID: 4558981328522587782}
-  _magazineGrapPoint: {fileID: 6540515622064817322}
-  _reloadHandTarget: {fileID: 155972720458838699}
-  _magazine: {fileID: 5167304524175800925}
-  _magazinePullOutPoint: {fileID: 2283747142997491652}
 --- !u!114 &4025274994038738399
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -785,6 +764,23 @@ MonoBehaviour:
     PositionOffset: {x: 0, y: 0, z: -0.15}
     RotationOffset: {x: 0, y: 0, z: 0}
     _duration: 0.4
+--- !u!114 &3443904060707994260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5289674846794416690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f8af1f25b4b85e48b475ee512e53206, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponPivot: {fileID: 4276832941789085783}
+  _weaponIKController: {fileID: 8322107613778549202}
+  _aimHit: {fileID: 6354078379798726760}
+  _bulletTrailPooling: {fileID: 7548385756913417618}
+  _bulletMarkPooling: {fileID: 2673896364749540520}
 --- !u!1 &6247629780395695001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1317,10 +1313,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3623376667837324982}
     - target: {fileID: 3723843891446055213, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
-      propertyPath: _reloadHandMotion
-      value: 
-      objectReference: {fileID: 8205075635937570608}
-    - target: {fileID: 3723843891446055213, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       propertyPath: _bulletMarkPooling
       value: 
       objectReference: {fileID: 2673896364749540520}
@@ -1589,6 +1581,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4683721846578919024, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2752056558187916351}
+    - targetCorrespondingSourceObject: {fileID: 4683721846578919024, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6067874919725989042}
     - targetCorrespondingSourceObject: {fileID: 6707638940327227325, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3121694032510097764}
@@ -1635,6 +1630,28 @@ MonoBehaviour:
   _weaponEffectDef: {fileID: 11400000, guid: e01b32e73479e9340bede4b86cd774da, type: 2}
   _muzzle: {fileID: 3074752556198235017}
   _duration: 0.01
+--- !u!114 &6067874919725989042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456440153435638232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 133c06991ea2b7f4fb7a6700e9eab8e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _reachMagazineTimeWeight: 1
+  _pullOutTimeWeight: 1
+  _insertTimeWeight: 1
+  _returnHandTimeWeight: 1
+  _weaponIKController: {fileID: 8322107613778549202}
+  _normalGripPoint: {fileID: 4558981328522587782}
+  _magazineGrapPoint: {fileID: 6540515622064817322}
+  _reloadHandTarget: {fileID: 155972720458838699}
+  _magazine: {fileID: 5167304524175800925}
+  _magazinePullOutPoint: {fileID: 2283747142997491652}
 --- !u!4 &945273554716447586 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5455051674980904138, guid: 13c46916fa552fb4e846d566e8b3a073, type: 3}

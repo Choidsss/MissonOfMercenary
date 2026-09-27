@@ -5,7 +5,7 @@ using UnityEngine;
 namespace MIssionOfMercenary
 {
     [DefaultExecutionOrder(10000)] // Animator와 IK 처리 뒤에 반동 Transform을 적용합니다. By Codex
-    public class WeaponRecoil : MonoBehaviour
+    public class WeaponRecoil : MonoBehaviour, IPlayerWeaponBindable
     {
         [Header("References")]
         [SerializeField] Transform _weaponPivot; // 무기 가져오기
@@ -119,6 +119,26 @@ namespace MIssionOfMercenary
             }
 
             _weaponPivot.SetLocalPositionAndRotation( _originPos, _originRot);  
+        }
+
+        public bool BindPlayer(PlayerWeaponContext weaponContext)
+        {
+            if(weaponContext == null || weaponContext.WeaponPivot == null)
+            {
+                Debug.Log("Player의 WeaponPivot이 없습니다.");
+                return false;
+            }
+
+            _isRecoilActive = false;
+            _currentRecoilPos = Vector3.zero;
+            _currentRecoilRotation = Vector3.zero;
+            _targetRecoilPos = Vector3.zero;
+            _targetRecoilRotation = Vector3.zero;
+
+            _weaponPivot = weaponContext.WeaponPivot;
+            _hasOriginPose = false;
+
+            return true;
         }
     }
 }

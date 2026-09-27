@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace MIssionOfMercenary
 {
-    public class HandGun : MonoBehaviour, IFirearm
+    public class HandGun : MonoBehaviour, IFirearm, IPlayerWeaponBindable
     {
         readonly HitscanResolver _hitscanResolver = new HitscanResolver();
 
@@ -71,6 +71,11 @@ namespace MIssionOfMercenary
 
         void Start()
         {
+            if (_aimHit == null)
+            {
+                _aimHit = GetComponentInParent<TryGetAimHit>();
+            }
+
             _aimHit = GetComponentInParent<TryGetAimHit>();
             _hgCurrentAmmo = _fireDef.MagazineCapacity;
         }
@@ -157,6 +162,27 @@ namespace MIssionOfMercenary
 
             _isReloading = false;
             _reloadRoutine = null;
+        }
+
+        public bool BindPlayer(PlayerWeaponContext weaponContext)
+        {
+            if (weaponContext == null || weaponContext.AimHit == null || weaponContext.BulletTrailPooling == null || weaponContext.BulletMarkPooling == null)
+            {
+                Debug.Log("Player의 사격 참조가 부족합니다.");
+                return false;
+            }
+
+            if (_fireDef == null || _muzzle == null)
+            {
+                Debug.Log("무기 설정 또는 총구가 없습니다.");
+                return false;
+            }
+
+            _aimHit = weaponContext.AimHit;
+            _bulletTrailPooling = weaponContext.BulletTrailPooling;
+            _bulletMarkPooling = weaponContext.BulletMarkPooling;
+
+            return true;
         }
     }
 }

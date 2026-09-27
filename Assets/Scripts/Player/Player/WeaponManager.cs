@@ -19,6 +19,9 @@ namespace MIssionOfMercenary
         IFirearm _weapon;
         Knife _knife;
 
+        [SerializeField] PlayerWeaponContext _weaponContext;
+        [SerializeField] Transform _weaponMount;
+
         [Header("Equip Motion")]
         [SerializeField] WeaponStartEquipMotion _equipMotion;
 
@@ -101,22 +104,18 @@ namespace MIssionOfMercenary
                 return;
             }
 
-            // 같은 무기를 다시 선택하면 장착 모션을 재시작하지 않는다. By Codex
             if (_equippedObject == selectedWeapon && selectedWeapon.activeSelf)
             {
                 return;
             }
 
-            // 이전 무기의 연사를 중단한다. By Codex
             _weapon?.TriggeredReleased();
 
-            // OnDisable에서 반동, 재장전, 칼 공격을 정리한다. By Codex
             if (_equippedObject != null)
             {
                 _equippedObject.SetActive(false);
             }
 
-            // 처음 시작할 때 활성화되어 있던 무기도 정리한다. By Codex
             for (int i = 0; i < _weapons.Length; i++)
             {
                 if (_weapons[i] != null)
@@ -125,7 +124,6 @@ namespace MIssionOfMercenary
                 }
             }
 
-            // 이전 무기의 정리가 끝난 후 공유 Pivot을 기본 자세로 복구한다. By Codex
             _equipMotion?.Cancel();
 
             _currentSlot = slot;
@@ -140,13 +138,11 @@ namespace MIssionOfMercenary
 
             _weaponUI.GetCurrentWeaponType(currentWeaponInterface);
 
-            // Pivot이 기본 자세일 때 반동의 기준을 먼저 저장한다. By Codex
             WeaponRecoil recoil =
                 selectedWeapon.GetComponentInChildren<WeaponRecoil>(true);
 
             recoil?.InitializeRecoil();
 
-            // 준비 자세를 적용한 다음 손의 IK를 연결한다. By Codex
             _equipMotion?.Play(slot);
             _weaponIKController.BlindWeapon(CurrentWeaponIKData);
 
@@ -196,20 +192,34 @@ namespace MIssionOfMercenary
             EquipWeapon(WeaponSlot.Melee);
         }
 
-        public void ReplacedWeapon(WeaponSlot slot, GameObject newWeaponPrefab, Vector3 dropPosition, Quaternion dropRotation)
+        // 변경: 외부에서는 TryReplacedWeapon을 통해서만 교체를 요청하고, 실제 처리 결과를 bool로 반환한다.
+        // 새 무기를 비활성 상태로 생성한 뒤 Player 참조를 연결한다.
+        // 연결 실패 시 새 인스턴스만 제거하며 기존 슬롯과 무기는 유지한다.
+        // 연결 성공 후에는 기존 드롭 처리를 유지하고 새 무기를 장착한다. By Codex
+        bool ReplacedWeapon(WeaponSlot slot, GameObject newWeaponPrefab, Vector3 dropPosition, Quaternion dropRotation)
         {
-            if(newWeaponPrefab == null) { return; }
+            if (newWeaponPrefab == null || _weaponMount == null || _weaponContext == null)
+            {
+                return false;
+            }
 
             int index = (int)slot;
+            if (_weapons == null || index < 0 || index >= _weapons.Length)
+            {
+                return false;
+            }
+
             GameObject oldWeapon = _weapons[index];
 
-            Transform weaponParent = oldWeapon != null ? oldWeapon.transform.parent : transform;
-
-            GameObject newWeapon = Instantiate(newWeaponPrefab, weaponParent);
-            newWeapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            GameObject newWeapon = CreateInActiveWeapon(newWeaponPrefab);
+            if (!BindWeaponToPlayer(newWeapon))
+            {
+                Destroy(newWeapon);
+                return false;
+            }
 
             DroppedWeapons newDroppedWeapon = newWeapon.GetComponentInChildren<DroppedWeapons>(true);
-            newDroppedWeapon?.SetEquippedState(); // 바닥용 물리와 Pickup Trigger를 끄고 총기 스크립트를 활성화합니다. By_Codex
+            newDroppedWeapon?.SetEquippedState(); 
 
             _weapons[index] = newWeapon;
 
@@ -219,7 +229,7 @@ namespace MIssionOfMercenary
 
                 if(dropData != null && dropData.DroppedWeaponPrefab != null)
                 {
-                    Instantiate(dropData.DroppedWeaponPrefab, dropPosition, dropRotation); // 기존 무기의 바닥용 프리팹을 생성합니다. By_Codex
+                    Instantiate(dropData.DroppedWeaponPrefab, dropPosition, dropRotation);
                 }
                 else
                 {
@@ -241,6 +251,76 @@ namespace MIssionOfMercenary
             }
 
             EquipWeapon(slot);
+            return true;
+        }
+
+        // 변경: Player 참조, 장착 부모, 슬롯 범위와 무기 구성을 생성 전에 검사한다.
+        // 검사를 통과하면 실제 교체 결과를 그대로 반환한다.
+        // 픽업 호출부는 true일 때만 바닥 무기를 제거한다. By Codex
+        public bool TryReplacedWeapon(WeaponSlot slot, GameObject newWeaponPrefab, Vector3 droppedPosition, Quaternion dropRotation)
+        {
+            int index = (int)slot;
+
+            if (newWeaponPrefab == null || _weaponMount == null || _weaponContext == null)
+            {
+                return false;
+            }
+
+            if (_weapons == null || index < 0 || index >= _weapons.Length)
+            {
+                return false;
+            }
+
+            bool hasWeapon = newWeaponPrefab.GetComponent<IFirearm>() != null || newWeaponPrefab.GetComponent<Knife>() != null;
+
+            if(!hasWeapon || newWeaponPrefab.GetComponentInChildren<WeaponIKData>(true) == null)
+            {
+                return false;
+            }
+
+            return ReplacedWeapon(slot, newWeaponPrefab, droppedPosition, dropRotation);
+        }
+
+        bool BindWeaponToPlayer(GameObject weapon)
+        {
+            if (weapon == null || _weaponContext == null)
+            {
+                return false;
+            }
+
+            // 초기화 대기 중인 비활성 무기의 자식도 모두 연결한다. By Codex
+            MonoBehaviour[] components = weapon.GetComponentsInChildren<MonoBehaviour>(true);
+
+            foreach (MonoBehaviour component in components)
+            {
+                if (component is IPlayerWeaponBindable bindable)
+                {
+                    if (!bindable.BindPlayer(_weaponContext))
+                    {
+                        Debug.Log("초기화 실패");
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        GameObject CreateInActiveWeapon(GameObject prefab)
+        {
+            GameObject staging = new GameObject("WeaponInitialization");
+            staging.SetActive(false);
+            staging.transform.SetParent(_weaponMount, false);
+
+            GameObject weapon = Instantiate(prefab, staging.transform);
+
+            weapon.SetActive(false);
+            weapon.transform.SetParent(_weaponMount, false);
+            weapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+            Destroy(staging);
+
+            return weapon;
         }
     }
 }

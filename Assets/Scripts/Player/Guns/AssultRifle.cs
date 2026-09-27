@@ -8,7 +8,7 @@ using UnityEditor.SettingsManagement;
 namespace MIssionOfMercenary
 {
     
-    public class AssultRifle : MonoBehaviour, IFirearm
+    public class AssultRifle : MonoBehaviour, IFirearm, IPlayerWeaponBindable
     {
         readonly HitscanResolver _hitscanResolver = new HitscanResolver();
         
@@ -72,6 +72,11 @@ namespace MIssionOfMercenary
             if (_weaponRecoil == null)
             {
                 _weaponRecoil = GetComponent<WeaponRecoil>(); 
+            }
+
+            if (_getAimRay == null)
+            {
+                _getAimRay = GetComponentInParent<TryGetAimHit>();
             }
         }
         private void Start()
@@ -225,6 +230,27 @@ namespace MIssionOfMercenary
         {
             Gizmos.color = Color.black;
             Gizmos.DrawLine(_muzzle.transform.position, _muzzle.transform.position + _muzzle.forward * 100f);
+        }
+
+        public bool BindPlayer(PlayerWeaponContext weaponContext)
+        {
+            if (weaponContext == null || weaponContext.AimHit == null || weaponContext.BulletTrailPooling == null || weaponContext.BulletMarkPooling == null)
+            {
+                Debug.Log("Player의 사격 참조가 부족합니다.");
+                return false;
+            }
+
+            if (_firearmDefinition == null || _muzzle == null)
+            {
+                Debug.Log("무기 설정 또는 총구가 없습니다.");
+                return false;
+            }
+
+            _getAimRay = weaponContext.AimHit;
+            _bulletTrailPooling = weaponContext.BulletTrailPooling;
+            _bulletMarkPooling = weaponContext.BulletMarkPooling;
+
+            return true;
         }
     }
 }

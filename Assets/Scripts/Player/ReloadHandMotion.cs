@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MIssionOfMercenary
 {
-    public class ReloadHandMotion : MonoBehaviour
+    public class ReloadHandMotion : MonoBehaviour, IPlayerWeaponBindable
     {
         // 값이 클수록 해당 구간에 더 많은 시간을 배분한다. By Codex
         [Header("Reload Phase Time Weights")]
@@ -136,6 +136,25 @@ namespace MIssionOfMercenary
             }
 
             _isMagazineAttached = false;
+        }
+
+        public bool BindPlayer(PlayerWeaponContext weaponContext)
+        {
+            if (weaponContext == null || weaponContext.WeaponIKController == null)
+            {
+                Debug.Log("weaponContext is null");
+                return false;
+            }
+
+            _weaponIKController = weaponContext.WeaponIKController;
+
+            if (!IsReady)
+            {
+                Debug.Log("IsReady Is False");
+                return false;
+            }
+
+            return true;
         }
         public void Cancel()
         {
