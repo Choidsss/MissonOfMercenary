@@ -283,7 +283,7 @@ Transform:
   m_GameObject: {fileID: 1635476576826597508}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.053, z: 0.502}
+  m_LocalPosition: {x: 0, y: 0.053, z: 0.5337}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -312,6 +312,37 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2130854701723502449}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6961536937032393521}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2139229285911033575
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2645437237689118950}
+  m_Layer: 9
+  m_Name: MagazineGripPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2645437237689118950
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139229285911033575}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -812,6 +843,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6961536937032393521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5849152673977591889
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9083145900144821749}
+  m_Layer: 9
+  m_Name: ReloadHandTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9083145900144821749
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5849152673977591889}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6961536937032393521}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7319903435566214677
 GameObject:
   m_ObjectHideFlags: 0
@@ -912,6 +974,8 @@ GameObject:
   - component: {fileID: 4805540506211358218}
   - component: {fileID: 5895763099437874652}
   - component: {fileID: 5685893099318318630}
+  - component: {fileID: 3754227955756068834}
+  - component: {fileID: 188507098136583946}
   - component: {fileID: 2058046314874696568}
   m_Layer: 9
   m_Name: AR_U
@@ -949,6 +1013,9 @@ Transform:
   - {fileID: 9013828035414448355}
   - {fileID: 8652672281563001668}
   - {fileID: 8485660061382683626}
+  - {fileID: 1077688438250706203}
+  - {fileID: 2645437237689118950}
+  - {fileID: 9083145900144821749}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6655030955435087469
@@ -963,20 +1030,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0431b3be5cf177c49804f597eb40bf5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ikController: {fileID: 0}
-  _aimController: {fileID: 0}
-  _bullet: {fileID: 0}
+  _reloadHandMotion: {fileID: 3754227955756068834}
+  _firearmDefinition: {fileID: 11400000, guid: f57e645e1a32c0140a007e40b7f96a9d, type: 2}
+  _weaponEffectDefinition: {fileID: 11400000, guid: 5f19822b3170e92439b30188203a9742, type: 2}
+  _weaponMuzzleFlashEffect: {fileID: 188507098136583946}
+  _weaponRecoil: {fileID: 5685893099318318630}
   _bulletTrailPooling: {fileID: 0}
   _bulletMarkPooling: {fileID: 0}
-  _trailRendererSpeed: 0
-  _inputReader: {fileID: 11400000, guid: 9cb87594dcc63a54f8541ec5c009a2be, type: 2}
-  _muzzle: {fileID: 0}
-  _muzzleFlash: {fileID: 0}
-  _bulletMarkObj: {fileID: 0}
-  _flashDestroyedTime: 2
-  _bulletMarkDestroyedTime: 2
-  _autoSpeed: 1
-  _maxAmmo: 30
+  _trailRendererSpeed: 1
+  _muzzle: {fileID: 8652672281563001668}
 --- !u!114 &5665742262519246431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1005,11 +1067,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cartridgePosition: {fileID: 0}
-  _cartridge: {fileID: 0}
-  _cartridgeUpForce: 0
-  _cartridgeRightForce: 0
-  _lifeTime: 0
-  _torque: 0
+  _cartridge: {fileID: 8792954647265824588, guid: afad03405a8b4914c97c78e992bed72e, type: 3}
+  _cartridgeUpForce: 10
+  _cartridgeRightForce: 10
+  _lifeTime: 10
+  _torque: 10
 --- !u!114 &5895763099437874652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1022,8 +1084,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fd1c61b8f21e4548b20e97b8810a258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _leftGripPoint: {fileID: 0}
-  _rightGripPoint: {fileID: 0}
+  _leftGripPoint: {fileID: 3703610628042265874}
+  _rightGripPoint: {fileID: 9013828035414448355}
   _useLeftHandIK: 1
 --- !u!114 &5685893099318318630
 MonoBehaviour:
@@ -1038,11 +1100,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponPivot: {fileID: 0}
-  _recoilKickBack: 0
-  _recoilUpDown: 0
-  _recoilVibration: 0
-  _snapSpeed: 0
-  _recoverySpeed: 0
+  _recoilKickBack: 10
+  _recoilUpDown: 10
+  _recoilVibration: 10
+  _snapSpeed: 10
+  _recoverySpeed: 10
+--- !u!114 &3754227955756068834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7770829599027755403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 133c06991ea2b7f4fb7a6700e9eab8e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _reachMagazineTimeWeight: 1
+  _pullOutTimeWeight: 1
+  _insertTimeWeight: 1
+  _returnHandTimeWeight: 1
+  _weaponIKController: {fileID: 0}
+  _normalGripPoint: {fileID: 3703610628042265874}
+  _magazineGrapPoint: {fileID: 2645437237689118950}
+  _reloadHandTarget: {fileID: 9083145900144821749}
+  _magazine: {fileID: 5313430477382430715}
+  _magazinePullOutPoint: {fileID: 1077688438250706203}
+--- !u!114 &188507098136583946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7770829599027755403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149e50822b9c3f047812dddcdac5de36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _firearmDef: {fileID: 11400000, guid: f57e645e1a32c0140a007e40b7f96a9d, type: 2}
+  _weaponEffectDef: {fileID: 11400000, guid: 5f19822b3170e92439b30188203a9742, type: 2}
+  _muzzle: {fileID: 8652672281563001668}
+  _duration: 0.1
 --- !u!114 &2058046314874696568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1057,6 +1157,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _triggerObjectName: PickupTrigger
   _padding: 0.1
+--- !u!1 &7920002568153436258
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1077688438250706203}
+  m_Layer: 9
+  m_Name: MagazinePullOutPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1077688438250706203
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7920002568153436258}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.476, z: 0.186}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6961536937032393521}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8093102899347466128
 GameObject:
   m_ObjectHideFlags: 0
@@ -1067,7 +1198,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8485660061382683626}
   - component: {fileID: 1773685295532517188}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PickupTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}

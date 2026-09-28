@@ -60,12 +60,21 @@ namespace MIssionOfMercenary
 
             if(!hitWeapon) 
             {
-                //Debug.Log("***************hitWeapon False***************"); 
+                Debug.Log("픽업 검사: 콜라이더 감지 안 됨", this);
                 return;
             }
 
             _targetWeapon = hit.collider.gameObject.GetComponentInParent<DroppedWeapons>();
             _canPickup = _targetWeapon != null;
+
+            if (_canPickup)
+            {
+                Debug.Log($"찾은 무기: {_targetWeapon.name}", _targetWeapon);
+            }
+            else
+            {
+                Debug.Log($"콜라이더만 감지: {hit.collider.name}", hit.collider);
+            }
         }
 
         void TryPickUp()

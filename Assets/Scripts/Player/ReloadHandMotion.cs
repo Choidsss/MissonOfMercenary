@@ -51,7 +51,6 @@ namespace MIssionOfMercenary
 
             duration = Mathf.Max(0.1f, duration);
 
-            // 전체 재장전 시간은 유지하고 구간별 비율만 조절한다. By Codex
             float reachWeight = Mathf.Max(0.01f, _reachMagazineTimeWeight);
             float pullWeight = Mathf.Max(0.01f, _pullOutTimeWeight);
             float insertWeight = Mathf.Max(0.01f, _insertTimeWeight);
@@ -62,7 +61,7 @@ namespace MIssionOfMercenary
 
             _weaponIKController.SetLeftHandOverride(_reloadHandTarget);
 
-            // 1. 왼손이 탄창을 잡는 위치로 이동. By Codex
+            // 1. 왼손이 탄창을 잡는 위치로 이동.
             yield return MoveTarget(
                 _normalGripPoint,
                 _magazineGrapPoint,
@@ -70,13 +69,13 @@ namespace MIssionOfMercenary
 
             AttachMagazine();
 
-            // 2. 손과 탄창을 함께 아래로 이동. By Codex
+            // 2. 손과 탄창을 함께 아래로 이동.
             yield return MoveTarget(
                 _magazineGrapPoint,
                 _magazinePullOutPoint,
                 timePerWeight * pullWeight);
 
-            // 3. 손과 탄창을 다시 삽입 위치로 이동. By Codex
+            // 3. 손과 탄창을 다시 삽입 위치로 이동.
             yield return MoveTarget(
                 _magazinePullOutPoint,
                 _magazineGrapPoint,
@@ -84,7 +83,7 @@ namespace MIssionOfMercenary
 
             RestoreMagazine();
 
-            // 4. 탄창은 총에 남기고 왼손만 기본 자세로 복귀. By Codex
+            // 4. 탄창은 총에 남기고 왼손만 기본 자세로 복귀. 
             yield return MoveTarget(
                 _magazineGrapPoint,
                 _normalGripPoint,

@@ -198,7 +198,7 @@ namespace MIssionOfMercenary
             if (!CanReload) { return; }
 
             _isReloading = true;
-            Debug.Log("Reloading");
+            //Debug.Log("Reloading");
             TriggeredReleased();//재장전중엔 무기공격 캔슬
 
             _reloadRoutine = StartCoroutine(ReloadDelayRoutine());
@@ -217,7 +217,9 @@ namespace MIssionOfMercenary
             }
             else
             {
-                // 모션이 없는 무기는 기존 재장전 시간을 사용한다. By Codex
+                //Debug.Log("빠짐");
+
+                // 모션이 없는 무기는 기존 재장전 시간을 사용한다.
                 yield return new WaitForSeconds(_reloadDelay);
             }
 
