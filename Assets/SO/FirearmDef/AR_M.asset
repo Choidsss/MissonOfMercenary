@@ -19,3 +19,5 @@ MonoBehaviour:
   _magazineCapacity: 30
   _range: 150
   _fireInterval: 0.1
+  _defaultSpreadAngle: 4
+  _aimSpreadAngle: 0

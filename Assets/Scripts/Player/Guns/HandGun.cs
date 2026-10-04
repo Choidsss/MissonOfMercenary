@@ -34,6 +34,9 @@ namespace MIssionOfMercenary
         [SerializeField] GameObject _shellEjector;
         [SerializeField] GameObject _bulletMark;
 
+        [Header("PlayerAimController")]
+        [SerializeField] PlayerAimController _playerAimController;
+
         [Header("Attack Fields")]
         [SerializeField] float _reloadDelay = 2.0f;
         [SerializeField] float _trailSpeeds = 1.0f;
@@ -84,7 +87,9 @@ namespace MIssionOfMercenary
         {
             IsShot = false;
 
-            ShotResult shot = _hitscanResolver.Resolver(_aimHit.GetAimRay(), _muzzle.position, AttackRange);
+            float spreadAngle = _playerAimController.IsAiming ? _fireDef.AimSpreadAngle : _fireDef.DefaultSpreadAngle;
+
+            ShotResult shot = _hitscanResolver.Resolver(_aimHit.GetAimRay(spreadAngle), _muzzle.position, AttackRange);
             _weaponMuzzleFlashEffect?.PlayMuzzleFlash();
 
             if (shot.Distance >= 0.01f)

@@ -60,7 +60,7 @@ namespace MIssionOfMercenary
 
             if(!hitWeapon) 
             {
-                Debug.Log("픽업 검사: 콜라이더 감지 안 됨", this);
+                //Debug.Log("픽업 검사: 콜라이더 감지 안 됨", this);
                 return;
             }
 
@@ -69,11 +69,11 @@ namespace MIssionOfMercenary
 
             if (_canPickup)
             {
-                Debug.Log($"찾은 무기: {_targetWeapon.name}", _targetWeapon);
+                //Debug.Log($"찾은 무기: {_targetWeapon.name}", _targetWeapon);
             }
             else
             {
-                Debug.Log($"콜라이더만 감지: {hit.collider.name}", hit.collider);
+                //Debug.Log($"콜라이더만 감지: {hit.collider.name}", hit.collider);
             }
         }
 

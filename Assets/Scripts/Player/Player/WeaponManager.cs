@@ -22,6 +22,9 @@ namespace MIssionOfMercenary
         [SerializeField] PlayerWeaponContext _weaponContext;
         [SerializeField] Transform _weaponMount;
 
+        [Header("PlayerAimController")]
+        [SerializeField] PlayerAimController _playerAimController;
+
         [Header("Equip Motion")]
         [SerializeField] WeaponStartEquipMotion _equipMotion;
 
@@ -132,6 +135,12 @@ namespace MIssionOfMercenary
 
             _weapon = selectedWeapon.GetComponent<IFirearm>();
             _knife = selectedWeapon.GetComponent<Knife>();
+
+            //**********new : 에임 함수**********
+            WeaponIKData ikData = CurrentWeaponIKData;
+
+            _playerAimController?.SetCurrentWeapon(selectedWeapon.transform, ikData != null ? ikData.WeaponAimPoint : null, _knife == null);
+            ////**********Finish**********
 
             IWeapons currentWeaponInterface =
                 selectedWeapon.GetComponentInParent<IWeapons>();

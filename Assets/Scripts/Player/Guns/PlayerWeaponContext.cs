@@ -15,11 +15,15 @@ namespace MIssionOfMercenary
         [SerializeField] PlayerBulletTrailPooling _bulletTrailPooling;
         [SerializeField] BulletMarkPooling _bulletMarkPooling;
 
+        [Header("PlayerAimController")]
+        [SerializeField] PlayerAimController _playerAimController;
+
         public Transform WeaponPivot { get { return _weaponPivot; } }
         public WeaponIKController WeaponIKController { get { return _weaponIKController; } }
         public TryGetAimHit AimHit { get { return _aimHit; } }
         public PlayerBulletTrailPooling BulletTrailPooling { get { return _bulletTrailPooling; } }
         public BulletMarkPooling BulletMarkPooling { get { return _bulletMarkPooling; } }
+        public PlayerAimController PlayerAimController { get { return _playerAimController; } }
 
     }
 }

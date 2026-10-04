@@ -54,6 +54,9 @@ namespace MIssionOfMercenary
         [Header("MuzzleFlashEffect")]
         [SerializeField] MuzzleFlashEffect _weaponMuzzleFlashEffect;
 
+        [Header("AimController")]
+        [SerializeField] PlayerAimController _playerAimController;
+
         [SerializeField] WeaponRecoil _weaponRecoil;
         [SerializeField] PlayerBulletTrailPooling _bulletTrailPooling;
         [SerializeField] BulletMarkPooling _bulletMarkPooling;
@@ -105,7 +108,9 @@ namespace MIssionOfMercenary
         {
             IsShot = false;
 
-            ShotResult shot = _hitscanResolver.Resolver(_getAimRay.GetAimRay(), _muzzle.position, AttackRange);
+            float spreadAngle = _playerAimController.IsAiming ? _firearmDefinition.AimSpreadAngle : _firearmDefinition.DefaultSpreadAngle;
+
+            ShotResult shot = _hitscanResolver.Resolver(_getAimRay.GetAimRay(spreadAngle), _muzzle.position, AttackRange);
 
             _weaponMuzzleFlashEffect?.PlayMuzzleFlash();
 

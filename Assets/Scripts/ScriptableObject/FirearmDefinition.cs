@@ -24,6 +24,10 @@ namespace MIssionOfMercenary
         [Header("FireInterval Definition")]
         [SerializeField] float _fireInterval;
 
+        [Header("SpreadAngle")]
+        [SerializeField] float _defaultSpreadAngle;
+        [SerializeField] float _aimSpreadAngle;
+
         public string GunName => _gunName;
         public int Damage => _damage;
         public int MagazineCapacity => _magazineCapacity;
@@ -31,5 +35,7 @@ namespace MIssionOfMercenary
         public float FireInterval => _fireInterval;
         public WeaponType GunWeaponType => _weaponType;
         public AimType GunAimType => _aimType;
+        public float DefaultSpreadAngle => _defaultSpreadAngle;
+        public float AimSpreadAngle => _aimSpreadAngle;
     }
 }
