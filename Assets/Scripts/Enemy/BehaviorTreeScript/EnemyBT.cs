@@ -7,7 +7,8 @@ namespace MIssionOfMercenary
     public enum EnemyBehaviorType
     {
         Patrol,
-        Sentry
+        Sentry,
+        Chaser
     }
 
     public class EnemyBT : MonoBehaviour
@@ -23,6 +24,8 @@ namespace MIssionOfMercenary
         SentrySensor _sensor;
         SentryEnemyAttack _sentryAttack;
 
+        [Header("Enemy Aim Correction")]
+        [SerializeField] float _aimYaw;
 
         [Header("BehaviorType")]
         [SerializeField] EnemyBehaviorType _behaviorType;
@@ -89,6 +92,9 @@ namespace MIssionOfMercenary
                 case EnemyBehaviorType.Sentry:
                     return SetupSentryEnemyTree();
 
+                case EnemyBehaviorType.Chaser:
+                    return SetupChaserEnemyTree();
+
                 default:
                     return SetupPatrolEnemyTree();
             }
@@ -136,34 +142,25 @@ namespace MIssionOfMercenary
 
             Sequence combatSeq = new Sequence();
             combatSeq.AddChild(new EnemySightNode(_sensor, _findArea));
-            combatSeq.AddChild(new SentryEnemyAttackNode(_enemyBT, _sentryAttack, _sensor, _enemyAnimation)); // 시야가 확보되면 풀링 연사 노드를 실행합니다. By Codex
-            selectorTree.AddChild(combatSeq); // 완성한 Sentry 공격 시퀀스를 루트 Selector에 연결합니다. By Codex
+            combatSeq.AddChild(new SentryEnemyAttackNode(_enemyBT, _sentryAttack, _sensor, _enemyAnimation));  
+            selectorTree.AddChild(combatSeq); 
+
+            return selectorTree;
+        }
+
+        BTNode SetupChaserEnemyTree()
+        {
+            BehaviorSelector selectorTree = new BehaviorSelector();
+
+            Sequence attackSequence = new Sequence();
+            attackSequence.AddChild(new IsPlayerInEnemyAttackRange(_enemyAttack, _enemyAnimation, _findArea, _nav));
+            attackSequence.AddChild(new SentryEnemyAttackNode(_enemyBT, _sentryAttack, _sensor, _enemyAnimation));
 
 
-            //BehaviorSelector typeSelector = new BehaviorSelector();
-            ////typeSelector.AddChild(new EnemySelectType())
+            selectorTree.AddChild(attackSequence);
 
-            ////공격 시퀀스 => 공격범위 안쪽인지 확인하는 노드, 공격하는 노드
-            //Sequence attackSeq = new Sequence();
-            //attackSeq.AddChild(new IsPlayerInEnemyAttackRange(_enemyAttack, _enemyAnimation, _findArea, _nav));
-            //attackSeq.AddChild(new EnemyFireNode(_enemyBT, _enemyHealth, _enemyAnimation, _enemyAttack, _findArea, _nav));
-
-            ////셀렉터 생성
-            //BehaviorSelector combatSelector = new BehaviorSelector();
-            //combatSelector.AddChild(attackSeq);//공격 시퀀스 실행
-            //combatSelector.AddChild(new ChaseToPlayerNode(_enemyAttack, _enemyAnimation, _findArea, _nav));//위 시퀀스가 실패했을 경우 Player를 쫓음
-
-            //Sequence combatSeq = new Sequence();
-            //combatSeq.AddChild(new IsDetectedPlayerNode(_findArea)); //먼저 플레이어의 위치를 아는지 확인하는 노드
-            //combatSeq.AddChild(combatSelector);//시퀀스 조립
-
-            //Sequence moveToSoundPositionSeq = new Sequence();
-            //moveToSoundPositionSeq.AddChild(new HasSoundTargetNode(_enemyChase));
-            //moveToSoundPositionSeq.AddChild(new ChaseSoundPositionNode(_moveSoundPositionSpeed, _nav, _enemyChase));
-
-            //selectorTree.AddChild(combatSeq);
-            //selectorTree.AddChild(moveToSoundPositionSeq);
-            //selectorTree.AddChild(new EnemyPatrolNode(_nav, _patrolSpeed, _wayPoint));
+            //SpawnAndChasePlayerNode()
+            //selectorTree.AddChild(new SpawnAndChasePlayerNode())
 
             return selectorTree;
         }
@@ -197,7 +194,7 @@ namespace MIssionOfMercenary
 
             if (direction.sqrMagnitude <= 0.001f) { return; } 
 
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            Quaternion targetRotation = Quaternion.LookRotation(direction) * Quaternion.Euler(0,_aimYaw,0);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _turnSpeed * Time.deltaTime);
         }
     }

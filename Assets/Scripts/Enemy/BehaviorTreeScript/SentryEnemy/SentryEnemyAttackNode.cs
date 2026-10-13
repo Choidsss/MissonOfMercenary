@@ -8,7 +8,6 @@ namespace MIssionOfMercenary
         readonly SentryEnemyAttack _sentryAttack;
         readonly SentrySensor _sensor;
         readonly EnemyAnimation _enemyAnimation;
-        readonly SentryEnemySaveGunTransform _gunTransform;
 
         public SentryEnemyAttackNode(EnemyBT bt, SentryEnemyAttack sentryAttack, SentrySensor sensor, EnemyAnimation enemyAnimation)
         {
@@ -16,7 +15,6 @@ namespace MIssionOfMercenary
             _sentryAttack = sentryAttack; 
             _sensor = sensor;
             _enemyAnimation = enemyAnimation;
-            _gunTransform = bt != null ? bt.GetComponent<SentryEnemySaveGunTransform>() : null;
         }
 
         public override State Evaluate()
@@ -24,21 +22,22 @@ namespace MIssionOfMercenary
             if (_enemyBT == null || _sentryAttack == null || _sensor == null || _enemyAnimation == null) { return State.Failure; }
             if (!_sensor.SentryDetectedPlayer) { return State.Failure; }
 
-            _enemyBT.LookAtTarget(_sensor.DetectedTarget); //바라보는건 계속 해야되는 거고
+            _enemyBT.LookAtTarget(_sensor.DetectedTarget);
+            float distance = (_sensor.DetectedTarget - _sensor.transform.position).magnitude;
 
-            _enemyAnimation.PlayEnemyAimAnimation();
-
-            if (_enemyAnimation.IsAnimationFinish)
+            if (distance > _sentryAttack.AttackRange)
             {
-                _enemyAnimation.StopAnimation();
-                if (_gunTransform != null && !_gunTransform.ApplyAimingGunTransform())
-                {
-                    return State.Running;
-                }
-                _sentryAttack.Attack(_sensor.DetectedTarget);
-                //추후 Attack함수 안에 있는 delay를 건드릴예정 && 탄퍼짐
+                return State.Failure;
+            }
 
-                return State.Running;
+            //달리는 애니메이션 없이 쏘는 애니메이션만 필요함
+
+            _sentryAttack.Attack(_sensor.DetectedTarget);
+            _enemyAnimation.PlayEnemyShotAnim(); //함수 수정
+
+            if (_sentryAttack.Ammo <= 0)
+            {
+                //_enemyAnimation.ReloadAnimation();
             }
 
             return State.Running;
