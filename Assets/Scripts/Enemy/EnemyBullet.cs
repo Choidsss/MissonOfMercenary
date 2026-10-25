@@ -12,7 +12,7 @@ namespace MIssionOfMercenary
 
         private void OnEnable()
         {
-            Debug.Log("탄환 활성화 — 반환 타이머 시작");
+            //Debug.Log("탄환 활성화 — 반환 타이머 시작");
 
             _returnRoutine = StartCoroutine(ReturnAfterTime());
         }
@@ -26,7 +26,7 @@ namespace MIssionOfMercenary
         {
             yield return new WaitForSeconds(_lifeTime);
 
-            Debug.Log("탄환 수명 종료 — 풀 반환");
+            //Debug.Log("탄환 수명 종료 — 풀 반환");
             _enemyBulletPooling.ReturnBullet(gameObject);
         }
 

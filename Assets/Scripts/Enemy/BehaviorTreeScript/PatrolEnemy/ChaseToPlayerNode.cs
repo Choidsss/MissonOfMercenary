@@ -30,8 +30,8 @@ namespace MIssionOfMercenary
             _nav.isStopped = false;
             _nav.updateRotation = true;
 
-            _enemyAnimation.StopEnemyShotAnim();
-            _enemyAnimation.PlayEnemyChaseAnimation();
+            _enemyAnimation.StopRobotEnemyShotAnim();
+            _enemyAnimation.PlayRobotEnemyChaseAnimation();
             _nav.SetDestination(_findArea.DetectedTarget);
 
             float remainDistance = Vector3.Distance(_findArea.DetectedTarget, _findArea.transform.position);

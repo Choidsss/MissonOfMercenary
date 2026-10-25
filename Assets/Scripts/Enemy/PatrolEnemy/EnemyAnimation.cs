@@ -16,6 +16,11 @@ namespace MIssionOfMercenary
         bool _aim = false;
         bool _isFinish = false;
 
+        //Terror_Enemy
+        bool _terroristIsShot = false;
+        bool _terroristIsRun = false;
+        bool _terroristIsReload = false;
+
         public bool IsChase { get { return _isFinish; }  }
         public bool IsAnimationFinish { get { return _isFinish; }  }
 
@@ -26,10 +31,10 @@ namespace MIssionOfMercenary
 
         void Update()
         {
-            PlayEnemyMovementAnim();
+            PlayRobotEnemyMovementAnim();
         }
 
-        void PlayEnemyMovementAnim()
+        void PlayRobotEnemyMovementAnim()
         {
             if(_nav == null || _anim == null)
             {
@@ -44,19 +49,19 @@ namespace MIssionOfMercenary
             }
         }
 
-        public void PlayEnemyShotAnim()
+        public void PlayRobotEnemyShotAnim()
         {
             _isShot = true;
             _anim.SetBool("Shot", _isShot);
         }
 
-        public void StopEnemyShotAnim()
+        public void StopRobotEnemyShotAnim()
         {
             _isShot = false;
             _anim.SetBool("Shot", _isShot);
         }
 
-        public void PlayEnemyAimAnimation()
+        public void PlayRobotEnemyAimAnimation()
         {
             _aim = true;
             _anim.SetBool("Aim", _aim);
@@ -64,33 +69,50 @@ namespace MIssionOfMercenary
             ReadAnimationFinishOrNot();
         }
 
-        public void StopEnemyAimCancelAnimation()
+        public void StopRobotEnemyAimCancelAnimation()
         {
             _aim = false;
             _anim.SetBool("Aim", _aim);
         }
 
         //Aim포즈까지 자세를 올렸을때 정지하도록 하는 함수
-        public void StopAnimation()
+        public void StopRobotAnimation()
         {
             _anim.speed = 0.0f;
         }
 
-        public void PlayAnimation()
+        public void PlayRobotAnimation()
         {
             _anim.speed = 1.0f;
         }
 
-        public void PlayEnemyChaseAnimation()
+        public void PlayRobotEnemyChaseAnimation()
         {
             _isChase = true;
             _anim.SetBool("Chase", _isChase);
         }
 
-        public void StopEnemyChaseAnimationReset()
+        public void StopRobotEnemyChaseAnimationReset()
         {
             _isChase = false;
             _anim.SetBool("Chase", _isChase);
+        }
+
+        //Terrorist_Enemy_Animation
+        public void PlayTerroristShotAnimation()
+        {
+            _anim.SetTrigger("TerroristShot");
+        }
+
+        public void PlayTerroristReloadAnimation()
+        {
+            _anim.SetTrigger("TerroristReload");
+
+        }
+
+        public void PlayTerroristRunAnimation()
+        {
+            _anim.SetTrigger("TerroristRun");
         }
 
         void ReadAnimationFinishOrNot()
@@ -106,11 +128,5 @@ namespace MIssionOfMercenary
                 _isFinish = false;
             }
         }
-
-        //IEnumerator EnemyShotDelay()
-        //{
-        //    yield return new WaitForSeconds(_delay);
-        //}
-
     }
 }

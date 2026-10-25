@@ -29,13 +29,13 @@ namespace MIssionOfMercenary
             {
                 _nav.isStopped = true;
                 _nav.updateRotation = true;
-                _enemyAnimation.StopEnemyChaseAnimationReset();
+                _enemyAnimation.StopRobotEnemyChaseAnimationReset();
 
                 return State.Success;
             }
             else
             {
-                _enemyAnimation.StopEnemyShotAnim();
+                _enemyAnimation.StopRobotEnemyShotAnim();
                 return State.Failure;
             }
         }

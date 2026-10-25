@@ -70,12 +70,12 @@ namespace MIssionOfMercenary
             _enemyChase = GetComponent<EnemyChase>();
 
             GetRouteFromDictionary();
-            _root = SetupTree();
+            //_root = SetupTree();
         }
 
         void Update()
         {
-            _root?.Evaluate();
+            //_root?.Evaluate();
         }
 
         /*

@@ -33,7 +33,7 @@ namespace MIssionOfMercenary
             //달리는 애니메이션 없이 쏘는 애니메이션만 필요함
 
             _sentryAttack.Attack(_sensor.DetectedTarget);
-            _enemyAnimation.PlayEnemyShotAnim(); //함수 수정
+            _enemyAnimation.PlayRobotEnemyShotAnim(); //함수 수정
 
             if (_sentryAttack.Ammo <= 0)
             {

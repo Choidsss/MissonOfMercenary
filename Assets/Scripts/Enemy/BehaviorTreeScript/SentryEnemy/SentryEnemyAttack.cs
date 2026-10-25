@@ -5,6 +5,8 @@ namespace MIssionOfMercenary
 {
     public class SentryEnemyAttack : MonoBehaviour
     {
+        [SerializeField] LayerMask _obstacleMask;
+
         [Header("Get Script")]
         [SerializeField] EnemyWeaponRecoil _weaponRecoil;
 
@@ -56,6 +58,14 @@ namespace MIssionOfMercenary
             if (_bulletPool == null || _muzzle == null) { return; }
 
             Vector3 direction = (targetPosition + _targetOffset - _muzzle.position).normalized; 
+
+            Vector3 targetPoint = targetPosition + _targetOffset;
+            if(Physics.Linecast(_muzzle.position, targetPoint, _obstacleMask, QueryTriggerInteraction.Ignore))
+            {
+                Debug.Log("Player가 벽에 가려져있습니다. 사격하지 않습니다");
+                return;
+            }
+
             GameObject bullet = _bulletPool.GetBullet(_muzzle.position, Quaternion.LookRotation(direction));
 
             if (bullet == null) { Debug.Log("탄환 풀 비었음 — 반환 확인 필요"); return; }
@@ -64,6 +74,8 @@ namespace MIssionOfMercenary
             if (bulletRigidbody == null)
             {
                 _bulletPool.ReturnBullet(bullet);
+                //추가추가추가추가추가추가추가추가
+                return;
             }
 
             bulletRigidbody.useGravity = false; 
@@ -71,7 +83,7 @@ namespace MIssionOfMercenary
 
             _ammo--;
 
-            _weaponRecoil.RecoilFromEnemyWeapon();
+            _weaponRecoil?.RecoilFromEnemyWeapon();
 
             _nextAttackTime = Time.time + Mathf.Max(_delayAttack, 0.01f); 
             PlayMuzzleFlash();

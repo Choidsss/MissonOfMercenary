@@ -37,7 +37,7 @@ namespace MIssionOfMercenary
 
             //총알은 이벤트로 생성
             _enemyBT.LookAtPlayer();
-            _enemyAnimation.PlayEnemyShotAnim();
+            _enemyAnimation.PlayRobotEnemyShotAnim();
 
 
             return State.Running;
