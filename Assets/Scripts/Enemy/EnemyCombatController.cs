@@ -15,6 +15,18 @@ namespace MIssionOfMercenary
         // 플레이어 방향과 이 각도 이내로 맞춰졌을 때 사격
         [SerializeField] float _fireAngle = 10f;
 
+        public void Initialize(Transform player, Transform firePoint)
+        {
+            if (player == null || firePoint || _combatPosition == null)
+            {
+                Debug.LogError("플레이어, 사격 위치, 이동 컴포넌트를 확인하세요.", this);
+                return;
+            }
+
+            _player = player;
+            _combatPosition.SetFirePosition(firePoint);
+        }
+
         //UPdate에서 함수 돌리는거 낭비잖아---나중에 고쳐야지.
         void Update()
         {

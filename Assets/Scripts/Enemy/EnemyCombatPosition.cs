@@ -86,5 +86,10 @@ namespace MIssionOfMercenary
 
             Debug.Log("사격위치에 도달 하였습니다");
         }
+
+        public void SetFirePosition(Transform firePoint)
+        {
+            _firePoint = firePoint;
+        }
     }
 }

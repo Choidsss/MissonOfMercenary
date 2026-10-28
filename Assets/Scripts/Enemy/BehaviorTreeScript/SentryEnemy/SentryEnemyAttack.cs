@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace MIssionOfMercenary
 {
     public class SentryEnemyAttack : MonoBehaviour
     {
+        public event Action _firedAction;
+
         [SerializeField] LayerMask _obstacleMask;
 
         [Header("Get Script")]
@@ -30,7 +33,9 @@ namespace MIssionOfMercenary
         [SerializeField] float _delayReload = 2f;
         [SerializeField] float _ammoSpeed = 20f;
 
+
         float _nextAttackTime;
+        //float _fireInterval;
         bool _isReloading;
         Coroutine _muzzleFlashRoutine;
 
@@ -39,6 +44,11 @@ namespace MIssionOfMercenary
         public int Damage { get { return _damage; } }
         public float AttackRange { get { return _attackRange; } }
         public int Ammo { get { return _ammo; } }
+        public bool IsReloading {  get { return _isReloading; } }
+
+        //Needed for Terrorist Animation
+        public float FireInterval => Mathf.Max(_delayAttack, 0.01f);
+       
 
         void Start()
         {
@@ -74,7 +84,6 @@ namespace MIssionOfMercenary
             if (bulletRigidbody == null)
             {
                 _bulletPool.ReturnBullet(bullet);
-                //추가추가추가추가추가추가추가추가
                 return;
             }
 
@@ -87,6 +96,9 @@ namespace MIssionOfMercenary
 
             _nextAttackTime = Time.time + Mathf.Max(_delayAttack, 0.01f); 
             PlayMuzzleFlash();
+
+            //Needed for Animation
+            _firedAction?.Invoke();
         }
 
         void PlayMuzzleFlash()

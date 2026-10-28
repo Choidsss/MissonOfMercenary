@@ -29096,17 +29096,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2028705676080052240, guid: 668a107e6bbc60e489f7d5082bead0f7, type: 3}
   m_PrefabInstance: {fileID: 584342293}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &584658726 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8595058170392017034, guid: c2fd01c636d7fd5428fa8f06f590d587, type: 3}
-  m_PrefabInstance: {fileID: 836134688}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 518e2f3e50679a644af3aa64b2c24535, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &584665933
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41076,7 +41065,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5347596296746313562, guid: c2fd01c636d7fd5428fa8f06f590d587, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 400.05
+      value: 410.52
       objectReference: {fileID: 0}
     - target: {fileID: 5347596296746313562, guid: c2fd01c636d7fd5428fa8f06f590d587, type: 3}
       propertyPath: m_LocalRotation.w
@@ -41107,17 +41096,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6455115343630280941, guid: c2fd01c636d7fd5428fa8f06f590d587, type: 3}
-      propertyPath: _attack
-      value: 
-      objectReference: {fileID: 584658726}
-    - target: {fileID: 6455115343630280941, guid: c2fd01c636d7fd5428fa8f06f590d587, type: 3}
       propertyPath: _player
       value: 
       objectReference: {fileID: 1634569299}
-    - target: {fileID: 8595058170392017034, guid: c2fd01c636d7fd5428fa8f06f590d587, type: 3}
-      propertyPath: _obstacleMask.m_Bits
-      value: 128
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -46547,7 +46528,7 @@ Transform:
   m_GameObject: {fileID: 955121838}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 307.31, y: 38, z: 389.27}
+  m_LocalPosition: {x: 313.43, y: 38, z: 394.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
