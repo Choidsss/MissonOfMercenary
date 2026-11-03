@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace MIssionOfMercenary
 {
@@ -14,6 +13,10 @@ namespace MIssionOfMercenary
     public class EnemyBT : MonoBehaviour
     {
         BTNode _root;
+
+        [Header("Behavior Tree Execution")]
+        [SerializeField] bool _runBehaviorTree = false;
+
         EnemyBT _enemyBT;
         EnemyChase _enemyChase;
         EnemyAttack _enemyAttack;
@@ -49,6 +52,7 @@ namespace MIssionOfMercenary
         [SerializeField] float _moveSoundPositionSpeed;
 
         Transform[] _wayPoint;
+
         public bool IsBlocked { get; set; } = false;
 
 
@@ -67,21 +71,43 @@ namespace MIssionOfMercenary
 
         void Start()
         {
+            if (!_runBehaviorTree)
+            {
+                return;
+            }
+
             _enemyChase = GetComponent<EnemyChase>();
 
-            GetRouteFromDictionary();
-            //_root = SetupTree();
+            if (_behaviorType == EnemyBehaviorType.Patrol)
+            {
+                GetRouteFromDictionary();
+
+                if (_wayPoint == null || _wayPoint.Length == 0)
+                {
+                    Debug.Log("순찰적의 순찰 경로가 없어 시작할 수 없습니다");
+                    return;
+                }
+            }
+
+            //GetRouteFromDictionary();
+            _root = SetupTree();
         }
 
         void Update()
         {
-            //_root?.Evaluate();
+            if (!_runBehaviorTree)
+            {
+                return;
+            }
+
+            if (_enemyHealth != null && _enemyHealth.IsDeath)
+            {
+                return;
+            }
+
+            _root?.Evaluate();
         }
 
-        /*
-         * 추가 :
-         * 적의 WayPoint가 하나만 있고, 플레이어가 일정 거리 안으로 들어온다면, 바로 공격 자세를 취하고 공격하도록 함(쫓지는 않고 제자리에서 게속 공격만)
-         */
         BTNode SetupTree()
         {
             switch (_behaviorType)

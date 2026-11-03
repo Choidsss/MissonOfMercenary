@@ -66,7 +66,6 @@ namespace MIssionOfMercenary
                 _reloadRoutine = null;
             }
 
-            // 무기 교체로 재장전을 취소하면 탄창과 왼손 제어를 복구한다. By Codex
             _reloadHandMotion?.Cancel();
             _isReloading = false;
             IsShot = false;
@@ -171,7 +170,7 @@ namespace MIssionOfMercenary
 
         public bool BindPlayer(PlayerWeaponContext weaponContext)
         {
-            if (weaponContext == null || weaponContext.AimHit == null || weaponContext.BulletTrailPooling == null || weaponContext.BulletMarkPooling == null)
+            if (weaponContext == null || weaponContext.AimHit == null || weaponContext.BulletTrailPooling == null || weaponContext.BulletMarkPooling == null || weaponContext.PlayerAimController == null)
             {
                 Debug.Log("Player의 사격 참조가 부족합니다.");
                 return false;
@@ -186,6 +185,7 @@ namespace MIssionOfMercenary
             _aimHit = weaponContext.AimHit;
             _bulletTrailPooling = weaponContext.BulletTrailPooling;
             _bulletMarkPooling = weaponContext.BulletMarkPooling;
+            _playerAimController = weaponContext.PlayerAimController;
 
             return true;
         }

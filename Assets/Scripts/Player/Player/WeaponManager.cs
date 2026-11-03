@@ -1,5 +1,4 @@
 using MissionOfMercenary;
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Animations;
 using System.Collections.Generic;

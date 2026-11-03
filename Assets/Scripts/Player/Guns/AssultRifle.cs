@@ -2,8 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System;
 using MissionOfMercenary;
-using UnityEditor.Rendering.LookDev;
-using UnityEditor.SettingsManagement;
 
 namespace MIssionOfMercenary
 {
@@ -241,7 +239,7 @@ namespace MIssionOfMercenary
 
         public bool BindPlayer(PlayerWeaponContext weaponContext)
         {
-            if (weaponContext == null || weaponContext.AimHit == null || weaponContext.BulletTrailPooling == null || weaponContext.BulletMarkPooling == null)
+            if (weaponContext == null || weaponContext.AimHit == null || weaponContext.BulletTrailPooling == null || weaponContext.BulletMarkPooling == null || weaponContext.PlayerAimController == null)
             {
                 Debug.Log("Player의 사격 참조가 부족합니다.");
                 return false;
@@ -256,6 +254,7 @@ namespace MIssionOfMercenary
             _getAimRay = weaponContext.AimHit;
             _bulletTrailPooling = weaponContext.BulletTrailPooling;
             _bulletMarkPooling = weaponContext.BulletMarkPooling;
+            _playerAimController = weaponContext.PlayerAimController;
 
             return true;
         }

@@ -15,21 +15,44 @@ namespace MIssionOfMercenary
         // 플레이어 방향과 이 각도 이내로 맞춰졌을 때 사격
         [SerializeField] float _fireAngle = 10f;
 
-        public void Initialize(Transform player, Transform firePoint)
+        bool _isInitialized;
+
+
+        public bool Initialize(Transform player, Transform firePoint)
         {
-            if (player == null || firePoint || _combatPosition == null)
+            _isInitialized = false;
+
+            if (player == null || firePoint == null || _combatPosition == null || _agent == null || _attack == null)
             {
                 Debug.LogError("플레이어, 사격 위치, 이동 컴포넌트를 확인하세요.", this);
-                return;
+                return false;
             }
 
+            if (!isActiveAndEnabled || !_combatPosition.isActiveAndEnabled || !_attack.isActiveAndEnabled)
+            {
+                Debug.Log("전투에 필요한 컴포넌트가 비활성화 되어 있습니다");
+                return false;
+            }
             _player = player;
             _combatPosition.SetFirePosition(firePoint);
+
+            if (!_combatPosition.MoveToFirePoint())
+            {
+                return false;
+            }
+
+            _isInitialized = true;
+            return true;
         }
 
         //UPdate에서 함수 돌리는거 낭비잖아---나중에 고쳐야지.
         void Update()
         {
+            if (!_isInitialized)
+            {
+                return;
+            }
+
             TestFacePlayer();
         }
 

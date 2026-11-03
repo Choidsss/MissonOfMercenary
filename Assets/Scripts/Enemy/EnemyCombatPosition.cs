@@ -11,19 +11,20 @@ namespace MIssionOfMercenary
         public bool HasArrived { get; private set; }
 
         bool _isMoveing = false;
+        
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
-            MoveToFirePoint();
-        }
+        //void Start()
+        //{
+        //    MoveToFirePoint();
+        //}
 
         private void Update()
         {
             TestEnemyMoveInUpdate();
         }
 
-        public void MoveToFirePoint()
+        public bool MoveToFirePoint()
         {
             HasArrived = false;
             _isMoveing = false;
@@ -31,19 +32,28 @@ namespace MIssionOfMercenary
             if(_agent == null || _firePoint == null)
             {
                 Debug.Log("Agent 또는 FirePoint 연결이 필요합니다");
-                return;
+                return false;
             }
 
             if(!_agent.isActiveAndEnabled || !_agent.isOnNavMesh)
             {
                 Debug.Log("적이 활성화된 NavMesh위에 있어야 합니다");
-                return;
+                return false;
             }
 
             _agent.isStopped = false;
             _agent.updateRotation = true;
 
             _isMoveing = _agent.SetDestination(_firePoint.position);
+
+            if (!_isMoveing)
+            {
+                _agent.isStopped = true;
+
+                Debug.Log("사격위치로 이동 요청을 보내지 못했습니다");
+            }
+
+            return _isMoveing;
         }
 
         void TestEnemyMoveInUpdate()

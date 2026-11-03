@@ -50,7 +50,7 @@ namespace MIssionOfMercenary
             float fov = Vector3.Angle(transform.forward, direction);
 
             //시야각 안에 있는지
-            bool isInSight = fov <= _degree && direction.sqrMagnitude <= _eyeSightDistance ? true : false;
+            bool isInSight = fov <= _degree && direction.sqrMagnitude <= _eyeSightDistance * _eyeSightDistance ? true : false;
             //벽에 막혔는지
             bool isBlocked = IsBlockedByObtacles(playerPosition);
 
@@ -80,9 +80,9 @@ namespace MIssionOfMercenary
 
         void AssasinBackside()
         {
-            //position, forward 잘못사용 이슈
-            Vector3 directionToPlayer = (_player.transform.position - transform.position).normalized;
-            directionToPlayer.y = 0;
+            //방향을 구할 때 바로 정규화하는중이지만, 이러면 거리정보가 신뢰가 가지 않음
+            //그래서 실제 거리 차이를 계산 후, 각도를 판단해야함
+            Vector3 directionToPlayer = _player.transform.position - transform.position;
 
             float sqrDistance = directionToPlayer.sqrMagnitude;
 
@@ -92,16 +92,9 @@ namespace MIssionOfMercenary
                 return;
             }
 
-            float backAngle = Vector3.Angle(-transform.forward, directionToPlayer.normalized);
+            float backAngle = Vector3.Angle(-transform.forward, directionToPlayer);
 
-            if(backAngle <= _backsideDegree)
-            {
-                _canAssasin = true;
-            }
-            else
-            {
-                _canAssasin = false;
-            }
+            _canAssasin = backAngle <= _backsideDegree;
         }
 
         private void OnDrawGizmos()

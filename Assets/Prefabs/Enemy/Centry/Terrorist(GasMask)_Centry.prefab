@@ -19,8 +19,11 @@ GameObject:
   - component: {fileID: -8809550640598328782}
   - component: {fileID: -8632889764796116247}
   - component: {fileID: -8996320463860673438}
-  - component: {fileID: 7069441537552992606}
   - component: {fileID: 3543257737738814741}
+  - component: {fileID: 7069441537552992606}
+  - component: {fileID: -2545718845163875716}
+  - component: {fileID: 645456658993028252}
+  - component: {fileID: -1474735650487506679}
   m_Layer: 10
   m_Name: Terrorist(GasMask)_Centry
   m_TagString: Untagged
@@ -73,7 +76,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8483681676546927841}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8dcf3931f36508242b3bc36f9094d93a, type: 3}
   m_Name: 
@@ -86,11 +89,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8483681676546927841}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89c1515554b12524dab6b14a3a143e0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _runBehaviorTree: 0
   _aimYaw: 15
   _behaviorType: 1
   _wayPointManager: {fileID: 0}
@@ -223,6 +227,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bulletEnemy: {fileID: 8792954647265824588, guid: afad03405a8b4914c97c78e992bed72e, type: 3}
   _poolingCount: 20
+--- !u!114 &3543257737738814741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8483681676546927841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518e2f3e50679a644af3aa64b2c24535, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _weaponRecoil: {fileID: 0}
+  _damage: 10
+  _attackRange: 10
+  _ammo: 10
+  _maxAmmo: 30
+  _bulletPool: {fileID: -8996320463860673438}
+  _muzzle: {fileID: 470042384204248625}
+  _muzzleFlash: {fileID: 6385891905196231162}
+  _muzzleFlashDuration: 0.05
+  _targetOffset: {x: 0, y: 1, z: 0}
+  _delayAttack: 0.1
+  _delayReload: 2
+  _ammoSpeed: 20
 --- !u!114 &7069441537552992606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,7 +272,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1048576
   _boxSize: {x: 20, y: 20, z: 20}
---- !u!114 &3543257737738814741
+--- !u!114 &-2545718845163875716
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -249,22 +281,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 8483681676546927841}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 518e2f3e50679a644af3aa64b2c24535, type: 3}
+  m_Script: {fileID: 11500000, guid: c1193cf13a9c25f43b9d7a22d7939068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponRecoil: {fileID: 0}
-  _damage: 10
-  _attackRange: 10
-  _ammo: 10
-  _maxAmmo: 30
-  _bulletPool: {fileID: -8996320463860673438}
-  _muzzle: {fileID: 470042384204248625}
-  _muzzleFlash: {fileID: 6385891905196231162}
-  _muzzleFlashDuration: 0.05
-  _targetOffset: {x: 0, y: 1, z: 0}
-  _delayAttack: 0.1
-  _delayReload: 2
-  _ammoSpeed: 20
+  _agent: {fileID: 0}
+  _firePoint: {fileID: 0}
+--- !u!114 &645456658993028252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8483681676546927841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be2f34741d6ba0b4096d90f9493ec4a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attack: {fileID: 0}
+  _combatPosition: {fileID: 0}
+  _agent: {fileID: 0}
+  _player: {fileID: 0}
+  _turnSpeed: 180
+  _fireAngle: 10
+--- !u!114 &-1474735650487506679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8483681676546927841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54618388ff8b9694895fefb68812d3cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5816218825373339924
 PrefabInstance:
   m_ObjectHideFlags: 0

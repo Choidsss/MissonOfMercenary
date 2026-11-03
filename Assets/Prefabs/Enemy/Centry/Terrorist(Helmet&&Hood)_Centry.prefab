@@ -21,6 +21,9 @@ GameObject:
   - component: {fileID: 1269574386755074349}
   - component: {fileID: 5764369317431949947}
   - component: {fileID: 8282616791590394992}
+  - component: {fileID: 6258738981963422440}
+  - component: {fileID: -6491411388317819667}
+  - component: {fileID: 7440200813315942559}
   m_Layer: 10
   m_Name: Terrorist(Helmet&&Hood)_Centry
   m_TagString: Untagged
@@ -73,7 +76,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3996438095034597574}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8dcf3931f36508242b3bc36f9094d93a, type: 3}
   m_Name: 
@@ -86,11 +89,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3996438095034597574}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89c1515554b12524dab6b14a3a143e0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _runBehaviorTree: 0
   _aimYaw: 15
   _behaviorType: 1
   _wayPointManager: {fileID: 0}
@@ -235,6 +239,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518e2f3e50679a644af3aa64b2c24535, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
   _weaponRecoil: {fileID: 0}
   _damage: 10
   _attackRange: 10
@@ -265,6 +272,50 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1048576
   _boxSize: {x: 20, y: 20, z: 20}
+--- !u!114 &6258738981963422440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3996438095034597574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1193cf13a9c25f43b9d7a22d7939068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _agent: {fileID: 0}
+  _firePoint: {fileID: 0}
+--- !u!114 &-6491411388317819667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3996438095034597574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be2f34741d6ba0b4096d90f9493ec4a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attack: {fileID: 0}
+  _combatPosition: {fileID: 0}
+  _agent: {fileID: 0}
+  _player: {fileID: 0}
+  _turnSpeed: 180
+  _fireAngle: 10
+--- !u!114 &7440200813315942559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3996438095034597574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54618388ff8b9694895fefb68812d3cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &462244675853190076
 PrefabInstance:
   m_ObjectHideFlags: 0
