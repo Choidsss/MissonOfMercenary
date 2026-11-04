@@ -50,6 +50,8 @@ namespace MIssionOfMercenary
         {
             if (!_isInitialized)
             {
+                //Initialize안해서 공격 안불리는 중
+                Debug.Log("초기화 안함");
                 return;
             }
 
@@ -60,21 +62,25 @@ namespace MIssionOfMercenary
         {
             if (_combatPosition == null || _agent == null || _player == null)
             {
+                Debug.Log("1");
                 return;
             }
 
             if(!_combatPosition.HasArrived)
             {
+                Debug.Log("2");
                 return;
             }
 
             if (!_agent.isActiveAndEnabled || !_agent.isOnNavMesh)
             {
+                Debug.Log("3");
                 return;
             }
 
             _agent.updateRotation = false;
 
+            //Debug.Log("내려왔음");
             FacePlayer();
             TryAttackPlayer();
         }
@@ -116,6 +122,7 @@ namespace MIssionOfMercenary
                 return;
             }
 
+            Debug.Log("Attack");
             _attack.Attack(_player.position);
         }
     }

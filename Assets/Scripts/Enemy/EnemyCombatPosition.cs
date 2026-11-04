@@ -53,6 +53,8 @@ namespace MIssionOfMercenary
                 Debug.Log("사격위치로 이동 요청을 보내지 못했습니다");
             }
 
+            //HasArrived = true;
+
             return _isMoveing;
         }
 
