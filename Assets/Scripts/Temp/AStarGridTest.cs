@@ -15,10 +15,19 @@ namespace MIssionOfMercenary
         [Header("Obstacle Layer")]
         [SerializeField] LayerMask _obstacleLayer;
 
+        [Header("Move Speed")]
+        [SerializeField] float _speed;
+
+
         bool[,] _walkable = new bool[10, 10];
         List<Vector2Int> _path;
+        int _pathIndex = 1;
 
-        
+        Vector2Int _move;
+        Vector3 _moveTo;
+        Vector3 _movement;
+
+        bool _isMoving = true;
 
         void Awake()
         {
@@ -165,6 +174,16 @@ namespace MIssionOfMercenary
                     path.Reverse();
                     _path = path;
 
+                    if (path.Count > 1)
+                    {
+                        //_path[0] 과 _path[1]은 출발칸과 다음칸
+                        //_move는 몇번칸인지, 어디로 가야하는지를 나타내는 필드
+                        _move = _path[_pathIndex];
+
+                        _moveTo = GetCellCenter(_move.x, _move.y, transform.position);
+                        
+                    }
+
                     Debug.Log($"총 {gCost[goal]}걸음: {string.Join(" → ", path)}");
                     return;
                 }
@@ -191,6 +210,33 @@ namespace MIssionOfMercenary
             // 목적지를 고르기 전에 조사할 후보가 다 떨어졌다.
             Debug.Log("목적지까지 갈 수 있는 경로가 없어요.");
 
+        }
+
+        private void Update()
+        {
+            if (!_isMoving)
+            {
+                return;
+            }
+
+            _movement = Vector3.MoveTowards(_character.position, _moveTo, _speed * Time.deltaTime);
+            
+            _character.position = _movement;
+
+            if(_character.position == _moveTo)
+            {
+                _pathIndex++;
+
+                if(_pathIndex >= _path.Count)
+                {
+                    _isMoving = false;
+                    Debug.Log("목적지 도착");
+                    return;
+                }
+
+                _move = _path[_pathIndex];
+                _moveTo = GetCellCenter(_move.x, _move.y, transform.position); 
+            }
         }
 
         Vector3 GetCellCenter(int x, int z, Vector3 center)
