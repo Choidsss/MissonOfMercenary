@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4357269162223434}
   - component: {fileID: 33672548248338800}
   - component: {fileID: 23467072212078122}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Fence_wood_wire_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 33803521297791614}
   - component: {fileID: 23059110126759452}
   - component: {fileID: 65908178469810994}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Fence_wood_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

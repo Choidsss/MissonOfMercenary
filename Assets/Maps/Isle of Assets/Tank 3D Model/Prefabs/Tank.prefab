@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7093067382167901943}
   - component: {fileID: 5958778929170814273}
   - component: {fileID: 1955961046317441279}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3353636593502140411}
   - component: {fileID: -821383041955719252}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Tank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 7600530654595209850}
   - component: {fileID: 1487324900592022668}
   - component: {fileID: 7777776446112242937}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: track_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,7 +289,7 @@ GameObject:
   - component: {fileID: 537964342117778901}
   - component: {fileID: 6444068927919159893}
   - component: {fileID: 7777776446112242936}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: wheels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -398,7 +398,7 @@ GameObject:
   - component: {fileID: 8333138535409562831}
   - component: {fileID: 6771998179883280616}
   - component: {fileID: 7777776446112242942}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: track_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -507,7 +507,7 @@ GameObject:
   - component: {fileID: 3607639273219803791}
   - component: {fileID: 717215350046942905}
   - component: {fileID: 7777776446112242941}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -616,7 +616,7 @@ GameObject:
   - component: {fileID: 946349861167268208}
   - component: {fileID: 8843640473830648536}
   - component: {fileID: 7777776446112242943}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: muzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

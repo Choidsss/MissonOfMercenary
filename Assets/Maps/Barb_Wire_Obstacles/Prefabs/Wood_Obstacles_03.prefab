@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4530633704484482}
   - component: {fileID: 33362954197889800}
   - component: {fileID: 23900039189989908}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Wood_Obstacles_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4874940407537786}
   - component: {fileID: 136674707022547118}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Wood_Obstacles_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 4420196015090142}
   - component: {fileID: 33777357760831312}
   - component: {fileID: 23318796834006984}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Wood_Obstacles_Wire_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}

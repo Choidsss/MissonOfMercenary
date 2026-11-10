@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33552621217974566}
   - component: {fileID: 23728647172406246}
   - component: {fileID: 136886163657427078}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Barb_Wire_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

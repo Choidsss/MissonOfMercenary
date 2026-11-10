@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3703554605717817810}
   - component: {fileID: 1477563321816349976}
   - component: {fileID: 2569314472131321366}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: P_rsg_military_concret_block_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

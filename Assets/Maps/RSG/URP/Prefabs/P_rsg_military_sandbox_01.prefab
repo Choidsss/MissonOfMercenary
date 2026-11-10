@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 940663660555929098}
   - component: {fileID: 3092037616281776832}
   - component: {fileID: 2122708086521973095}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: P_rsg_military_sandbox_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

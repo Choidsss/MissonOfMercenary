@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5606657631364291302}
   - component: {fileID: 6689871359777693419}
   - component: {fileID: 5610742882251178292}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Roof
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 8603475657884290752}
   - component: {fileID: 1673080962826783995}
   - component: {fileID: 5706766763646965151}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Hangar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7490953376921949785}
   - component: {fileID: 254709962343430534}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Hangar1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,6 +337,10 @@ PrefabInstance:
     - target: {fileID: 8901495380476537616, guid: 38fcb473a8f39364e919afa6fc18e6d7, type: 3}
       propertyPath: m_Name
       value: Tile
+      objectReference: {fileID: 0}
+    - target: {fileID: 8901495380476537616, guid: 38fcb473a8f39364e919afa6fc18e6d7, type: 3}
+      propertyPath: m_Layer
+      value: 23
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

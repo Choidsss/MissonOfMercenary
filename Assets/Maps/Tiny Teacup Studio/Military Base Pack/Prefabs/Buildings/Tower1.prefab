@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 768393490848820767}
   - component: {fileID: 655724488256994240}
   - component: {fileID: 3611936984499459492}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Ladder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4968119439141378259}
   - component: {fileID: -8250466046580599102}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Tower1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 1345608429052346432}
   - component: {fileID: 4309025746753698531}
   - component: {fileID: 2833226286337308768}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}

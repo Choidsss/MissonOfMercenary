@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7676115591045549119}
   - component: {fileID: 2180792417161373991}
   - component: {fileID: 5390828129399489733}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Toilet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2256879296330761541}
   - component: {fileID: 235160692125478397}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Toilet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 3848858880259590650}
   - component: {fileID: 2625615237739662839}
   - component: {fileID: 8230091459404538454}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Roof
   m_TagString: Untagged
   m_Icon: {fileID: 0}

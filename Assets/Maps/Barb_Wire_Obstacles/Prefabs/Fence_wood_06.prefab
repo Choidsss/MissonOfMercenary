@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4354733609275510}
   - component: {fileID: 65048488510559194}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Fence_wood_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,7 +66,7 @@ GameObject:
   - component: {fileID: 4969032213662278}
   - component: {fileID: 33288513954212888}
   - component: {fileID: 23735031658229566}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Fence_wood_wire_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 4704488259109064}
   - component: {fileID: 33140702878287708}
   - component: {fileID: 23656371311423250}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Fence_wood_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}

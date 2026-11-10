@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4852363852120674}
   - component: {fileID: 33380789012821348}
   - component: {fileID: 23817345867287308}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Metal_Obstacles_wire_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 33477240891287532}
   - component: {fileID: 23655460799028306}
   - component: {fileID: 136995562541575576}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Metal_Obstacles_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}

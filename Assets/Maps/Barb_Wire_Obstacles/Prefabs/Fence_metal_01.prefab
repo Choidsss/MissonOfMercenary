@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4256421532340876}
   - component: {fileID: 33959987960844288}
   - component: {fileID: 23763677000237162}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Fence_metal_wire_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 4557770438434780}
   - component: {fileID: 33029111736572808}
   - component: {fileID: 23656718808314830}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Fence_metal_grid_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 33221344185418426}
   - component: {fileID: 23876170873329674}
   - component: {fileID: 65695939279882662}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Fence_metal_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
