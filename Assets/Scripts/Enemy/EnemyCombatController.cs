@@ -62,19 +62,19 @@ namespace MIssionOfMercenary
         {
             if (_combatPosition == null || _agent == null || _player == null)
             {
-                Debug.Log("1");
+                //Debug.Log("1");
                 return;
             }
 
             if(!_combatPosition.HasArrived)
             {
-                Debug.Log("2");
+                //Debug.Log("2");
                 return;
             }
 
             if (!_agent.isActiveAndEnabled || !_agent.isOnNavMesh)
             {
-                Debug.Log("3");
+                //Debug.Log("3");
                 return;
             }
 
@@ -122,7 +122,7 @@ namespace MIssionOfMercenary
                 return;
             }
 
-            Debug.Log("Attack");
+            //Debug.Log("Attack");
             _attack.Attack(_player.position);
         }
     }
