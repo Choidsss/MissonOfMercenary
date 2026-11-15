@@ -23,12 +23,15 @@ namespace MIssionOfMercenary
 
         void Start()
         {
-            //Debug.Log(WorldToCell(GetCellCenter(2, 3)));
+            
         }
 
         void Update()
         {
-        
+            //if (IsMoveAble())
+            //{
+
+            //}
         }
 
         //월드 위치를 칸 번호로 반환하는 함수
@@ -41,6 +44,15 @@ namespace MIssionOfMercenary
             int z = Mathf.FloorToInt((worldPosition.z - startZ) / _cellSize);
 
             return new Vector2Int(x, z);
+        }
+
+        //각 이웃칸에서 목적지까지 몇 걸음 남았을지 추정하는 함수
+        int GetHeuristic(Vector2Int from, Vector2Int goal)
+        {
+            int heuristicX = Mathf.Abs(from.x - goal.x);
+            int heuristicY = Mathf.Abs(from.y - goal.y) ;
+
+            return heuristicX + heuristicY;
         }
 
         //셀 한칸의 중앙의 월드 좌표를 가져오는 함수
@@ -88,6 +100,69 @@ namespace MIssionOfMercenary
 
 
             }
+        }
+
+        //이걸 반복문으로 하나에 묶어야 함.
+        void SearchGrid(Vector2Int start, Vector2Int goal)
+        {
+            List<Vector2Int> open = new List<Vector2Int>();
+            Dictionary<Vector2Int, int> moveCount = new Dictionary<Vector2Int, int>();
+
+            //출발칸을 먼저 조사하겠다고 말하는 것
+            open.Add(start);
+            moveCount.Add(start, 0);
+
+            while (open.Count > 0)
+            {
+                int bestIndex = 0;
+                int bestF = int.MaxValue;
+
+                for (int i = 0; i < open.Count; i++)
+                {
+                    Vector2Int pos = open[i];
+                    int f = moveCount[pos] + GetHeuristic(pos, goal);
+
+                    if (f < bestF)
+                    {
+                        bestF = f;
+                        bestIndex = i;
+                    }
+                }
+
+                Vector2Int current = open[bestIndex];
+                open.RemoveAt(bestIndex);
+
+                if (current == goal)
+                {
+                    Debug.Log("목적지 도착");
+                    return;
+                }
+
+                foreach (Vector2Int neighbor in GetNeighborsInGrid(current.x, current.y))
+                {
+                    int newG = moveCount[current] + 1;
+
+                    //이웃들의 비용들을 물어보고 비교해야함
+                    if (moveCount.TryGetValue(neighbor, out int oldG))
+                    {
+                        if (oldG <= newG)
+                        {
+                            continue;
+                        }
+                    }
+
+                    moveCount[neighbor] = newG;
+
+                    if (!open.Contains(neighbor))
+                    {
+                        open.Add(neighbor);
+                    }
+                }
+
+
+
+            }
+
         }
 
         //현재 위치에서 갈수 있는 칸에 대해 자료형에 담아두는 함수
