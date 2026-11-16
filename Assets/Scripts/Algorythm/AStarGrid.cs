@@ -19,9 +19,9 @@ namespace MIssionOfMercenary
         [SerializeField] Transform _end;
 
         [Header("Variable Option")]
-        [SerializeField] int _gridWidth; //ÀüÃ¼ ±×¸®µå Áß °¡·Î ¹æÇâÀÇ Ä­ÀÇ °³¼ö
+        [SerializeField] int _gridWidth; //ì „ì²´ ê·¸ë¦¬ë“œ ì¤‘ ê°€ë¡œ ë°©í–¥ì˜ ì¹¸ì˜ ê°œìˆ˜
         [SerializeField] float _maxDistance;
-        [SerializeField] float _cellSize; //¼¿ ÇÑÄ­ÀÇ Å©±â
+        [SerializeField] float _cellSize; //ì…€ í•œì¹¸ì˜ í¬ê¸°
         [SerializeField] LayerMask _obstacleLayer;
         [SerializeField] Vector3 _positionOffset;
 
@@ -42,13 +42,13 @@ namespace MIssionOfMercenary
         {
             if (_nav == null || !_nav.isActiveAndEnabled || !_nav.isOnNavMesh)
             {
-                Debug.Log("È°¼ºÈ­ µÈ NavMeshÀ§¿¡ ÀÖ¾î¾ß ÇÕ´Ï´Ù");
+                Debug.Log("í™œì„±í™” ëœ NavMeshìœ„ì— ìˆì–´ì•¼ í•©ë‹ˆë‹¤");
                 return;
             }
 
             if (_end == null)
             {
-                Debug.Log("¸ñÇ¥ TransformÀ» ¿¬°áÇØ ÁÖ¼¼¿ä");
+                Debug.Log("ëª©í‘œ Transformì„ ì—°ê²°í•´ ì£¼ì„¸ìš”");
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace MIssionOfMercenary
                 return;
             }
 
-            //°æ·Î °è»êÀÌ ³¡³¯¶§ ±îÁö ±â´Ù¸²
+            //ê²½ë¡œ ê³„ì‚°ì´ ëë‚ ë•Œ ê¹Œì§€ ê¸°ë‹¤ë¦¼
             if (_nav.pathPending)
             {
                 return;
@@ -91,7 +91,7 @@ namespace MIssionOfMercenary
                 _nav.isStopped = true;
                 _nav.ResetPath();
 
-                Debug.Log("ÇöÀç ¸ñÇ¥ ÁöÁ¡±îÁö µµ´ŞÇÒ ¼ö ¾ø½À´Ï´Ù");
+                Debug.Log("í˜„ì¬ ëª©í‘œ ì§€ì ê¹Œì§€ ë„ë‹¬í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤");
                 return;
             }
 
@@ -106,7 +106,7 @@ namespace MIssionOfMercenary
             EnemyMoveToDestination();
         }
 
-        //¿ùµå À§Ä¡¸¦ Ä­ ¹øÈ£·Î ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+        //ì›”ë“œ ìœ„ì¹˜ë¥¼ ì¹¸ ë²ˆí˜¸ë¡œ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
         Vector2Int WorldToCell(Vector3 worldPosition)
         {
             float startX = transform.position.x + _positionOffset.x - _gridWidth * _cellSize * 0.5f;
@@ -118,7 +118,7 @@ namespace MIssionOfMercenary
             return new Vector2Int(x, z);
         }
 
-        //°¢ ÀÌ¿ôÄ­¿¡¼­ ¸ñÀûÁö±îÁö ¸î °ÉÀ½ ³²¾ÒÀ»Áö ÃßÁ¤ÇÏ´Â ÇÔ¼ö
+        //ê° ì´ì›ƒì¹¸ì—ì„œ ëª©ì ì§€ê¹Œì§€ ëª‡ ê±¸ìŒ ë‚¨ì•˜ì„ì§€ ì¶”ì •í•˜ëŠ” í•¨ìˆ˜
         int GetHeuristic(Vector2Int from, Vector2Int goal)
         {
             int heuristicX = Mathf.Abs(from.x - goal.x);
@@ -127,20 +127,20 @@ namespace MIssionOfMercenary
             return heuristicX + heuristicY;
         }
 
-        //¼¿ ÇÑÄ­ÀÇ Áß¾ÓÀÇ ¿ùµå ÁÂÇ¥¸¦ °¡Á®¿À´Â ÇÔ¼ö
+        //ì…€ í•œì¹¸ì˜ ì¤‘ì•™ì˜ ì›”ë“œ ì¢Œí‘œë¥¼ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
         Vector3 GetCellCenter(int x, int z)
         {
-            float width = _gridWidth * _cellSize;//ÀüÃ¼ ±×¸®µå °¡·ÎÀÇ ±æÀÌ(ÇÑÄ­ÀÇ ±æÀÌ * ¼¿ÀÇ °³¼ö)
-            float startX = transform.position.x + _positionOffset.x - width * 0.5f;//¿ŞÂÊ ³¡ÀÇ ½ÃÀÛÁöÁ¡
-            float startZ = transform.position.z + _positionOffset.z - width * 0.5f;//¿ŞÂÊ ³¡ÀÇ ½ÃÀÛÁöÁ¡
-            float firstCellX = startX + _cellSize * 0.5f;//Ã¹¹øÂ° Ä­ÀÇ Áß¾Ó ÁöÁ¡ ±¸ÇÏ´Â°Å1
-            float firstCellZ = startZ + _cellSize * 0.5f;//Ã¹¹øÂ° Ä­ÀÇ Áß¾Ó ÁöÁ¡ ±¸ÇÏ´Â°Å2
+            float width = _gridWidth * _cellSize;//ì „ì²´ ê·¸ë¦¬ë“œ ê°€ë¡œì˜ ê¸¸ì´(í•œì¹¸ì˜ ê¸¸ì´ * ì…€ì˜ ê°œìˆ˜)
+            float startX = transform.position.x + _positionOffset.x - width * 0.5f;//ì™¼ìª½ ëì˜ ì‹œì‘ì§€ì 
+            float startZ = transform.position.z + _positionOffset.z - width * 0.5f;//ì™¼ìª½ ëì˜ ì‹œì‘ì§€ì 
+            float firstCellX = startX + _cellSize * 0.5f;//ì²«ë²ˆì§¸ ì¹¸ì˜ ì¤‘ì•™ ì§€ì  êµ¬í•˜ëŠ”ê±°1
+            float firstCellZ = startZ + _cellSize * 0.5f;//ì²«ë²ˆì§¸ ì¹¸ì˜ ì¤‘ì•™ ì§€ì  êµ¬í•˜ëŠ”ê±°2
 
-            //¼¿ÀÇ Áß¾Ó ÁÂÇ¥°ª
+            //ì…€ì˜ ì¤‘ì•™ ì¢Œí‘œê°’
             return new Vector3(firstCellX + x * _cellSize, transform.position.y + _positionOffset.y + GRID_TICKNESS, firstCellZ + z * _cellSize);
         }
 
-        //ÀÌµ¿ÇÒ ¼ö ÀÖ´Â ¼¿ÀÎÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+        //ì´ë™í•  ìˆ˜ ìˆëŠ” ì…€ì¸ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
         bool IsMoveAble(int x, int z)
         {
             if (x > _gridWidth - 1 || z > _gridWidth - 1 || x < 0 || z < 0)
@@ -162,11 +162,11 @@ namespace MIssionOfMercenary
                     Vector3 cellSize = new Vector3(_cellSize, GRID_TICKNESS, _cellSize);
                     Vector3 pos = GetCellCenter(x, z);
 
-                    //±×¸®µå À§¿¡ Àå¾Ö¹° È®ÀÎ ÈÄ ¹è¿­¿¡ Ç¥±â
-                    //±×¸®°í Å©±â ³Ñ±â´Â°Ç ¹İÅä¸·³»¼­
+                    //ê·¸ë¦¬ë“œ ìœ„ì— ì¥ì• ë¬¼ í™•ì¸ í›„ ë°°ì—´ì— í‘œê¸°
+                    //ê·¸ë¦¬ê³  í¬ê¸° ë„˜ê¸°ëŠ”ê±´ ë°˜í† ë§‰ë‚´ì„œ
                     bool blocked = Physics.CheckBox(pos, cellSize * 0.5f, Quaternion.identity, _obstacleLayer);
 
-                    //BlockÀÌ true¸é ¸·Èù°Í
+                    //Blockì´ trueë©´ ë§‰íŒê²ƒ
                     _moveAble[x, z] = !blocked;
                 }
 
@@ -174,23 +174,23 @@ namespace MIssionOfMercenary
             }
         }
 
-        //ÀÌ°É ¹İº¹¹®À¸·Î ÇÏ³ª¿¡ ¹­¾î¾ß ÇÔ.
+        //ì´ê±¸ ë°˜ë³µë¬¸ìœ¼ë¡œ í•˜ë‚˜ì— ë¬¶ì–´ì•¼ í•¨.
         List<Vector2Int> SearchGrid(Vector2Int start, Vector2Int goal)
         {
             if (!IsMoveAble(start.x, start.y) || !IsMoveAble(goal.x, goal.y))
             {
-                Debug.Log("¸ñÀûÁö·Î ÀÌµ¿ÇÒ ¼ö ¾ø½À´Ï´Ù");
+                Debug.Log("ëª©ì ì§€ë¡œ ì´ë™í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤");
                 return null;
             }
 
-            //¾ÕÀ¸·Î Á¶»çÇÒ ÈÄº¸ÀÇ Ä­µé
+            //ì•ìœ¼ë¡œ ì¡°ì‚¬í•  í›„ë³´ì˜ ì¹¸ë“¤
             List<Vector2Int> open = new List<Vector2Int>();
-            //Ãâ¹ßÁ¡¿¡¼­ °¢ Ä­±îÁö ¹ß°ßÇÑ °¡Àå ÂªÀº ÀÌµ¿ È½¼ö
+            //ì¶œë°œì ì—ì„œ ê° ì¹¸ê¹Œì§€ ë°œê²¬í•œ ê°€ì¥ ì§§ì€ ì´ë™ íšŸìˆ˜
             Dictionary<Vector2Int, int> moveCount = new Dictionary<Vector2Int, int>();
-            //°¢ Ä­¿¡ µµÂøÇÏ±â Á÷Àü¿¡ ÀÖ¾ú´ø Ä­
+            //ê° ì¹¸ì— ë„ì°©í•˜ê¸° ì§ì „ì— ìˆì—ˆë˜ ì¹¸
             Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
 
-            //Ãâ¹ßÄ­À» ¸ÕÀú Á¶»çÇÏ°Ú´Ù°í ¸»ÇÏ´Â °Í
+            //ì¶œë°œì¹¸ì„ ë¨¼ì € ì¡°ì‚¬í•˜ê² ë‹¤ê³  ë§í•˜ëŠ” ê²ƒ
             open.Add(start);
             moveCount.Add(start, 0);
 
@@ -229,7 +229,7 @@ namespace MIssionOfMercenary
 
                     path.Reverse();
 
-                    Debug.Log($"°æ·Î ¹ß°ß {moveCount[goal]} °ÉÀ½");
+                    Debug.Log($"ê²½ë¡œ ë°œê²¬ {moveCount[goal]} ê±¸ìŒ");
                     return path;
                 }
 
@@ -237,7 +237,7 @@ namespace MIssionOfMercenary
                 {
                     int newG = moveCount[current] + 1;
 
-                    //ÀÌ¿ôµéÀÇ ºñ¿ëµéÀ» ¹°¾îº¸°í ºñ±³ÇØ¾ßÇÔ
+                    //ì´ì›ƒë“¤ì˜ ë¹„ìš©ë“¤ì„ ë¬¼ì–´ë³´ê³  ë¹„êµí•´ì•¼í•¨
                     if (moveCount.TryGetValue(neighbor, out int oldG))
                     {
                         if (oldG <= newG)
@@ -256,39 +256,39 @@ namespace MIssionOfMercenary
                 }
             }
 
-            Debug.Log("¸ñÀûÁö±îÁö µµ´ŞÇÒ ¼ö ÀÖ´Â °æ·Î°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù");
+            Debug.Log("ëª©ì ì§€ê¹Œì§€ ë„ë‹¬í•  ìˆ˜ ìˆëŠ” ê²½ë¡œê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤");
             return null;
         }
 
-        //ÇöÀç À§Ä¡¿¡¼­ °¥¼ö ÀÖ´Â Ä­¿¡ ´ëÇØ ÀÚ·áÇü¿¡ ´ã¾ÆµÎ´Â ÇÔ¼ö
-        //»óÇÏÁÂ¿ì Áß °¥¼ö ÀÖ´Â ¹æÇâ È®ÀÎ ÈÄ ¸®½ºÆ®¿¡ ´ã¾Æ¼­ ¸®ÅÏ
+        //í˜„ì¬ ìœ„ì¹˜ì—ì„œ ê°ˆìˆ˜ ìˆëŠ” ì¹¸ì— ëŒ€í•´ ìë£Œí˜•ì— ë‹´ì•„ë‘ëŠ” í•¨ìˆ˜
+        //ìƒí•˜ì¢Œìš° ì¤‘ ê°ˆìˆ˜ ìˆëŠ” ë°©í–¥ í™•ì¸ í›„ ë¦¬ìŠ¤íŠ¸ì— ë‹´ì•„ì„œ ë¦¬í„´
         List<Vector2Int> GetNeighborsInGrid(int x, int z)
         {
             List<Vector2Int> neighborsList = new List<Vector2Int>();
 
-            //¹æÇâ¸¸ ÁıÁß
-            //¿ŞÂÊÀ» °¥ ¼ö ÀÖ´Â°¡?
+            //ë°©í–¥ë§Œ ì§‘ì¤‘
+            //ì™¼ìª½ì„ ê°ˆ ìˆ˜ ìˆëŠ”ê°€?
             if (IsMoveAble(x - 1, z))
             {
-                neighborsList.Add(new Vector2Int(x - 1, z)); //°¥ ¼ö ÀÖ´Â À§Ä¡¸¦ ÀúÀå
+                neighborsList.Add(new Vector2Int(x - 1, z)); //ê°ˆ ìˆ˜ ìˆëŠ” ìœ„ì¹˜ë¥¼ ì €ì¥
             }
 
-            //¿À¸¥ÂÊÀ» °¥ ¼ö ÀÖ´Â°¡?
+            //ì˜¤ë¥¸ìª½ì„ ê°ˆ ìˆ˜ ìˆëŠ”ê°€?
             if (IsMoveAble(x + 1, z))
             {
-                neighborsList.Add(new Vector2Int(x + 1, z)); //°¥ ¼ö ÀÖ´Â À§Ä¡¸¦ ÀúÀå
+                neighborsList.Add(new Vector2Int(x + 1, z)); //ê°ˆ ìˆ˜ ìˆëŠ” ìœ„ì¹˜ë¥¼ ì €ì¥
             }
 
-            //À§ÂÊÀ» °¥ ¼ö ÀÖ´Â°¡?
+            //ìœ„ìª½ì„ ê°ˆ ìˆ˜ ìˆëŠ”ê°€?
             if (IsMoveAble(x, z + 1))
             {
-                neighborsList.Add(new Vector2Int(x, z + 1)); //°¥ ¼ö ÀÖ´Â À§Ä¡¸¦ ÀúÀå
+                neighborsList.Add(new Vector2Int(x, z + 1)); //ê°ˆ ìˆ˜ ìˆëŠ” ìœ„ì¹˜ë¥¼ ì €ì¥
             }
             
-            //¾Æ·¡ÂÊÀ» °¥ ¼ö ÀÖ´Â°¡?
+            //ì•„ë˜ìª½ì„ ê°ˆ ìˆ˜ ìˆëŠ”ê°€?
             if (IsMoveAble(x, z - 1))
             {
-                neighborsList.Add(new Vector2Int(x, z - 1)); //°¥ ¼ö ÀÖ´Â À§Ä¡¸¦ ÀúÀå
+                neighborsList.Add(new Vector2Int(x, z - 1)); //ê°ˆ ìˆ˜ ìˆëŠ” ìœ„ì¹˜ë¥¼ ì €ì¥
             }
 
             return neighborsList;
@@ -324,7 +324,7 @@ namespace MIssionOfMercenary
                 _isMoving = false;
                 _nav.isStopped = true;
 
-                Debug.Log("¸ñÀûÁö¿¡ µµÂøÇÏ¿´½À´Ï´Ù");
+                Debug.Log("ëª©ì ì§€ì— ë„ì°©í•˜ì˜€ìŠµë‹ˆë‹¤");
                 return;
             }
 
@@ -338,7 +338,7 @@ namespace MIssionOfMercenary
                 _nav.isStopped = true;
                 _nav.ResetPath();
 
-                Debug.LogWarning("¸ñÇ¥ ÁöÁ¡ ÁÖº¯¿¡ NavMesh°¡ ¾ø½À´Ï´Ù");
+                Debug.LogWarning("ëª©í‘œ ì§€ì  ì£¼ë³€ì— NavMeshê°€ ì—†ìŠµë‹ˆë‹¤");
                 return;
             }
 
@@ -349,7 +349,7 @@ namespace MIssionOfMercenary
                 _nav.isStopped = true;
                 _nav.ResetPath();
 
-                Debug.Log("ÀÌµ¿ ¿ä«Š¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù");
+                Debug.Log("ì´ë™ ìš”ì³¥ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤");
             }
             //_moveToCoordinate = FindPath(_start, _end);
 
@@ -366,6 +366,17 @@ namespace MIssionOfMercenary
 
         private void OnDrawGizmos()
         {
+            // Display the original A* route before NavMesh projection.
+            if (_moveToCoordinate != null && _moveToCoordinate.Count > 1)
+            {
+                Gizmos.color = Color.blue;
+
+                for (int i = 1; i < _moveToCoordinate.Count; i++)
+                {
+                    Gizmos.DrawLine(_moveToCoordinate[i - 1], _moveToCoordinate[i]);
+                }
+            }
+
             for(int x = 0; x < _gridWidth; x++)
             {
                 for(int z = 0;z < _gridWidth; z++)
