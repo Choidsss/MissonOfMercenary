@@ -656,7 +656,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 21.45
+  m_fontSize: 23
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -34536,7 +34536,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 36.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -36424,7 +36424,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &726979094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36437,11 +36437,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45690cb74b22f9a4c845c2d32fb9a7e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _nav: {fileID: 0}
+  _end: {fileID: 0}
   _gridWidth: 10
+  _maxDistance: 0
   _cellSize: 3
   _obstacleLayer:
     serializedVersion: 2
     m_Bits: 8388608
+  _positionOffset: {x: 0, y: 0, z: 0}
 --- !u!4 &726979095
 Transform:
   m_ObjectHideFlags: 0
@@ -41280,7 +41284,7 @@ PrefabInstance:
       objectReference: {fileID: 1634569299}
     - target: {fileID: 5347596296746313562, guid: c2fd01c636d7fd5428fa8f06f590d587, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 315.87
+      value: 318.43
       objectReference: {fileID: 0}
     - target: {fileID: 5347596296746313562, guid: c2fd01c636d7fd5428fa8f06f590d587, type: 3}
       propertyPath: m_LocalPosition.y
@@ -41288,7 +41292,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5347596296746313562, guid: c2fd01c636d7fd5428fa8f06f590d587, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 410.52
+      value: 380.96
       objectReference: {fileID: 0}
     - target: {fileID: 5347596296746313562, guid: c2fd01c636d7fd5428fa8f06f590d587, type: 3}
       propertyPath: m_LocalRotation.w
@@ -41335,6 +41339,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2fd01c636d7fd5428fa8f06f590d587, type: 3}
+--- !u!195 &836134689 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 7888838580323094705, guid: c2fd01c636d7fd5428fa8f06f590d587, type: 3}
+  m_PrefabInstance: {fileID: 836134688}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &836985480
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46759,7 +46768,7 @@ Transform:
   m_GameObject: {fileID: 955121838}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 313.43, y: 38, z: 394.76}
+  m_LocalPosition: {x: 311.03, y: 38, z: 353.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -49326,7 +49335,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 39.1
+  m_fontSize: 42
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -64360,7 +64369,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.3
+  m_fontSize: 33.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -84220,7 +84229,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40.4
+  m_fontSize: 59.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -88013,14 +88022,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 1520182296}
     m_Modifications:
     - target: {fileID: 2778711286873668843, guid: 5c89ab9d3f42fe849a82955bf08b4895, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.2999998
-      objectReference: {fileID: 0}
-    - target: {fileID: 2778711286873668843, guid: 5c89ab9d3f42fe849a82955bf08b4895, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.2999998
-      objectReference: {fileID: 0}
-    - target: {fileID: 2778711286873668843, guid: 5c89ab9d3f42fe849a82955bf08b4895, type: 3}
       propertyPath: m_LocalPosition.x
       value: -62.47
       objectReference: {fileID: 0}
@@ -88063,6 +88064,30 @@ PrefabInstance:
     - target: {fileID: 3297804386327684689, guid: 5c89ab9d3f42fe849a82955bf08b4895, type: 3}
       propertyPath: m_Name
       value: ATV_N1_LE_Prefab (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8305375116718464220, guid: 5c89ab9d3f42fe849a82955bf08b4895, type: 3}
+      propertyPath: _end
+      value: 
+      objectReference: {fileID: 955121839}
+    - target: {fileID: 8305375116718464220, guid: 5c89ab9d3f42fe849a82955bf08b4895, type: 3}
+      propertyPath: _nav
+      value: 
+      objectReference: {fileID: 836134689}
+    - target: {fileID: 8305375116718464220, guid: 5c89ab9d3f42fe849a82955bf08b4895, type: 3}
+      propertyPath: _cellSize
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8305375116718464220, guid: 5c89ab9d3f42fe849a82955bf08b4895, type: 3}
+      propertyPath: _gridWidth
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8305375116718464220, guid: 5c89ab9d3f42fe849a82955bf08b4895, type: 3}
+      propertyPath: _maxDistance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8305375116718464220, guid: 5c89ab9d3f42fe849a82955bf08b4895, type: 3}
+      propertyPath: _obstacleLayer.m_Bits
+      value: 8388608
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -89336,7 +89361,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42.35
+  m_fontSize: 45.5
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
