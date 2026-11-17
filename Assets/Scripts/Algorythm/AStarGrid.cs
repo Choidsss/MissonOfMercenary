@@ -7,13 +7,12 @@ namespace MIssionOfMercenary
     public class AStarGrid : MonoBehaviour
     {
         const float GRID_TICKNESS = 1f;
-        const float WHITE_SPACE_OFFSET = 0.8f;
+        const float WHITE_SPACE_OFFSET = 0.4f;
+        const float OBSTACLES_MULTIPLY = 0.5f;
 
         [Header("Set Algorythm")]
         [Header("NavMesh Insert")]
         [SerializeField] NavMeshAgent _nav;
-
-        //[Header("Start Position")]
 
         [Header("End Position")]
         [SerializeField] Transform _end;
@@ -24,6 +23,10 @@ namespace MIssionOfMercenary
         [SerializeField] float _cellSize; //셀 한칸의 크기
         [SerializeField] LayerMask _obstacleLayer;
         [SerializeField] Vector3 _positionOffset;
+
+        [Header("Determine Obstacles In Algorythm")]
+        [SerializeField] Vector3 _obstacleCheckSize = new Vector3(1f, 1f, 1f);
+        [SerializeField] Vector3 _obstacleCheckOffset = Vector3.zero;
 
         List<Vector3> _moveToCoordinate = new List<Vector3>();
         Transform _start;
@@ -151,6 +154,32 @@ namespace MIssionOfMercenary
             return _moveAble[x, z];
         }
 
+        //현재 칸에서 이웃 칸 까지 검사 박스를 밀어서 지나갈수 있는지 판단
+        bool CanMoveBetweenCells(Vector2Int from, Vector2Int to)
+        {
+            //도착 칸에 서 있을 공각이 있는지 확인
+            if(!IsMoveAble(to.x, to.y))
+            {
+                Debug.Log("이동할 수 없는 지역입니다");
+                return false;
+            }
+
+            Vector3 start = GetCellCenter(from.x, from.y) + _obstacleCheckOffset;
+            Vector3 end = GetCellCenter(to.x, to.y) + _obstacleCheckOffset;
+
+            //먼저 움직일 방향을 구함
+            Vector3 movement = end - start;
+            float distance = movement.magnitude;
+
+            if(distance <= Mathf.Epsilon)
+            {
+                return true;
+            }
+
+            bool blocked = Physics.BoxCast(start, _obstacleCheckSize * OBSTACLES_MULTIPLY, movement / distance, out RaycastHit hit, Quaternion.identity, distance, _obstacleLayer, QueryTriggerInteraction.Ignore);
+            return !blocked;
+        }
+
         void BuildGrid()
         {
             _moveAble = new bool[_gridWidth, _gridWidth];
@@ -160,11 +189,12 @@ namespace MIssionOfMercenary
                 for (int z = 0; z < _gridWidth; z++)
                 {
                     Vector3 cellSize = new Vector3(_cellSize, GRID_TICKNESS, _cellSize);
-                    Vector3 pos = GetCellCenter(x, z);
+                    Vector3 checkCenter = GetCellCenter(x, z) + _obstacleCheckOffset;
+                    //Vector3 pos = GetCellCenter(x, z);
 
                     //그리드 위에 장애물 확인 후 배열에 표기
                     //그리고 크기 넘기는건 반토막내서
-                    bool blocked = Physics.CheckBox(pos, cellSize * 0.5f, Quaternion.identity, _obstacleLayer);
+                    bool blocked = Physics.CheckBox(checkCenter, _obstacleCheckSize * OBSTACLES_MULTIPLY, Quaternion.identity, _obstacleLayer, QueryTriggerInteraction.Ignore);
 
                     //Block이 true면 막힌것
                     _moveAble[x, z] = !blocked;
@@ -265,30 +295,36 @@ namespace MIssionOfMercenary
         List<Vector2Int> GetNeighborsInGrid(int x, int z)
         {
             List<Vector2Int> neighborsList = new List<Vector2Int>();
+            Vector2Int current = new Vector2Int(x, z);
+
+            Vector2Int left = new Vector2Int(x - 1, z);
+            Vector2Int right = new Vector2Int(x + 1, z);
+            Vector2Int up = new Vector2Int(x, z + 1);
+            Vector2Int down = new Vector2Int(x, z - 1);
 
             //방향만 집중
             //왼쪽을 갈 수 있는가?
-            if (IsMoveAble(x - 1, z))
+            if (CanMoveBetweenCells(current, left))
             {
-                neighborsList.Add(new Vector2Int(x - 1, z)); //갈 수 있는 위치를 저장
+                neighborsList.Add(left); //갈 수 있는 위치를 저장
             }
 
             //오른쪽을 갈 수 있는가?
-            if (IsMoveAble(x + 1, z))
+            if (CanMoveBetweenCells(current, right))
             {
-                neighborsList.Add(new Vector2Int(x + 1, z)); //갈 수 있는 위치를 저장
+                neighborsList.Add(right); //갈 수 있는 위치를 저장
             }
 
             //위쪽을 갈 수 있는가?
-            if (IsMoveAble(x, z + 1))
+            if (CanMoveBetweenCells(current, up))
             {
-                neighborsList.Add(new Vector2Int(x, z + 1)); //갈 수 있는 위치를 저장
+                neighborsList.Add(up); //갈 수 있는 위치를 저장
             }
             
             //아래쪽을 갈 수 있는가?
-            if (IsMoveAble(x, z - 1))
+            if (CanMoveBetweenCells(current, down))
             {
-                neighborsList.Add(new Vector2Int(x, z - 1)); //갈 수 있는 위치를 저장
+                neighborsList.Add(down); //갈 수 있는 위치를 저장
             }
 
             return neighborsList;
@@ -351,17 +387,6 @@ namespace MIssionOfMercenary
 
                 Debug.Log("이동 요쳥에 실패하였습니다");
             }
-            //_moveToCoordinate = FindPath(_start, _end);
-
-            //_nav.SetDestination(_moveToCoordinate[_currentIndex]);
-
-            //if (_nav.remainingDistance <= 0.1f)
-            //{
-            //    _currentIndex++;
-            //    return;
-            //}
-
-            //_nav.SetDestination()
         }
 
         private void OnDrawGizmos()
@@ -369,8 +394,8 @@ namespace MIssionOfMercenary
             // Display the original A* route before NavMesh projection.
             if (_moveToCoordinate != null && _moveToCoordinate.Count > 1)
             {
-                Gizmos.color = Color.blue;
-
+                Gizmos.color = Color.black;
+                
                 for (int i = 1; i < _moveToCoordinate.Count; i++)
                 {
                     Gizmos.DrawLine(_moveToCoordinate[i - 1], _moveToCoordinate[i]);
@@ -383,6 +408,10 @@ namespace MIssionOfMercenary
                 {
                     Vector3 pos = GetCellCenter(x, z);
                     Vector3 cellSize = new Vector3(_cellSize, GRID_TICKNESS, _cellSize);
+                    Vector3 checkCenter = pos + _obstacleCheckOffset;
+
+                    Gizmos.color = Color.cyan;
+                    Gizmos.DrawWireCube(checkCenter, _obstacleCheckSize);
 
                     if(_moveAble != null && !_moveAble[x, z])
                     {
