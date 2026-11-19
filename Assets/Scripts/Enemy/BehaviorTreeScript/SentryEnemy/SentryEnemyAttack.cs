@@ -78,7 +78,7 @@ namespace MIssionOfMercenary
 
             GameObject bullet = _bulletPool.GetBullet(_muzzle.position, Quaternion.LookRotation(direction));
 
-            if (bullet == null) { Debug.Log("탄환 풀 비었음 — 반환 확인 필요"); return; }
+            if (bullet == null) {  return; }
 
             Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
             if (bulletRigidbody == null)
@@ -124,7 +124,7 @@ namespace MIssionOfMercenary
 
         IEnumerator ReloadRoutine()
         {
-            Debug.Log("Called ReloadRoutine Func"); 
+            //Debug.Log("Called ReloadRoutine Func"); 
             _isReloading = true; 
             yield return new WaitForSeconds(_delayReload); 
             _ammo = _maxAmmo;

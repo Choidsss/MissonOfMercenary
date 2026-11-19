@@ -21,12 +21,18 @@ namespace MIssionOfMercenary
         [SerializeField] int _gridWidth; //전체 그리드 중 가로 방향의 칸의 개수
         [SerializeField] float _maxDistance;
         [SerializeField] float _cellSize; //셀 한칸의 크기
+        [SerializeField] float _moveSpeed; //셀을 넘어가는 속도
+        // *** 추가: 초당 회전 각도. 720이면 90도 회전에 약 0.125초가 걸린다.
+        [SerializeField, Min(0f)] float _turnSpeed = 720f;
         [SerializeField] LayerMask _obstacleLayer;
         [SerializeField] Vector3 _positionOffset;
 
         [Header("Determine Obstacles In Algorythm")]
         [SerializeField] Vector3 _obstacleCheckSize = new Vector3(1f, 1f, 1f);
         [SerializeField] Vector3 _obstacleCheckOffset = Vector3.zero;
+
+        // *** 추가: 끄면 셀마다 이동하는 기존 경로와 비교할 수 있다.
+        [SerializeField] bool _simplifyPath = true;
 
         List<Vector3> _moveToCoordinate = new List<Vector3>();
         Transform _start;
@@ -36,6 +42,11 @@ namespace MIssionOfMercenary
         bool _isMoving;
         int _currentIndex = 0;
 
+        // *** 추가: 스폰된 적도 현재 격자의 이동 설정을 공유한다.
+        public float MoveSpeed => Mathf.Max(0f, _moveSpeed);
+        public float TurnSpeed => Mathf.Max(0f, _turnSpeed);
+        public float SampleDistance => Mathf.Max(0f, _maxDistance);
+
         private void Awake()
         {
             BuildGrid();
@@ -43,6 +54,12 @@ namespace MIssionOfMercenary
 
         void Start()
         {
+            // *** 추가: 적/목표를 비워 두면 스포너용 공용 격자로만 사용한다.
+            if (_nav == null && _end == null)
+            {
+                return;
+            }
+
             if (_nav == null || !_nav.isActiveAndEnabled || !_nav.isOnNavMesh)
             {
                 Debug.Log("활성화 된 NavMesh위에 있어야 합니다");
@@ -81,6 +98,9 @@ namespace MIssionOfMercenary
                 _isMoving = false;
                 return;
             }
+
+            // *** 추가: 실행 중 Inspector에서 조절한 이동/회전 속도를 바로 반영한다.
+            ApplyMovementSettings();
 
             //경로 계산이 끝날때 까지 기다림
             if (_nav.pathPending)
@@ -121,13 +141,15 @@ namespace MIssionOfMercenary
             return new Vector2Int(x, z);
         }
 
-        //각 이웃칸에서 목적지까지 몇 걸음 남았을지 추정하는 함수
-        int GetHeuristic(Vector2Int from, Vector2Int goal)
+        // *** 변경: 대각선 비용을 포함한 남은 거리를 추정하도록 반환형을 float로 변경.
+        float GetHeuristic(Vector2Int from, Vector2Int goal)
         {
             int heuristicX = Mathf.Abs(from.x - goal.x);
             int heuristicY = Mathf.Abs(from.y - goal.y) ;
 
-            return heuristicX + heuristicY;
+            // *** 추가: 대각선은 √2, 남은 직선은 1의 비용으로 추정한다.
+            int diagonal = Mathf.Min(heuristicX, heuristicY);
+            return diagonal * Mathf.Sqrt(2f) + Mathf.Abs(heuristicX - heuristicY);
         }
 
         //셀 한칸의 중앙의 월드 좌표를 가져오는 함수
@@ -160,7 +182,7 @@ namespace MIssionOfMercenary
             //도착 칸에 서 있을 공각이 있는지 확인
             if(!IsMoveAble(to.x, to.y))
             {
-                Debug.Log("이동할 수 없는 지역입니다");
+                // *** 변경: 탐색 중 반복 출력되던 이동 불가 로그를 제거.
                 return false;
             }
 
@@ -215,8 +237,8 @@ namespace MIssionOfMercenary
 
             //앞으로 조사할 후보의 칸들
             List<Vector2Int> open = new List<Vector2Int>();
-            //출발점에서 각 칸까지 발견한 가장 짧은 이동 횟수
-            Dictionary<Vector2Int, int> moveCount = new Dictionary<Vector2Int, int>();
+            // *** 변경: 대각선의 소수 비용을 저장하도록 이동 비용 자료형을 float로 변경.
+            Dictionary<Vector2Int, float> moveCount = new Dictionary<Vector2Int, float>();
             //각 칸에 도착하기 직전에 있었던 칸
             Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
 
@@ -227,12 +249,14 @@ namespace MIssionOfMercenary
             while (open.Count > 0)
             {
                 int bestIndex = 0;
-                int bestF = int.MaxValue;
+                // *** 변경: 최소 비용 비교도 float로 수행한다.
+                float bestF = float.PositiveInfinity;
 
                 for (int i = 0; i < open.Count; i++)
                 {
                     Vector2Int pos = open[i];
-                    int f = moveCount[pos] + GetHeuristic(pos, goal);
+                    // *** 변경: 누적 비용과 추정 비용의 합을 float로 계산한다.
+                    float f = moveCount[pos] + GetHeuristic(pos, goal);
 
                     if (f < bestF)
                     {
@@ -259,16 +283,19 @@ namespace MIssionOfMercenary
 
                     path.Reverse();
 
-                    Debug.Log($"경로 발견 {moveCount[goal]} 걸음");
+                    // *** 변경: 걸음 수 대신 셀 크기를 반영한 격자 이동 거리를 출력한다.
+                    Debug.Log($"경로 발견: 격자 이동 거리 {moveCount[goal] * _cellSize:F2}");
                     return path;
                 }
 
                 foreach (Vector2Int neighbor in GetNeighborsInGrid(current.x, current.y))
                 {
-                    int newG = moveCount[current] + 1;
+                    // *** 추가: 직선 이동 비용은 1, 대각선 이동 비용은 √2로 구분한다.
+                    bool diagonal = neighbor.x != current.x && neighbor.y != current.y;
+                    float newG = moveCount[current] + (diagonal ? Mathf.Sqrt(2f) : 1f);
 
-                    //이웃들의 비용들을 물어보고 비교해야함
-                    if (moveCount.TryGetValue(neighbor, out int oldG))
+                    // *** 변경: 기존 이동 비용도 float로 읽어 새 비용과 비교한다.
+                    if (moveCount.TryGetValue(neighbor, out float oldG))
                     {
                         if (oldG <= newG)
                         {
@@ -290,48 +317,93 @@ namespace MIssionOfMercenary
             return null;
         }
 
-        //현재 위치에서 갈수 있는 칸에 대해 자료형에 담아두는 함수
-        //상하좌우 중 갈수 있는 방향 확인 후 리스트에 담아서 리턴
+        // *** 변경 시작: 기존 4방향 이웃 탐색을 아래의 8방향 탐색으로 교체.
         List<Vector2Int> GetNeighborsInGrid(int x, int z)
         {
-            List<Vector2Int> neighborsList = new List<Vector2Int>();
+            List<Vector2Int> neighbors = new List<Vector2Int>(8);
             Vector2Int current = new Vector2Int(x, z);
 
-            Vector2Int left = new Vector2Int(x - 1, z);
-            Vector2Int right = new Vector2Int(x + 1, z);
-            Vector2Int up = new Vector2Int(x, z + 1);
-            Vector2Int down = new Vector2Int(x, z - 1);
-
-            //방향만 집중
-            //왼쪽을 갈 수 있는가?
-            if (CanMoveBetweenCells(current, left))
+            for (int dx = -1; dx <= 1; dx++)
             {
-                neighborsList.Add(left); //갈 수 있는 위치를 저장
+                for (int dz = -1; dz <= 1; dz++)
+                {
+                    if (dx == 0 && dz == 0)
+                    {
+                        continue;
+                    }
+
+                    Vector2Int next = new Vector2Int(x + dx, z + dz);
+
+                    // *** 추가: 막힌 옆 칸의 모서리를 대각선으로 잘라 가지 않는다.
+                    if (dx != 0 && dz != 0 &&
+                        (!IsMoveAble(x + dx, z) || !IsMoveAble(x, z + dz)))
+                    {
+                        continue;
+                    }
+
+                    // *** 변경: 8방향 후보 모두 기존 박스 검사로 도착 셀과 이동 구간을 확인한다.
+                    if (CanMoveBetweenCells(current, next))
+                    {
+                        neighbors.Add(next);
+                    }
+                }
             }
 
-            //오른쪽을 갈 수 있는가?
-            if (CanMoveBetweenCells(current, right))
-            {
-                neighborsList.Add(right); //갈 수 있는 위치를 저장
-            }
-
-            //위쪽을 갈 수 있는가?
-            if (CanMoveBetweenCells(current, up))
-            {
-                neighborsList.Add(up); //갈 수 있는 위치를 저장
-            }
-            
-            //아래쪽을 갈 수 있는가?
-            if (CanMoveBetweenCells(current, down))
-            {
-                neighborsList.Add(down); //갈 수 있는 위치를 저장
-            }
-
-            return neighborsList;
+            return neighbors;
         }
 
-        List<Vector3> FindPath(Vector3 startPosition, Vector3 goalPosition)
+        // *** 변경 끝: 8방향 이웃 탐색.
+
+        // *** 추가 시작: 적 크기의 박스로 직진 가능한 중간 경유점을 생략한다.
+        List<Vector2Int> SimplifyPath(List<Vector2Int> path)
         {
+            if (path.Count <= 2)
+            {
+                return path;
+            }
+
+            List<Vector2Int> simplified = new List<Vector2Int> { path[0] };
+            int anchorIndex = 0;
+
+            while (anchorIndex < path.Count - 1)
+            {
+                // 바로 다음 칸은 A*에서 이미 통과 가능하다고 확인한 구간이다.
+                int nextIndex = anchorIndex + 1;
+
+                // 목적지 쪽부터 검사해 직진 가능한 가장 먼 경유점을 선택한다.
+                // 먼 지점이 막혀 있어도 가까운 지점은 열려 있을 수 있다.
+                for (int candidate = path.Count - 1; candidate > anchorIndex + 1; candidate--)
+                {
+                    if (CanMoveBetweenCells(path[anchorIndex], path[candidate]))
+                    {
+                        nextIndex = candidate;
+                        break;
+                    }
+                }
+
+                simplified.Add(path[nextIndex]);
+                anchorIndex = nextIndex;
+            }
+
+            // 출발 셀과 마지막 목적 셀은 항상 유지한다.
+            return simplified;
+        }
+        // *** 추가 끝: 경로 단순화.
+
+        // *** 변경: 스폰된 적이 공용 격자에 경로를 요청할 수 있게 공개한다.
+        public List<Vector3> FindPath(Vector3 startPosition, Vector3 goalPosition)
+        {
+            // *** 추가: 잘못된 크기 또는 초기화 전 호출을 방어한다.
+            if (_gridWidth <= 0 || _cellSize <= 0f)
+            {
+                Debug.LogWarning("Grid Width와 Cell Size는 0보다 커야 합니다.", this);
+                return null;
+            }
+            if (_moveAble == null)
+            {
+                BuildGrid();
+            }
+
             List<Vector3> worldPath = new List<Vector3>();
 
             Vector2Int start = WorldToCell(startPosition);
@@ -344,6 +416,14 @@ namespace MIssionOfMercenary
                 return null;
             }
 
+            // *** 추가: A* 탐색이 완료된 뒤, 월드 좌표로 바꾸기 전에 경유점을 줄인다.
+            if (_simplifyPath)
+            {
+                int originalCount = cellPath.Count;
+                cellPath = SimplifyPath(cellPath);
+                Debug.Log($"경로 단순화: {originalCount}개 → {cellPath.Count}개 경유점");
+            }
+
             foreach(Vector2Int cell in cellPath)
             {
                 Vector3 position = GetCellCenter(cell.x, cell.y);
@@ -351,6 +431,14 @@ namespace MIssionOfMercenary
             }
 
             return worldPath;
+        }
+
+        // *** 추가: 이동 중 회전은 NavMeshAgent가 담당하며 속도를 별도로 조절한다.
+        void ApplyMovementSettings()
+        {
+            _nav.speed = Mathf.Max(0f, _moveSpeed);
+            _nav.angularSpeed = Mathf.Max(0f, _turnSpeed);
+            _nav.updateRotation = true;
         }
 
         private void EnemyMoveToDestination()
@@ -378,6 +466,8 @@ namespace MIssionOfMercenary
                 return;
             }
 
+            // *** 변경: 첫 이동 요청 전에도 이동 속도와 회전 속도를 적용한다.
+            ApplyMovementSettings();
             _isMoving = _nav.SetDestination(hit.position);
 
             if (!_isMoving)
