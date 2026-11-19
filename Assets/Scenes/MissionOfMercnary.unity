@@ -36335,12 +36335,14 @@ MonoBehaviour:
   _maxDistance: 0
   _cellSize: 3
   _moveSpeed: 0
+  _turnSpeed: 720
   _obstacleLayer:
     serializedVersion: 2
     m_Bits: 8388608
   _positionOffset: {x: 0, y: 0, z: 0}
   _obstacleCheckSize: {x: 1, y: 1, z: 1}
   _obstacleCheckOffset: {x: 0, y: 0, z: 0}
+  _simplifyPath: 1
 --- !u!4 &726979095
 Transform:
   m_ObjectHideFlags: 0
@@ -46667,7 +46669,7 @@ Transform:
   m_GameObject: {fileID: 955121838}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 332.857, y: 38, z: 349.781}
+  m_LocalPosition: {x: 327.46, y: 38, z: 348.88}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -87982,7 +87984,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8305375116718464220, guid: 5c89ab9d3f42fe849a82955bf08b4895, type: 3}
       propertyPath: _moveSpeed
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8305375116718464220, guid: 5c89ab9d3f42fe849a82955bf08b4895, type: 3}
       propertyPath: _maxDistance
