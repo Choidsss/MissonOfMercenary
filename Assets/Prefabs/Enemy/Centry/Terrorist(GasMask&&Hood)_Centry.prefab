@@ -25,13 +25,14 @@ GameObject:
   - component: {fileID: 6455115343630280941}
   - component: {fileID: 8899199047245375907}
   - component: {fileID: 5869675672773313109}
+  - component: {fileID: 2685864484415738113}
   m_Layer: 10
   m_Name: Terrorist(GasMask&&Hood)_Centry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5347596296746313562
 Transform:
   m_ObjectHideFlags: 0
@@ -280,7 +281,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 757117458370313821}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1193cf13a9c25f43b9d7a22d7939068, type: 3}
   m_Name: 
@@ -332,6 +333,18 @@ MonoBehaviour:
   _enemy: {fileID: 6455115343630280941}
   _player: {fileID: 0}
   _firePosition: {fileID: 0}
+--- !u!114 &2685864484415738113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 757117458370313821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98fda4fbbb3cc3f43aad20bfffe79e07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3680505721009903956
 PrefabInstance:
   m_ObjectHideFlags: 0

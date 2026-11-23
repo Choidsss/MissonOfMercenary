@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -36,24 +37,21 @@ namespace MIssionOfMercenary
     public class AStarEnemySpawner : MonoBehaviour
     {
         private List<SpawnedEnemy> _spawnedEnemies = new List<SpawnedEnemy>(); // 스폰된 적 관리
+        private Dictionary<Transform, bool> _spawnPositionDic = new Dictionary<Transform, bool>();
 
         [Header("Enemy Move To Cover Position")]
         [SerializeField]
         private List<Transform> EnemyCoverPosition = new List<Transform>();
 
+        [SerializeField] NavMeshAgent[] _enemyPrefabs;
         [SerializeField] AStarGrid _grid;
-        [SerializeField] NavMeshAgent _enemyPrefab;
-        [SerializeField] Transform _target;
-        [SerializeField] Transform _spawnPoint;
         [SerializeField, Min(1)] int _totalCount = 1;
         [SerializeField, Min(0.1f)] float _spawnInterval = 2f;
         [SerializeField, Min(0.01f)] float _spawnSampleDistance = 1f;
         [SerializeField] bool _spawnOnStart = true;
 
-        //EnemyCoverPosition만큼의 크기를 같는 bool 배열 => 빈자리 찾는 용도
-        //_didCover를 확인하고 빈자리가 있다면 바로 그 자리에 적의 목적지로 설정(크기가 같으니 인덱스도 같음)
-        //적 스폰 수 조절(최대 엄폐 위치의 수를 넘어가지 않도록)
-
+        [Header("Spawn Position List")]
+        [SerializeField] Transform[] _spawnPositionList;
 
         bool[] _didCovered;
 
@@ -62,9 +60,21 @@ namespace MIssionOfMercenary
         private void Awake()
         {
             _didCovered = new bool[EnemyCoverPosition.Count];
+            AddSpawnPositionToDictionary();
         }
 
-        //비어있는 위치를  찾아서 숫자로 반환
+        void AddSpawnPositionToDictionary()
+        {
+            // 수정: 비어 있거나 중복된 스폰 지점으로 초기화가 실패하지 않도록 처리.
+            if (_spawnPositionList == null) return;
+            for(int i = 0;i < _spawnPositionList.Length;i++)
+            {
+                Transform point = _spawnPositionList[i];
+                if (point != null) _spawnPositionDic[point] = false;
+            }
+        }
+
+        //비어있는 위치 찾아서 숫자로 반환
         int FindEmptySpawnIndex()
         {
             for (int i = 0;i < EnemyCoverPosition.Count; i++)
@@ -79,7 +89,7 @@ namespace MIssionOfMercenary
         }
 
         //적이 스폰될 때마다 비어있는 위치의 리스트를 받아와서 0번부터 순차적으로 할당
-        void EnemySpawnOne()
+        public void EnemySpawnOne()
         {
             //빈자리 찾은거 가져오고
             int reserve = FindEmptySpawnIndex();
@@ -90,46 +100,106 @@ namespace MIssionOfMercenary
                 return;
             }
 
-            //빈자리 예약
-            _didCovered[reserve] = true;
-
-            Vector3 spawnPosition = GetSpawnPosition();
-
-            //적의 NavMeshAgent를 복사해서 적을 생성
-            NavMeshAgent enemy = Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
-
-            AStarEnemyMover mover = enemy.GetComponent<AStarEnemyMover>();
-
-            if(mover == null || !mover.MoveTo(_grid, EnemyCoverPosition[reserve].position))
+            if (!TryGetSpawnPosition(out Vector3 spawnPosition))
             {
-                _didCovered[reserve] = false;
-                Destroy(enemy.gameObject);
+                Debug.Log("!TryGetSpawnPosition Exception");
                 return;
             }
 
-            if(_grid == null || _enemyPrefab == null)
+            // 수정: 프리팹 배열이 없거나 비어 있으면 랜덤 선택 전에 중단.
+            if (_enemyPrefabs == null || _enemyPrefabs.Length == 0) return;
+            int index = Random.Range(0, _enemyPrefabs.Length);
+
+            if(_grid == null || _enemyPrefabs[index] == null)
             {
                 Debug.Log("AStatGrid 혹은 NavMeshAgent가 없습니다");
                 return;
             }
 
-            SpawnedEnemy spawnedEnemy = new SpawnedEnemy(EnemyType.Terrorrist1, mover, reserve);
-            mover.MoveTo(_grid, EnemyCoverPosition[reserve].position);
+            // 수정: 선택한 적의 NavMesh에서 생성 가능한 좌표를 확인한 뒤 엄폐 자리 예약.
+            NavMeshQueryFilter filter = new NavMeshQueryFilter
+            {
+                agentTypeID = _enemyPrefabs[index].agentTypeID,
+                areaMask = _enemyPrefabs[index].areaMask
+            };
+            if (!NavMesh.SamplePosition(spawnPosition, out NavMeshHit hit,
+                Mathf.Max(0.01f, _spawnSampleDistance), filter)) return;
+            spawnPosition = hit.position;
+            _didCovered[reserve] = true;
+
+            Debug.Log("생성 전 로그");
+            //적의 NavMeshAgent를 복사해서 적을 생성
+            NavMeshAgent enemy = Instantiate(_enemyPrefabs[index], spawnPosition, Quaternion.identity);
+            Debug.Log("생성 후 로그");
+
+
+            AStarEnemyMover mover = enemy.GetComponent<AStarEnemyMover>();
+
+
+
+            if(mover == null || !mover.MoveTo(_grid, EnemyCoverPosition[reserve].position))
+            {
+                Debug.Log("무버 false");
+                _didCovered[reserve] = false;
+                Destroy(enemy.gameObject);
+                return;
+            }
+
+            EnemyType type = (EnemyType)index;
+
+            SpawnedEnemy spawnedEnemy = new SpawnedEnemy(type, mover, reserve);
+            // 수정: 위에서 성공한 이동 요청을 중복 호출하지 않도록 제거.
             
             _spawnedEnemies.Add(spawnedEnemy);
         }
 
-        Vector3 GetSpawnPosition()
+        bool TryGetSpawnPosition(out Vector3 position)
         {
-            //ToDo : 
-            //스포너위치에서 랜덤한 범위에서 적을 랜덤하게 생성하도록
-            //스폰 지점을 여러개를 만든다고 하면, 어떻게 만들래? 확장성까지 확보한다는 가정하에
-            //그리고 언제 어떤 스포너를 부를거야.
-            //그거까지 정하고 랜덤하게 위치 뽑아서 생성해야지
-            
+            position = Vector3.zero;
 
-            //임시
-            return Vector3.zero;
+            if (_spawnPositionList == null)
+            {
+                return false;
+            }
+
+            foreach (Transform point in _spawnPositionList)
+            {
+                if (point == null)
+                {
+                    continue;
+                }
+
+                if (_spawnPositionDic.TryGetValue(point, out bool enable) && enable)
+                {
+                    position = point.position;
+                    // 수정: 터레인 높이에 맞춰 요청한 스폰 기준 Y 좌표를 유지.
+                    position.y = 38f;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // 수정: 새 트리거의 지점을 활성화하기 전에 이전 지점의 허용 상태 초기화.
+        public void DisableAllSpawnPositions()
+        {
+            var positions = new List<Transform>(_spawnPositionDic.Keys);
+            foreach (Transform position in positions)
+                _spawnPositionDic[position] = false;
+        }
+
+        //Dic의 bool 값 true시키는 역할
+        public bool SetSpawnPositionEnabled(Transform position, bool enabled)
+        {
+            if (position == null || !_spawnPositionDic.ContainsKey(position))
+            {
+                Debug.LogWarning("스포너에 등록되지 않은 스폰 지점입니다.", this);
+                return false;
+            }
+
+            _spawnPositionDic[position] = enabled;
+            return true;
         }
     }
 }
