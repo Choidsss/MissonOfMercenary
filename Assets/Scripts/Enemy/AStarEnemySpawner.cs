@@ -39,6 +39,10 @@ namespace MIssionOfMercenary
         private List<SpawnedEnemy> _spawnedEnemies = new List<SpawnedEnemy>(); // 스폰된 적 관리
         private Dictionary<Transform, bool> _spawnPositionDic = new Dictionary<Transform, bool>();
 
+        [Header("For Find Player")]
+        [SerializeField]
+        private Transform _player;
+
         [Header("Enemy Move To Cover Position")]
         [SerializeField]
         private List<Transform> EnemyCoverPosition = new List<Transform>();
@@ -59,7 +63,7 @@ namespace MIssionOfMercenary
 
         private void Awake()
         {
-            _didCovered = new bool[EnemyCoverPosition.Count];
+            _didCovered = new bool[EnemyCoverPosition != null ? EnemyCoverPosition.Count : 0];
             AddSpawnPositionToDictionary();
         }
 
@@ -77,8 +81,10 @@ namespace MIssionOfMercenary
         //비어있는 위치 찾아서 숫자로 반환
         int FindEmptySpawnIndex()
         {
+            if (EnemyCoverPosition == null || _didCovered == null) return -1;
             for (int i = 0;i < EnemyCoverPosition.Count; i++)
             {
+                if (i >= _didCovered.Length) return -1;
                 if (!_didCovered[i] && EnemyCoverPosition[i] != null)
                 {
                     return i;
@@ -91,28 +97,47 @@ namespace MIssionOfMercenary
         //적이 스폰될 때마다 비어있는 위치의 리스트를 받아와서 0번부터 순차적으로 할당
         public void EnemySpawnOne()
         {
+            // 수정: 연결 누락과 초기화 상태를 구분해서 스폰 실패 원인을 출력.
+            if (_grid == null)
+            {
+                Debug.LogWarning("[Spawner] 스폰 중단: AStarGrid가 연결되지 않았습니다.", this);
+                return;
+            }
+            if (EnemyCoverPosition == null || EnemyCoverPosition.Count == 0)
+            {
+                Debug.LogWarning("[Spawner] 스폰 중단: 엄폐 위치가 등록되지 않았습니다.", this);
+                return;
+            }
+            if (_didCovered == null || _didCovered.Length != EnemyCoverPosition.Count)
+            {
+                Debug.LogWarning("[Spawner] 스폰 중단: 엄폐 예약 배열이 초기화되지 않았거나 실행 중 엄폐 목록 크기가 변경됐습니다.", this);
+                return;
+            }
             //빈자리 찾은거 가져오고
             int reserve = FindEmptySpawnIndex();
 
             if(reserve < 0)
             {
-                Debug.Log("빈 자리를 찾을 수 없습니다");
+                Debug.LogWarning("[Spawner] 스폰 중단: 비어 있는 유효한 엄폐 위치가 없습니다.", this);
                 return;
             }
 
             if (!TryGetSpawnPosition(out Vector3 spawnPosition))
             {
-                Debug.Log("!TryGetSpawnPosition Exception");
                 return;
             }
 
             // 수정: 프리팹 배열이 없거나 비어 있으면 랜덤 선택 전에 중단.
-            if (_enemyPrefabs == null || _enemyPrefabs.Length == 0) return;
+            if (_enemyPrefabs == null || _enemyPrefabs.Length == 0)
+            {
+                Debug.LogWarning("[Spawner] 스폰 중단: 적 프리팹 배열이 비어 있습니다.", this);
+                return;
+            }
             int index = Random.Range(0, _enemyPrefabs.Length);
 
-            if(_grid == null || _enemyPrefabs[index] == null)
+            if(_enemyPrefabs[index] == null)
             {
-                Debug.Log("AStatGrid 혹은 NavMeshAgent가 없습니다");
+                Debug.LogWarning($"[Spawner] 스폰 중단: 프리팹 배열의 {index}번 항목이 비어 있습니다.", this);
                 return;
             }
 
@@ -123,23 +148,38 @@ namespace MIssionOfMercenary
                 areaMask = _enemyPrefabs[index].areaMask
             };
             if (!NavMesh.SamplePosition(spawnPosition, out NavMeshHit hit,
-                Mathf.Max(0.01f, _spawnSampleDistance), filter)) return;
+                Mathf.Max(0.01f, _spawnSampleDistance), filter))
+            {
+                Debug.LogWarning($"[Spawner] 스폰 중단: {spawnPosition} 주변에 '{_enemyPrefabs[index].name}'의 Agent 타입/영역에 맞는 NavMesh가 없습니다.", this);
+                return;
+            }
             spawnPosition = hit.position;
             _didCovered[reserve] = true;
 
-            Debug.Log("생성 전 로그");
             //적의 NavMeshAgent를 복사해서 적을 생성
             NavMeshAgent enemy = Instantiate(_enemyPrefabs[index], spawnPosition, Quaternion.identity);
-            Debug.Log("생성 후 로그");
+            EnemyCombatController combat = enemy.GetComponent<EnemyCombatController>();
 
+            if (combat != null)
+            {
+                combat.Initialize(_player);
+            }
 
             AStarEnemyMover mover = enemy.GetComponent<AStarEnemyMover>();
 
 
 
-            if(mover == null || !mover.MoveTo(_grid, EnemyCoverPosition[reserve].position))
+            // 수정: Mover 누락과 이동 요청 실패를 구분하고 두 경우 모두 예약과 생성된 적 정리.
+            if (mover == null)
             {
-                Debug.Log("무버 false");
+                Debug.LogWarning($"[Spawner] 생성 취소: '{enemy.name}'에 AStarEnemyMover가 없습니다. 엄폐 {reserve}번 예약을 해제합니다.", this);
+                _didCovered[reserve] = false;
+                Destroy(enemy.gameObject);
+                return;
+            }
+            if(!mover.MoveTo(_grid, EnemyCoverPosition[reserve].position))
+            {
+                Debug.LogWarning($"[Spawner] 생성 취소: '{enemy.name}'의 엄폐 {reserve}번 이동 요청에 실패했습니다. Mover 로그를 확인하세요. 예약을 해제합니다.", this);
                 _didCovered[reserve] = false;
                 Destroy(enemy.gameObject);
                 return;
@@ -157,8 +197,10 @@ namespace MIssionOfMercenary
         {
             position = Vector3.zero;
 
-            if (_spawnPositionList == null)
+            // 수정: 위치 미등록과 활성화된 위치 없음을 별도 원인으로 출력.
+            if (_spawnPositionList == null || _spawnPositionList.Length == 0)
             {
+                Debug.LogWarning("[Spawner] 스폰 중단: 스폰 지점 배열이 비어 있습니다.", this);
                 return false;
             }
 
@@ -178,6 +220,7 @@ namespace MIssionOfMercenary
                 }
             }
 
+            Debug.LogWarning("[Spawner] 스폰 중단: 등록된 유효한 스폰 지점 중 활성화(true)된 곳이 없습니다.", this);
             return false;
         }
 

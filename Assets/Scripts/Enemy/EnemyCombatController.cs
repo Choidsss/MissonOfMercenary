@@ -5,10 +5,15 @@ namespace MIssionOfMercenary
 {
     public class EnemyCombatController : MonoBehaviour
     {
+        Transform _player;
+        AStarEnemyMover _mover;
+        NavMeshAgent _agent;
+
+        bool _isIntialized;
+        
+        //[SerializeField] EnemyCombatPosition _combatPosition;
+        //[SerializeField] NavMeshAgent _agent;
         [SerializeField] SentryEnemyAttack _attack;
-        [SerializeField] EnemyCombatPosition _combatPosition;
-        [SerializeField] NavMeshAgent _agent;
-        [SerializeField] Transform _player;
 
         //초당 회전하는 각도
         [SerializeField] float _turnSpeed = 180f;
@@ -18,71 +23,41 @@ namespace MIssionOfMercenary
         bool _isInitialized;
 
 
-        public bool Initialize(Transform player, Transform firePoint)
+        private void Awake()
         {
-            _isInitialized = false;
+            _mover = GetComponent<AStarEnemyMover>();
+            _agent = GetComponent<NavMeshAgent>();
+        }
 
-            if (player == null || firePoint == null || _combatPosition == null || _agent == null || _attack == null)
-            {
-                Debug.LogError("플레이어, 사격 위치, 이동 컴포넌트를 확인하세요.", this);
-                return false;
-            }
-
-            if (!isActiveAndEnabled || !_combatPosition.isActiveAndEnabled || !_attack.isActiveAndEnabled)
-            {
-                Debug.Log("전투에 필요한 컴포넌트가 비활성화 되어 있습니다");
-                return false;
-            }
+        public bool Initialize(Transform player)
+        {
             _player = player;
-            _combatPosition.SetFirePosition(firePoint);
 
-            if (!_combatPosition.MoveToFirePoint())
-            {
-                return false;
-            }
+            _isInitialized = _player != null && _mover != null && _agent != null;
 
-            _isInitialized = true;
-            return true;
+            return _isInitialized;
         }
 
         //UPdate에서 함수 돌리는거 낭비잖아---나중에 고쳐야지.
         void Update()
         {
-            if (!_isInitialized)
+            if (!_isInitialized || _player == null)
             {
-                //Initialize안해서 공격 안불리는 중
-                Debug.Log("초기화 안함");
                 return;
             }
 
-            TestFacePlayer();
-        }
-
-        void TestFacePlayer()
-        {
-            if (_combatPosition == null || _agent == null || _player == null)
+            if (!_mover.HasArrived)
             {
-                //Debug.Log("1");
-                return;
-            }
-
-            if(!_combatPosition.HasArrived)
-            {
-                //Debug.Log("2");
                 return;
             }
 
             if (!_agent.isActiveAndEnabled || !_agent.isOnNavMesh)
             {
-                //Debug.Log("3");
                 return;
             }
 
-            _agent.updateRotation = false;
-
-            //Debug.Log("내려왔음");
+            _agent.updatePosition = false;
             FacePlayer();
-            TryAttackPlayer();
         }
 
         void FacePlayer()
@@ -103,7 +78,7 @@ namespace MIssionOfMercenary
 
         void TryAttackPlayer()
         {
-            if(_attack == null || !_attack.isActiveAndEnabled)
+            if (_attack == null || !_attack.isActiveAndEnabled)
             {
                 return;
             }
@@ -117,7 +92,7 @@ namespace MIssionOfMercenary
 
             float angle = Vector3.Angle(transform.forward, direction);
 
-            if(angle > _fireAngle)
+            if (angle > _fireAngle)
             {
                 return;
             }

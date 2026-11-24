@@ -11,16 +11,11 @@ GameObject:
   - component: {fileID: 8264262871078165209}
   - component: {fileID: -3477199059410224905}
   - component: {fileID: 7410775436156102356}
-  - component: {fileID: -893953025676444165}
-  - component: {fileID: -4518015287347167772}
-  - component: {fileID: -3663966244213930382}
-  - component: {fileID: -1364221620620014638}
   - component: {fileID: 5936672103273299849}
   - component: {fileID: -8809550640598328782}
   - component: {fileID: -8632889764796116247}
   - component: {fileID: -8996320463860673438}
   - component: {fileID: 3543257737738814741}
-  - component: {fileID: 7069441537552992606}
   - component: {fileID: -2545718845163875716}
   - component: {fileID: 645456658993028252}
   - component: {fileID: -1474735650487506679}
@@ -83,84 +78,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nav: {fileID: -3477199059410224905}
---- !u!114 &-893953025676444165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8483681676546927841}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89c1515554b12524dab6b14a3a143e0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _runBehaviorTree: 0
-  _aimYaw: 15
-  _behaviorType: 1
-  _wayPointManager: {fileID: 0}
-  _turnSpeed: 5
-  _nav: {fileID: -3477199059410224905}
-  _routeID: Terrorist(GasMask)
-  _patrolSpeed: 1
-  _moveSoundPositionSpeed: 6
---- !u!114 &-4518015287347167772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8483681676546927841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4624696a2ecfd7b45944bec9c41935c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player: {fileID: 0}
-  _degree: 70
-  _eyeSightDistance: 10
-  _backsideDegree: 70
-  _backsideDistance: 3
-  _eyeHeight: {x: 0, y: 1.7, z: 0}
-  _targetHeight: {x: 0, y: 1.7, z: 0}
-  _obstaclesLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _playerLayer:
-    serializedVersion: 2
-    m_Bits: 1048576
-  _enemyTurnAmount: 17
-  _lookAngleOffset: 35
---- !u!114 &-3663966244213930382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8483681676546927841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b50a5e0ceed6fa74ea0b00bf9a3fc680, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemyBulletPooling: {fileID: -8996320463860673438}
-  _attackRange: 15
-  _bulletSpeed: 150
-  _ammo: {fileID: 8792954647265824588, guid: afad03405a8b4914c97c78e992bed72e, type: 3}
-  _muzzle: {fileID: 7140598272400534065}
-  _muzzleFire: {fileID: 6385891905196231162}
---- !u!114 &-1364221620620014638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8483681676546927841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bfb79a989ec7084da71f7da5ae27a70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5936672103273299849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,23 +173,6 @@ MonoBehaviour:
   _delayAttack: 0.1
   _delayReload: 2
   _ammoSpeed: 20
---- !u!114 &7069441537552992606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8483681676546927841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8f50053917442946ab52c752ecee843, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player: {fileID: 0}
-  _layer:
-    serializedVersion: 2
-    m_Bits: 1048576
-  _boxSize: {x: 20, y: 20, z: 20}
 --- !u!114 &-2545718845163875716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,7 +180,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8483681676546927841}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1193cf13a9c25f43b9d7a22d7939068, type: 3}
   m_Name: 
@@ -299,9 +199,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2f34741d6ba0b4096d90f9493ec4a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attack: {fileID: 0}
-  _combatPosition: {fileID: 0}
-  _agent: {fileID: 0}
+  _attack: {fileID: 3543257737738814741}
+  _combatPosition: {fileID: -2545718845163875716}
+  _agent: {fileID: -3477199059410224905}
   _player: {fileID: 0}
   _turnSpeed: 180
   _fireAngle: 10
@@ -524,11 +424,6 @@ BoxCollider:
 --- !u!136 &6874151966044697851 stripped
 CapsuleCollider:
   m_CorrespondingSourceObject: {fileID: 1140177058525406703, guid: 551118d1b2d753f4bb1c6a3ff5df4864, type: 3}
-  m_PrefabInstance: {fileID: 5816218825373339924}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7140598272400534065 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3724437856628964133, guid: 551118d1b2d753f4bb1c6a3ff5df4864, type: 3}
   m_PrefabInstance: {fileID: 5816218825373339924}
   m_PrefabAsset: {fileID: 0}
 --- !u!136 &7554603387916379018 stripped

@@ -24,7 +24,7 @@ namespace MIssionOfMercenary
         public bool IsChase { get { return _isFinish; }  }
         public bool IsAnimationFinish { get { return _isFinish; }  }
 
-        void Start()
+        void Awake()
         {
             _anim = GetComponentInChildren<Animator>();
         }
@@ -98,21 +98,51 @@ namespace MIssionOfMercenary
             _anim.SetBool("Chase", _isChase);
         }
 
-        //Terrorist_Enemy_Animation
-        public void PlayTerroristShotAnimation()
+        //**************Terrorist_Enemy_Animation**************
+        public void PlayTerroristIdleToShotAnimation()
         {
-            _anim.SetTrigger("TerroristShot");
+            _terroristIsReload = false;
+            _terroristIsShot = true;
+
+            _anim.SetBool("IsFiring", true);
+            _anim.SetBool("IsReloading", false);
+        }
+
+        public void PlayTerroristShotToIdleAnimation()
+        {
+            _terroristIsReload = false;
+            _terroristIsShot = false;
+
+            _anim.SetBool("IsFiring", false);
+            _anim.SetBool("IsReloading", false);
         }
 
         public void PlayTerroristReloadAnimation()
         {
-            _anim.SetTrigger("TerroristReload");
+            _terroristIsReload = true;
 
+            _anim.SetBool("IsReloading", true);
         }
 
         public void PlayTerroristRunAnimation()
         {
-            _anim.SetTrigger("TerroristRun");
+            _terroristIsRun = true;
+
+            _anim.SetBool("IsMoving", true);
+        }
+
+        public void PlayTerroristStopRunAnimation()
+        {
+            _terroristIsRun = false;
+
+            _anim.SetBool("IsMoving", false);
+        }
+
+        public void PlayTerroristStopReloadAnimation()
+        {
+            _terroristIsReload = false;
+
+            _anim.SetBool("IsReloading", false);
         }
 
         void ReadAnimationFinishOrNot()

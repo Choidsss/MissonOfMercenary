@@ -8,6 +8,7 @@ namespace MIssionOfMercenary
     [RequireComponent(typeof(NavMeshAgent))]
     public class AStarEnemyMover : MonoBehaviour
     {
+        EnemyAnimation _enemyAnimation;
         NavMeshAgent _agent;
         AStarGrid _grid;
         List<Vector3> _path;
@@ -16,14 +17,31 @@ namespace MIssionOfMercenary
 
         public bool HasArrived { get; private set; }
 
+        private void Awake()
+        {
+            _enemyAnimation = GetComponent<EnemyAnimation>();
+        }
+
         public bool MoveTo(AStarGrid grid, Vector3 target)
         {
             _agent = GetComponent<NavMeshAgent>();
             HasArrived = false;
             _moving = false;
 
-            if (grid == null || !_agent.isActiveAndEnabled || !_agent.isOnNavMesh)
+            // 수정: 이동 시작 실패의 원인을 Grid, Agent 활성 상태, NavMesh 배치로 구분.
+            if (grid == null)
             {
+                Debug.LogWarning("[Mover] 이동 실패: AStarGrid가 전달되지 않았습니다.", this);
+                return false;
+            }
+            if (_agent == null || !_agent.isActiveAndEnabled)
+            {
+                Debug.LogWarning("[Mover] 이동 실패: NavMeshAgent가 없거나 비활성 상태입니다.", this);
+                return false;
+            }
+            if (!_agent.isOnNavMesh)
+            {
+                Debug.LogWarning($"[Mover] 이동 실패: 적이 NavMesh 위에 배치되지 않았습니다. 현재 위치: {transform.position}", this);
                 return false;
             }
 
@@ -33,6 +51,8 @@ namespace MIssionOfMercenary
             _path = grid.FindPath(_agent.transform.position, target);
             if (_path == null || _path.Count == 0)
             {
+                // 수정: 생성 좌표와 엄폐 좌표를 포함해 A* 경로 탐색 실패를 출력.
+                Debug.LogWarning($"[Mover] 이동 실패: A* 경로를 찾지 못했습니다. 출발: {transform.position}, 목표: {target}. 그리드 범위와 장애물 셀을 확인하세요.", this);
                 return false;
             }
 
@@ -64,6 +84,10 @@ namespace MIssionOfMercenary
             {
                 StopMovement("이동 요청에 실패했습니다.");
             }
+
+            //이동 중 달리는 애니메이션
+            _enemyAnimation.PlayTerroristRunAnimation();
+
             return _moving;
         }
 
@@ -86,8 +110,12 @@ namespace MIssionOfMercenary
             if (_agent.remainingDistance > Mathf.Max(_agent.stoppingDistance, 0.1f)) return;
 
             _index++;
+
+            //지정 엄폐물 위치 도착
             if (_index >= _path.Count)
             {
+                _enemyAnimation.PlayTerroristStopRunAnimation();
+
                 HasArrived = true;
                 StopMovement();
                 return;

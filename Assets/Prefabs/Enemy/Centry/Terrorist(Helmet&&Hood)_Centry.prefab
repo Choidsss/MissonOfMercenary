@@ -11,16 +11,11 @@ GameObject:
   - component: {fileID: 8536954738932991978}
   - component: {fileID: 1773959790196164877}
   - component: {fileID: 5019230920989533036}
-  - component: {fileID: 96816042713168192}
-  - component: {fileID: 7118268140473991693}
-  - component: {fileID: 4831122213501426851}
-  - component: {fileID: 7427674602950081595}
   - component: {fileID: 8277692216705007746}
   - component: {fileID: 8280855799808669219}
   - component: {fileID: 8563263082776647770}
   - component: {fileID: 1269574386755074349}
   - component: {fileID: 5764369317431949947}
-  - component: {fileID: 8282616791590394992}
   - component: {fileID: 6258738981963422440}
   - component: {fileID: -6491411388317819667}
   - component: {fileID: 7440200813315942559}
@@ -83,84 +78,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nav: {fileID: 1773959790196164877}
---- !u!114 &96816042713168192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3996438095034597574}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89c1515554b12524dab6b14a3a143e0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _runBehaviorTree: 0
-  _aimYaw: 15
-  _behaviorType: 1
-  _wayPointManager: {fileID: 0}
-  _turnSpeed: 5
-  _nav: {fileID: 1773959790196164877}
-  _routeID: 
-  _patrolSpeed: 1
-  _moveSoundPositionSpeed: 6
---- !u!114 &7118268140473991693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3996438095034597574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4624696a2ecfd7b45944bec9c41935c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player: {fileID: 0}
-  _degree: 70
-  _eyeSightDistance: 10
-  _backsideDegree: 70
-  _backsideDistance: 3
-  _eyeHeight: {x: 0, y: 1.7, z: 0}
-  _targetHeight: {x: 0, y: 1.7, z: 0}
-  _obstaclesLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _playerLayer:
-    serializedVersion: 2
-    m_Bits: 1048576
-  _enemyTurnAmount: 17
-  _lookAngleOffset: 35
---- !u!114 &4831122213501426851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3996438095034597574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b50a5e0ceed6fa74ea0b00bf9a3fc680, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemyBulletPooling: {fileID: 1269574386755074349}
-  _attackRange: 15
-  _bulletSpeed: 150
-  _ammo: {fileID: 8792954647265824588, guid: afad03405a8b4914c97c78e992bed72e, type: 3}
-  _muzzle: {fileID: 2170557290630690191}
-  _muzzleFire: {fileID: 6744882231722899272}
---- !u!114 &7427674602950081595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3996438095034597574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bfb79a989ec7084da71f7da5ae27a70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8277692216705007746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,23 +173,6 @@ MonoBehaviour:
   _delayAttack: 0.1
   _delayReload: 2
   _ammoSpeed: 20
---- !u!114 &8282616791590394992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3996438095034597574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8f50053917442946ab52c752ecee843, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player: {fileID: 0}
-  _layer:
-    serializedVersion: 2
-    m_Bits: 1048576
-  _boxSize: {x: 20, y: 20, z: 20}
 --- !u!114 &6258738981963422440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,9 +199,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2f34741d6ba0b4096d90f9493ec4a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attack: {fileID: 0}
-  _combatPosition: {fileID: 0}
-  _agent: {fileID: 0}
+  _attack: {fileID: 5764369317431949947}
+  _combatPosition: {fileID: 6258738981963422440}
+  _agent: {fileID: 1773959790196164877}
   _player: {fileID: 0}
   _turnSpeed: 180
   _fireAngle: 10
@@ -484,11 +384,6 @@ CapsuleCollider:
 --- !u!135 &2031839374570764792 stripped
 SphereCollider:
   m_CorrespondingSourceObject: {fileID: 1898463162273544772, guid: a471dd46042c13c4180e17240f5b38b5, type: 3}
-  m_PrefabInstance: {fileID: 462244675853190076}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2170557290630690191 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1762428415889552947, guid: a471dd46042c13c4180e17240f5b38b5, type: 3}
   m_PrefabInstance: {fileID: 462244675853190076}
   m_PrefabAsset: {fileID: 0}
 --- !u!136 &2398413262834833527 stripped
