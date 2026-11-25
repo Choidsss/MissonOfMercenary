@@ -27,7 +27,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5347596296746313562
 Transform:
   m_ObjectHideFlags: 0
@@ -201,9 +201,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attack: {fileID: 8595058170392017034}
-  _combatPosition: {fileID: 1005914110279221759}
-  _agent: {fileID: 7888838580323094705}
-  _player: {fileID: 0}
   _turnSpeed: 180
   _fireAngle: 10
 --- !u!114 &8899199047245375907
@@ -230,9 +227,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 124b0a49841ae194e893837286d698ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 6455115343630280941}
-  _player: {fileID: 0}
-  _firePosition: {fileID: 0}
 --- !u!114 &2685864484415738113
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -65,7 +65,8 @@ namespace MIssionOfMercenary
             HasStarted = true;
 
             Debug.Log("EnemySpawnOne() ½ÇÇà");
-            _spawner.EnemySpawnOne();
+            //_spawner.EnemySpawnOne();
+            _spawner.StartSpawning();
         }
     }
 }

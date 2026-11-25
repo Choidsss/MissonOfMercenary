@@ -59,12 +59,30 @@ namespace MIssionOfMercenary
 
         bool[] _didCovered;
 
-        int _spawnedCount;
+        int _currentSpawnCount;
+        bool _isSpawning;
 
         private void Awake()
         {
             _didCovered = new bool[EnemyCoverPosition != null ? EnemyCoverPosition.Count : 0];
             AddSpawnPositionToDictionary();
+        }
+
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+            _isSpawning = false;
+        }
+
+        public void StartSpawning()
+        {
+            if(_isSpawning || _currentSpawnCount >= _totalCount)
+            {
+                Debug.Log("StartSpawning() 에러");
+                return;
+            }
+
+            StartCoroutine(SpawnOneRoutine());
         }
 
         void AddSpawnPositionToDictionary()
@@ -141,6 +159,12 @@ namespace MIssionOfMercenary
                 return;
             }
 
+            if (_currentSpawnCount >= _totalCount)
+            {
+                Debug.LogWarning("이미 설정했던 만큼 적을 생성하였습니다");
+                return;
+            }
+
             // 수정: 선택한 적의 NavMesh에서 생성 가능한 좌표를 확인한 뒤 엄폐 자리 예약.
             NavMeshQueryFilter filter = new NavMeshQueryFilter
             {
@@ -191,6 +215,8 @@ namespace MIssionOfMercenary
             // 수정: 위에서 성공한 이동 요청을 중복 호출하지 않도록 제거.
             
             _spawnedEnemies.Add(spawnedEnemy);
+
+            _currentSpawnCount++;
         }
 
         bool TryGetSpawnPosition(out Vector3 position)
@@ -243,6 +269,66 @@ namespace MIssionOfMercenary
 
             _spawnPositionDic[position] = enabled;
             return true;
+        }
+
+        void ReleaseDeadEnemies()
+        {
+            for (int i = _spawnedEnemies.Count - 1;i >= 0;i--)
+            {
+                SpawnedEnemy enemy = _spawnedEnemies[i];
+
+                bool shouldRelease = enemy.Mover == null;
+
+                if (!shouldRelease)
+                {
+                    EnemyHealth health = enemy.Mover.GetComponent<EnemyHealth>();
+                    shouldRelease = health != null && health.IsDeath;
+                }
+
+                if (!shouldRelease)
+                {
+                    continue;
+                }
+
+                _didCovered[enemy.CoveredIndex] = false;
+                _spawnedEnemies.RemoveAt(i);
+                
+            }
+        }
+
+        IEnumerator SpawnOneRoutine()
+        {
+            Debug.Log("SpawnOneRoutine() 들어옴");
+            _isSpawning = true;
+
+            while (_currentSpawnCount < _totalCount)
+            {
+                ReleaseDeadEnemies();
+
+                if(FindEmptySpawnIndex() >= 0)
+                {
+                    int previousCount = _currentSpawnCount;
+
+                    EnemySpawnOne();
+
+                    if (previousCount == _currentSpawnCount)
+                    {
+                        Debug.LogWarning(
+                    "[Spawner] 생성에 실패했습니다. 원인을 수정한 뒤 다시 시작하세요.",
+                    this);
+                        break;
+                    }
+                }
+
+                //if (_currentSpawnCount < _totalCount)
+                //{
+                //    yield return new WaitForSeconds(_spawnInterval);
+                //}
+                yield return new WaitForSeconds(Mathf.Max(0.1f, _spawnInterval));
+
+                _isSpawning = false;
+            }
+
         }
     }
 }
