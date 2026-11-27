@@ -23,6 +23,7 @@ namespace MIssionOfMercenary
 
         public void TakeDamege(int damaged)
         {
+            if (_isDeath) { return; }
             _enemyHealth = _enemyHealth - damaged;
             _enemyHealth = Mathf.Clamp(_enemyHealth, 0, 100);
 
@@ -42,6 +43,7 @@ namespace MIssionOfMercenary
             {
                 Debug.Log("적이 사살 되었습니다.");
 
+                _enemyHit.SetRagdoll(true);
                 StartCoroutine(EnemyDeathDelay());
             }
         }

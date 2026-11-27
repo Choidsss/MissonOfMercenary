@@ -9,10 +9,6 @@ namespace MIssionOfMercenary
         AStarEnemyMover _mover;
         NavMeshAgent _agent;
 
-        bool _isIntialized;
-        
-        //[SerializeField] EnemyCombatPosition _combatPosition;
-        //[SerializeField] NavMeshAgent _agent;
         [SerializeField] SentryEnemyAttack _attack;
 
         //초당 회전하는 각도
@@ -57,7 +53,9 @@ namespace MIssionOfMercenary
             }
 
             _agent.updatePosition = false;
-            FacePlayer();
+
+            FacePlayer(); //Player를 바라봄
+            TryAttackPlayer(); //그 상태에서 공격요청
         }
 
         void FacePlayer()
@@ -97,7 +95,7 @@ namespace MIssionOfMercenary
                 return;
             }
 
-            //Debug.Log("Attack");
+            Debug.Log("Spawn Enemy Attack to player");
             _attack.Attack(_player.position);
         }
     }

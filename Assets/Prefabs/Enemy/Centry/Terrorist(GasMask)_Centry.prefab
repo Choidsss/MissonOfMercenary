@@ -163,16 +163,19 @@ MonoBehaviour:
   _weaponRecoil: {fileID: 0}
   _damage: 10
   _attackRange: 10
-  _ammo: 10
   _maxAmmo: 30
   _bulletPool: {fileID: -8996320463860673438}
   _muzzle: {fileID: 470042384204248625}
   _muzzleFlash: {fileID: 6385891905196231162}
   _muzzleFlashDuration: 0.05
   _targetOffset: {x: 0, y: 1, z: 0}
-  _delayAttack: 0.1
+  _delayAttack: 1.5
   _delayReload: 2
-  _ammoSpeed: 20
+  _ammoSpeed: 500
+  _nearDistance: 1
+  _farDistance: 2
+  _nearSpreadRadius: 40
+  _farSpreadRadius: 45
 --- !u!114 &-2545718845163875716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,9 +203,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attack: {fileID: 3543257737738814741}
-  _combatPosition: {fileID: -2545718845163875716}
-  _agent: {fileID: -3477199059410224905}
-  _player: {fileID: 0}
   _turnSpeed: 180
   _fireAngle: 10
 --- !u!114 &-1474735650487506679

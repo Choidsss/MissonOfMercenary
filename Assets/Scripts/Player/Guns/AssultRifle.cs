@@ -128,7 +128,12 @@ namespace MIssionOfMercenary
             }
             else
             {
-                _bulletMarkPooling.GetBulletMark(hit.point + hit.normal * 0.01f, Quaternion.LookRotation(hit.normal));
+    //            Debug.Log(
+    //$"총알 충돌: {hit.collider.name}, " +
+    //$"레이어: {LayerMask.LayerToName(hit.collider.gameObject.layer)}, " +
+    //$"위치: {hit.point}, 거리: {hit.distance}",
+    //hit.collider);
+                _bulletMarkPooling.GetBulletMark(hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal));
             }
 
             IsShot = true;
@@ -209,20 +214,12 @@ namespace MIssionOfMercenary
 
         IEnumerator ReloadDelayRoutine()
         {
-            //yield return new WaitForSeconds(_reloadDelay);
-            //_currentAmmo = _firearmDefinition.MagazineCapacity;    
-            //_isReloading = false;
-            //_reloadRoutine = null;
-
             if (_reloadHandMotion != null && _reloadHandMotion.IsReady)
             {
                 yield return _reloadHandMotion.Play(_reloadDelay);
             }
             else
             {
-                //Debug.Log("빠짐");
-
-                // 모션이 없는 무기는 기존 재장전 시간을 사용한다.
                 yield return new WaitForSeconds(_reloadDelay);
             }
 

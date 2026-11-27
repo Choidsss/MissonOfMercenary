@@ -215,8 +215,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.6418242, y: 2.9853044, z: 5.316808}
+  m_Center: {x: 0.02656955, y: 1.4853896, z: -0.2695363}
 --- !u!114 &8305375116718464220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,11 +230,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nav: {fileID: 0}
-  _start: {x: 0, y: 0, z: 0}
-  _end: {x: 0, y: 0, z: 0}
+  _end: {fileID: 0}
   _gridWidth: 0
   _maxDistance: 0
   _cellSize: 0
+  _moveSpeed: 0
+  _turnSpeed: 720
   _obstacleLayer:
     serializedVersion: 2
     m_Bits: 0
+  _positionOffset: {x: 0, y: 0, z: 0}
+  _obstacleCheckSize: {x: 1, y: 1, z: 1}
+  _obstacleCheckOffset: {x: 0, y: 0, z: 0}
+  _simplifyPath: 1

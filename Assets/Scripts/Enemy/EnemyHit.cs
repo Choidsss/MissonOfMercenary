@@ -39,60 +39,57 @@ namespace MIssionOfMercenary
             SetRagdoll(false);
         }
 
-        //수정 필요 => foreach검사를 밖에서 한번만 하도록
         public void SetRagdoll(bool active)
         {
-            foreach(Rigidbody rb in _rigidbodies)
+            //foreach(Rigidbody rb in _rigidbodies)
+            //{
+            //    if (_anim != null) { /*Debug.Log("Animator Component is Not Exist!");*/ _anim.enabled = false; }
+            //    if (_bt != null) { /*Debug.Log("EnemyBT Component is Not Exist!");*/ _bt.enabled = false;}
+            //    if (_nav != null) { /*Debug.Log("NavMeshAgent Component is Not Exist!");*/ _nav.enabled = false; }
+            //    if (_area != null) { /*Debug.Log("EnemyFindArea Component is Not Exist!");*/ _area.enabled = false; }
+
+            //    _anim.enabled = !active;
+            //    _bt.enabled = !active;
+            //    _nav.enabled = !active;
+            //    _area.enabled = !active;
+
+            //    rb.isKinematic = !active;
+
+            //    if (active)
+            //    {
+            //        rb.WakeUp();
+            //    }
+            //}
+
+            if (active)
             {
-                if (_anim == null) { Debug.Log("Animator Component is Not Exist!"); return; }
-                if (_bt == null) { Debug.Log("EnemyBT Component is Not Exist!"); return; }
-                if (_nav == null) { Debug.Log("NavMeshAgent Component is Not Exist!"); return; }
-                if (_area == null) { Debug.Log("EnemyFindArea Component is Not Exist!"); return; }
+                if (_anim != null) _anim.enabled = false;
+                if (_bt != null) _bt.enabled = false;
+                if (_nav != null) _nav.enabled = false;
+                if (_area != null) _area.enabled = false;
 
-                _anim.enabled = !active;
-                _bt.enabled = !active;
-                _nav.enabled = !active;
-                _area.enabled = !active;
+                var mover = GetComponent<AStarEnemyMover>();
+                if (mover != null) mover.enabled = false;
 
+                var combat = GetComponent<EnemyCombatController>();
+                if (combat != null) combat.enabled = false;
+
+                var attack = GetComponent<SentryEnemyAttack>();
+                if (attack != null)
+                {
+                    attack.StopAllCoroutines();
+                    attack.enabled = false;
+                }
+            }
+
+            foreach (Rigidbody rb in _rigidbodies)
+            {
                 rb.isKinematic = !active;
 
                 if (active)
-                {
                     rb.WakeUp();
-                }
             }
         }
-
-        //public void RagdollHit(RaycastHit muzzleHit, int damage)
-        //{
-        //    if(muzzleHit.collider.gameObject.layer != 10) { Debug.Log("Does Not Equal Layer Enemy"); }// 일단 조건 이렇게 해놓음
-
-        //    if(muzzleHit.collider.gameObject.layer == 10)
-        //    {
-        //        BodyPart hitPart = _part.GiveHitPart(muzzleHit);
-
-        //        Debug.Log($"맞은 부위 : {hitPart}");
-
-        //        switch (hitPart)
-        //        {
-        //            case BodyPart.Arms:
-        //                _totalDamage = damage + _bonusDamageArms;
-        //                break;
-        //            case BodyPart.Legs:
-        //                _totalDamage = damage + _bonusDamageLegs;
-        //                break;
-        //            case BodyPart.Head:
-        //                _totalDamage = damage + _bonusDamageHead;
-        //                break;
-        //            default:
-        //                _totalDamage = damage;
-        //                break;
-        //        }
-        //        Debug.Log($"준 데미지 : {_totalDamage}");
-        //        _health.TakeDamege(_totalDamage);
-        //        _pelivisRb.constraints = RigidbodyConstraints.FreezeRotationY;//Y만 체크(시선은 고정이되, 팔다리는 움직임)
-        //    }
-        //}
 
         public void ReceiveHit(RaycastHit hit, int damage)
         {

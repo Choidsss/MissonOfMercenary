@@ -24,13 +24,14 @@ namespace MIssionOfMercenary
     {
         public ShotResult Resolver(Ray aimRay, Vector3 muzzlePosition, float range)
         {
+            int hitMask = Physics.DefaultRaycastLayers & ~LayerMask.GetMask("Player", "Weapons");
             Vector3 targetPoint;
 
             /*
              * 처음 레이캐스트는 targetPoint 계산용 캐스트.
              */
 
-            if (Physics.Raycast(aimRay, out RaycastHit aimHit, range))//ray를 쏴서 걸리는게 있다면, 그 hit된 포인트가 타겟
+            if (Physics.Raycast(aimRay, out RaycastHit aimHit, range, hitMask, QueryTriggerInteraction.Ignore))//ray를 쏴서 걸리는게 있다면, 그 hit된 포인트가 타겟
             {
                 targetPoint = aimHit.point;
             }
@@ -52,7 +53,7 @@ namespace MIssionOfMercenary
             }
 
             //있으면 본격적인 명중된 정보 연산
-            bool isHit = Physics.Raycast(muzzlePosition, direction, out RaycastHit hit, range);
+            bool isHit = Physics.Raycast(muzzlePosition, direction, out RaycastHit hit, range, hitMask, QueryTriggerInteraction.Ignore);
 
             float distance = isHit ? hit.distance : range;
             
